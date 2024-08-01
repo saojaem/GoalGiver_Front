@@ -1,5 +1,6 @@
 package com.example.goalgiver.ui.goaldetail
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,11 +15,11 @@ class PhotoCertificationFragment: Fragment() {
 
     private val imageResources = listOf(
         R.drawable.img_emptystate,
+        R.drawable.img_books,
         R.drawable.img_emptystate,
+        R.drawable.img_books,
         R.drawable.img_emptystate,
-        R.drawable.img_emptystate,
-        R.drawable.img_emptystate,
-        R.drawable.img_emptystate
+        R.drawable.img_books
     )
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,5 +36,12 @@ class PhotoCertificationFragment: Fragment() {
 
         val adapter = PhotoImageAdapter(requireContext(), imageResources)
         binding.gvGoaldetailCertification.adapter = adapter
+
+        binding.gvGoaldetailCertification.setOnItemClickListener { parent, view, position, id ->
+            val intent = Intent(requireContext(), PhotoDetailActivity::class.java).apply {
+                putExtra("imageResource", imageResources[position])
+            }
+            startActivity(intent)
+        }
     }
 }
