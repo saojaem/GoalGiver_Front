@@ -30,7 +30,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.main.goal.AddGoalTeam"/>
+        <activity
+            android:name=".ui.main.goal.datePickerActivity"
+            android:theme= "@style/popupTheme" />
+        <activity android:name=".ui.main.goal.AddGoalRepeat" />
+        <activity android:name=".ui.main.goal.AddGoalDonation" />
+        <activity android:name=".ui.main.goal.AddGoalStartTimeSpinner" />
+        <activity android:name=".ui.main.goal.AddGoalFinishTimeSpinner" />
+
     </application>
 
 </manifest>
