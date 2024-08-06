@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Base application theme -->
+    <!-- Popup theme -->
+    <style name="popupTheme" parent="Theme.MaterialComponents.Light.Dialog">
+        <!-- Customize your popup theme here. -->
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowBackground">@android:color/white</item>
+
+
+    </style>
+
+
+</resources>
