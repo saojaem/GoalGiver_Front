@@ -1,5 +1,6 @@
 package com.example.goalgiver.ui.main.goal
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -26,6 +27,11 @@ class GoalFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setupButtonListeners()
+
+        binding.floatingActionButton.setOnClickListener {
+            val intent = Intent(requireContext(), AddGoalMain::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun setupButtonListeners() {
