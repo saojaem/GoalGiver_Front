@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -87,6 +88,14 @@ public class AddGoalMain extends AppCompatActivity {
         certificationLocation_Pbt = findViewById(R.id.goal_add_certification_location);
         target_lacation_L = findViewById(R.id.goal_add_target_location);
         certificationTeam_bt = findViewById(R.id.goal_add_team_certification_team);
+
+        ImageView backButton = findViewById(R.id.add_goal_backButton);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();  // 현재 액티비티를 종료하고 이전 화면으로 돌아갑니다.
+            }
+        });
 
         personal();
         imageCertificationP();
