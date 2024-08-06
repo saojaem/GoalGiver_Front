@@ -2,49 +2,49 @@
 <resources>
     <style name="H1" parent="Widget.AppCompat.TextView">
         <item name="android:fontFamily">@font/pretendard_semibold</item>
-        <item name="android:textSize">20px</item>
+        <item name="android:textSize">20dp</item>
         <item name="android:textColor">@color/black</item>
     </style>
 
     <style name="H2" parent="Widget.AppCompat.TextView">
         <item name="android:fontFamily">@font/pretendard_semibold</item>
-        <item name="android:textSize">18px</item>
+        <item name="android:textSize">18dp</item>
         <item name="android:textColor">@color/black</item>
     </style>
 
     <style name="Title1" parent="Widget.AppCompat.TextView">
         <item name="android:fontFamily">@font/pretendard_semibold</item>
-        <item name="android:textSize">16px</item>
+        <item name="android:textSize">16dp</item>
         <item name="android:textColor">@color/black</item>
     </style>
 
     <style name="Title2" parent="Widget.AppCompat.TextView">
         <item name="android:fontFamily">@font/pretendard_semibold</item>
-        <item name="android:textSize">15px</item>
+        <item name="android:textSize">15dp</item>
         <item name="android:textColor">@color/black</item>
     </style>
 
     <style name="Title3" parent="Widget.AppCompat.TextView">
         <item name="android:fontFamily">@font/pretendard_semibold</item>
-        <item name="android:textSize">14px</item>
+        <item name="android:textSize">14dp</item>
         <item name="android:textColor">@color/black</item>
     </style>
 
     <style name="Body1" parent="Widget.AppCompat.TextView">
         <item name="android:fontFamily">@font/pretendard_medium</item>
-        <item name="android:textSize">15px</item>
+        <item name="android:textSize">15dp</item>
         <item name="android:textColor">@color/black</item>
     </style>
 
     <style name="Body2" parent="Widget.AppCompat.TextView">
         <item name="android:fontFamily">@font/pretendard_medium</item>
-        <item name="android:textSize">14px</item>
+        <item name="android:textSize">14dp</item>
         <item name="android:textColor">@color/black</item>
     </style>
 
     <style name="Caption1" parent="Widget.AppCompat.TextView">
         <item name="android:fontFamily">@font/pretendard_medium</item>
-        <item name="android:textSize">12px</item>
+        <item name="android:textSize">12dp</item>
         <item name="android:textColor">@color/black</item>
     </style>
 </resources>
