@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:gravity="center">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="종료 시간"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="16dp"/>
+
+    <TimePicker
+        android:id="@+id/finish_timePicker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:timePickerMode="spinner"
+        android:layout_gravity="center_horizontal"/>
+
+    <LinearLayout
+        android:id="@+id/finish_buttonLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        tools:ignore="MissingConstraints"
+        app:layout_constraintTop_toBottomOf="@+id/gridLayout">
+
+        <Button
+            android:id="@+id/add_goal_finish_cencel"
+            android:layout_width="28dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:text="취소"
+            android:textColor="#0E9AFF"
+            android:textStyle="bold"
+            android:textSize="16dp"
+            android:background="@drawable/add_goal_repeat_plus"/>
+        <Button
+            android:id="@+id/add_goal_finish_choose_complete"
+            android:layout_width="56dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/click_btn"
+            android:textColor="@color/white"
+            android:textSize="16dp"
+            android:layout_weight="2"
+            android:text="선택 완료"/>
+    </LinearLayout>
+</LinearLayout>

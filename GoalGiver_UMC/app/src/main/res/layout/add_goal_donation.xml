@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/titleText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="기부 단체 선택"
+        android:textColor="@color/black"
+        android:textSize="18dp"
+        android:layout_marginTop="20dp"
+        android:textAlignment="center"
+        android:gravity="center"
+        tools:ignore="MissingConstraints" />
+
+    <GridLayout
+        android:id="@+id/gridLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:alignmentMode="alignMargins"
+        android:columnCount="3"
+        android:rowCount="2"
+        app:layout_constraintTop_toBottomOf="@+id/titleText">
+
+        <!-- First Row -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_columnWeight="1"
+            android:layout_row="0">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="150dp"
+                android:src="@drawable/unicef"/>
+            <RadioButton
+                android:id="@+id/radioUnicef"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onRadioButtonClicked"
+                android:stateListAnimator="@null"
+                android:clickable="false"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_columnWeight="1"
+            android:layout_row="0">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="148dp"
+                android:src="@drawable/save_the_children" />
+
+            <RadioButton
+                android:id="@+id/radioSaveTheChildren"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onRadioButtonClicked"
+                android:stateListAnimator="@null"
+                android:clickable="false"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_columnWeight="1"
+            android:layout_row="0">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="150dp"
+                android:src="@drawable/plan_international"/>
+            <RadioButton
+                android:id="@+id/radioPlanInternational"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onRadioButtonClicked"
+                android:stateListAnimator="@null"
+                android:clickable="false"/>
+        </LinearLayout>
+
+        <!-- Second Row -->
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_row="1"
+            android:layout_column="0"
+            android:layout_columnWeight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="150dp"
+                android:src="@drawable/goodneighbors" />
+
+            <RadioButton
+                android:id="@+id/radioGoodNeighbors"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onRadioButtonClicked"
+                android:stateListAnimator="@null"
+                android:clickable="false"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_columnWeight="1"
+            android:layout_row="1">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="150dp"
+                android:src="@drawable/purme_foundation"/>
+            <RadioButton
+                android:id="@+id/radioPurnuFoundation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onRadioButtonClicked"
+                android:stateListAnimator="@null"
+                android:clickable="false"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_columnWeight="1"
+            android:layout_row="1">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="150dp"
+                android:src="@drawable/green_umbrella"/>
+            <RadioButton
+                android:id="@+id/radioChildFund"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onRadioButtonClicked"
+                android:stateListAnimator="@null"
+                android:clickable="false"/>
+        </LinearLayout>
+
+    </GridLayout>
+
+    <LinearLayout
+        android:id="@+id/buttonLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        tools:ignore="MissingConstraints"
+        app:layout_constraintTop_toBottomOf="@+id/gridLayout">
+
+        <Button
+            android:id="@+id/add_goal_repeat_cencel"
+            android:layout_width="28dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:text="취소"
+            android:textColor="#0E9AFF"
+            android:textStyle="bold"
+            android:textSize="16dp"
+            android:background="@drawable/add_goal_repeat_plus"/>
+        <Button
+            android:id="@+id/add_goal_repeat_choose_complete"
+            android:layout_width="56dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/click_btn"
+            android:textColor="@color/white"
+            android:textSize="16dp"
+            android:layout_weight="2"
+            android:text="선택 완료"/>
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
