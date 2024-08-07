@@ -60,7 +60,8 @@ class GoalDetailActivity: AppCompatActivity() {
             override fun onTabSelected(p0: TabLayout.Tab) {
                 val fragment = when (p0.position) {
                     0 -> IndividualProgressFragment()
-                    1 -> PhotoCertificationFragment()
+                    //1 -> PhotoCertificationFragment()
+                    1 -> CalendarCertificationFragment()
                     else -> null
                 }
                 if (fragment != null) {
