@@ -1,7 +1,16 @@
 package com.example.goalgiver.ui.goaldetail
 
+import android.app.Activity
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.os.Bundle
+import android.provider.MediaStore
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.example.goalgiver.R
 import com.example.goalgiver.databinding.ActivityGoaldetailBinding
 import com.github.mikephil.charting.animation.Easing
@@ -11,6 +20,11 @@ import com.github.mikephil.charting.data.PieEntry
 import com.google.android.material.tabs.TabLayout
 
 class GoalDetailActivity: AppCompatActivity() {
+
+    // 카메라 임시코드
+    private val REQUEST_IMAGE_CAPTURE = 101
+    private val CAMERA_PERMISSION_CODE = 102
+    private lateinit var takePictureLauncher: ActivityResultLauncher<Intent>
 
     lateinit var binding: ActivityGoaldetailBinding
 
@@ -28,6 +42,72 @@ class GoalDetailActivity: AppCompatActivity() {
 
         initPieChart()
         setTab()
+        //카메라 임시코드
+        takePictureLauncher = registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val data: Intent? = result.data
+                // handle the image here
+            }
+        }
+        binding.btnTemp.setOnClickListener {
+            checkCameraPermission()
+        }
+    }
+
+    private fun checkCameraPermission() {
+        // 카메라 권한 부여 확인
+        if (ContextCompat.checkSelfPermission(
+            this,
+            android.Manifest.permission.CAMERA
+        ) != PackageManager.PERMISSION_GRANTED
+            ) {
+            // 권한 없다면 권한 요청
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(android.Manifest.permission.CAMERA),
+                CAMERA_PERMISSION_CODE
+            )
+        } else {
+            // 권한 이미 허용되었다면 촬영 진행
+            dispatchTakePictureIntent()
+        }
+    }
+
+    private fun dispatchTakePictureIntent() {
+        // 카메라 앱 실행 위한 Intent 생성
+        val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        //startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
+        takePictureLauncher.launch(takePictureIntent)
+    }
+
+    // 권한 요청 결과 처리
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == CAMERA_PERMISSION_CODE) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // 권한이 허용되면 사진 촬영 진행
+                dispatchTakePictureIntent()
+            } else {
+                // 권한이 거부되었을 때 처리
+                // (예: 사용자에게 권한이 필요하다는 메시지 표시)
+            }
+        }
+    }
+
+    // 찍은 사진 결과 표시
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            // 사진 찍기 완료 후 결과 이미지를 ImageView에 설정
+            val imageBitmap = data?.extras?.get("data") as Bitmap
+            //imageView.setImageBitmap(imageBitmap)
+        }
     }
 
     private fun initPieChart() {
