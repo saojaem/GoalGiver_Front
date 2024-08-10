@@ -6,13 +6,17 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.example.goalgiver.MainActivity
 import com.example.goalgiver.R
 import com.example.goalgiver.databinding.ActivityGoaldetailBinding
+import com.example.goalgiver.ui.certification.CertificationDialog
+import com.example.goalgiver.ui.main.goal.AddGoalMain
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
@@ -49,6 +53,20 @@ class GoalDetailActivity: AppCompatActivity() {
             if (result.resultCode == Activity.RESULT_OK) {
                 val data: Intent? = result.data
                 // handle the image here
+                // 사진 찍기 완료 후 결과 이미지를 ImageView에 설정
+                Log.d("blabla", "success")
+                val imageBitmap = data?.extras?.get("data") as Bitmap
+                //imageView.setImageBitmap(imageBitmap)
+                binding.ivGoaldetailMainphoto.setImageBitmap(imageBitmap)
+
+                val dialog = CertificationDialog(
+                    context = this,
+                    imageResId = R.drawable.icn_check,
+                    messageResId = R.string.certification_success,
+                    targetActivity = AddGoalMain::class.java
+                )
+                dialog.show()
+
             }
         }
         binding.btnTemp.setOnClickListener {
@@ -104,9 +122,18 @@ class GoalDetailActivity: AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            // 사진 찍기 완료 후 결과 이미지를 ImageView에 설정
-            val imageBitmap = data?.extras?.get("data") as Bitmap
-            //imageView.setImageBitmap(imageBitmap)
+//            // 사진 찍기 완료 후 결과 이미지를 ImageView에 설정
+//            Log.d("blabla", "success")
+//            val imageBitmap = data?.extras?.get("data") as Bitmap
+//            //imageView.setImageBitmap(imageBitmap)
+//            binding.ivGoaldetailMainphoto.setImageBitmap(imageBitmap)
+//
+//            val dialog = CertificationDialog(
+//                context = this,
+//                imageResId = R.drawable.icn_check,
+//                messageResId = R.string.app_name
+//            )
+//            dialog.show()
         }
     }
 
@@ -140,8 +167,8 @@ class GoalDetailActivity: AppCompatActivity() {
             override fun onTabSelected(p0: TabLayout.Tab) {
                 val fragment = when (p0.position) {
                     0 -> IndividualProgressFragment()
-                    //1 -> PhotoCertificationFragment()
-                    1 -> CalendarCertificationFragment()
+                    1 -> PhotoCertificationFragment()
+                    //1 -> CalendarCertificationFragment()
                     else -> null
                 }
                 if (fragment != null) {

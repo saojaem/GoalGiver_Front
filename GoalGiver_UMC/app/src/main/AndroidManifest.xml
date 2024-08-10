@@ -43,6 +43,7 @@
         <activity android:name=".ui.main.goal.AddGoalDonation" />
         <activity android:name=".ui.main.goal.AddGoalStartTimeSpinner" />
         <activity android:name=".ui.main.goal.AddGoalFinishTimeSpinner" />
+        <activity android:name=".ui.goaldetail.PhotoDetailActivity" />
         <activity
             android:name=".ui.goaldetail.GoalDetailActivity"
             android:exported="true">

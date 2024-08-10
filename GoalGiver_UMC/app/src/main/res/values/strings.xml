@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">GoalGiver</string>
+    <string name="certification_success">인증 성공</string>
+    <string name="certification_fail">인증 실패</string>
     <string-array name="custom_weekdays">
         <item>월</item>
         <item>화</item>
