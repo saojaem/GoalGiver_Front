@@ -7,5 +7,6 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="Theme.GoalGiver" parent="Base.Theme.GoalGiver" />
+    <style name="Theme.GoalGiver" parent="Theme.AppCompat.Light" />
+
 </resources>
