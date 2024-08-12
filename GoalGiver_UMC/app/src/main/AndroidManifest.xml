@@ -54,6 +54,7 @@
 <!--            </intent-filter>-->
         </activity>
         <activity android:name=".ui.certification.MapCertificationActivity" />
+        <activity android:name=".ui.main.people.SearchFriendActivity" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBDdcgSnDnIM4Xc8rI3n3Nyxr5fwmqKgZk"/>

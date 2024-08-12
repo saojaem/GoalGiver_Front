@@ -1,5 +1,6 @@
 package com.example.goalgiver.ui.main.people
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -19,6 +20,7 @@ class PeopleFragment: Fragment() {
         binding = FragmentPeopleBinding.inflate(inflater, container, false)
 
         initFriendList()
+        setSearchBtn()
 
         return binding.root
     }
@@ -35,5 +37,11 @@ class PeopleFragment: Fragment() {
 
         rv_friend.adapter = friendListAdapter
         rv_friend.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+    }
+
+    private fun setSearchBtn() {
+        binding.btnPeopleSearch.setOnClickListener {
+            startActivity(Intent(requireActivity(), SearchFriendActivity::class.java))
+        }
     }
 }
