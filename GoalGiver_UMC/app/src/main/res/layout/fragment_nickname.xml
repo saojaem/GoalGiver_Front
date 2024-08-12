@@ -47,10 +47,13 @@
 
     <!-- Check Duplicate Button -->
     <Button
+
         android:id="@+id/checkDuplicateButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@drawable/rounded_button"
         android:text="중복확인"
+        android:textColor="@android:color/white"
         android:textSize="16sp"
         app:layout_constraintStart_toEndOf="@id/nicknameEditText"
         app:layout_constraintEnd_toEndOf="parent"
@@ -94,7 +97,7 @@
         android:layout_height="wrap_content"
         android:text="시작하기"
         android:textSize="16sp"
-
+        android:background="@drawable/rounded_button"
         android:textColor="@android:color/white"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

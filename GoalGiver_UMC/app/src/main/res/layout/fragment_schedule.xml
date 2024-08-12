@@ -1,80 +1,72 @@
-<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:tools="http://schemas.android.com/tools"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-android:background="#F5F5F5"
-tools:context=".MainActivity">
-
-<!-- Calendar Header -->
-<LinearLayout
-    android:id="@+id/calendarHeader"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="16dp"
-    android:layout_alignParentTop="true">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#F5F5F5"
+    tools:context=".MainActivity">
 
-    <!-- Calendar Month and Year -->
+    <!-- Calendar Header -->
     <LinearLayout
+        android:id="@+id/calendarHeader"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:layout_alignParentTop="true">
 
-        <TextView
-            android:id="@+id/textMonthYear"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="2024년 6월"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:layout_gravity="center"
-            android:paddingBottom="8dp" />
-        <View
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:background="@drawable/icn_alarm" />
+        <!-- Calendar Month and Year -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
 
+            <TextView
+                android:id="@+id/textMonthYear"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2024년 6월"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_gravity="center"
+                android:paddingBottom="8dp" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/icn_alarm" />
+        </LinearLayout>
     </LinearLayout>
 
-</LinearLayout>
-
-<!-- Calendar View -->
-<CalendarView
-    android:id="@+id/calendarView"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_below="@id/calendarHeader"
-    android:layout_marginBottom="16dp" />
-
-<!-- Image and Text Section -->
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_below="@id/calendarView"
-    android:layout_centerInParent="true"
-    android:orientation="vertical"
-    android:gravity="center"
-    android:paddingTop="32dp">
-
-    <!-- Placeholder for the Image -->
-    <ImageView
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:src="@drawable/group_26753" />
-
-    <!-- Placeholder Text -->
-    <TextView
-        android:layout_width="wrap_content"
+    <!-- Material Calendar View -->
+    <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+        android:id="@+id/calendar_view"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="오늘은 예정된 할 일이 없어요"
+        android:padding="12dp"
+        android:theme="@style/CalenderViewCustom"
+        app:mcv_dateTextAppearance="@style/CalenderViewDateCustomText"
+        app:mcv_firstDayOfWeek="sunday"
+        app:mcv_selectionMode="single"
+        app:mcv_showOtherDates="all"
+        app:mcv_weekDayTextAppearance="@style/CalenderViewWeekCustomText" />
+
+    <!-- ToDo 리스트를 보여주는 TextView -->
+    <TextView
+        android:id="@+id/todoTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/calendar_view"
+        android:layout_marginTop="16dp"
+        android:padding="16dp"
         android:textSize="16sp"
-        android:paddingTop="16dp" />
-</LinearLayout>
+        android:textColor="@android:color/black"
+        tools:text="할 일을 선택하세요." />
 
 </RelativeLayout>

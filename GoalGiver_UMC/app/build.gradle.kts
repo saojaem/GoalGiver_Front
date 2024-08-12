@@ -56,6 +56,10 @@ dependencies {
     // MaterialCalendarView
     implementation("com.github.prolificinteractive:material-calendarview:2.0.1")
     implementation("com.jakewharton.threetenabp:threetenabp:1.2.0")
+
+    // harry
+    implementation ("androidx.fragment:fragment-ktx:1.5.7")
+    
     // Google Maps
     implementation("com.google.android.gms:play-services-maps:19.0.0")
     implementation("com.google.android.gms:play-services-location:21.3.0")
