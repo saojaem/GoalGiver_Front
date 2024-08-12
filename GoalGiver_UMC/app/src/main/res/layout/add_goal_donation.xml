@@ -3,14 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    app:behavior_hideable="true"
+    app:behavior_draggable="true"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
     <TextView
         android:id="@+id/titleText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="기부 단체 선택"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         android:textSize="18dp"
         android:layout_marginTop="20dp"
         android:textAlignment="center"
@@ -22,6 +25,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:alignmentMode="alignMargins"
+        android:layout_marginTop="30dp"
         android:columnCount="3"
         android:rowCount="2"
         app:layout_constraintTop_toBottomOf="@+id/titleText">
@@ -66,7 +70,8 @@
                 android:layout_height="wrap_content"
                 android:onClick="onRadioButtonClicked"
                 android:stateListAnimator="@null"
-                android:clickable="false"/>
+                android:clickable="false"
+                />
         </LinearLayout>
 
         <LinearLayout
@@ -158,10 +163,11 @@
 
     <LinearLayout
         android:id="@+id/buttonLayout"
+        android:paddingBottom="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="50dp"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
         tools:ignore="MissingConstraints"
