@@ -47,7 +47,7 @@ public class AddGoalFinishTimeSpinner extends AppCompatActivity {
                 String time = formatTime(hour, minute);
 
                 Intent resultIntent = new Intent();
-                resultIntent.putExtra("selectedStartTime", time);
+                resultIntent.putExtra("selectedEndTime", time);
                 setResult(RESULT_OK, resultIntent);
                 finish();
             }

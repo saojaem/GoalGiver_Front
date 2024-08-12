@@ -35,7 +35,8 @@
             android:layout_weight="2"
             android:onClick="mOnClick"
             android:text="취소"
-            android:width="2dp"/>
+            android:background="@drawable/click_btn"
+            android:textColor="@android:color/white" />
 
         <Button
             android:id="@+id/vDateEnter"
@@ -43,8 +44,8 @@
             android:layout_marginStart="20dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="선택완료" />
+            android:text="선택완료"
+            android:background="@drawable/click_btn"
+            android:textColor="@android:color/white" />
     </LinearLayout>
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

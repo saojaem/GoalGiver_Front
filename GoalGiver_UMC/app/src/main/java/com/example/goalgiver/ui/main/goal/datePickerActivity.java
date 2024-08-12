@@ -11,20 +11,18 @@ import android.widget.DatePicker;
 import com.example.goalgiver.R;
 
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 
-public class datePickerActivity extends AppCompatActivity{
-    private int mYear =0, mMonth=0, mDay=0;
+public class datePickerActivity extends AppCompatActivity {
+    private int mYear = 0, mMonth = 0, mDay = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.add_goal_date_picker);
         Calendar calendar = Calendar.getInstance();
-        Button EnterDate;
+        Button enterDate;
 
         // 현재 년, 월, 일 가져옴
         mYear = calendar.get(Calendar.YEAR);
@@ -32,37 +30,54 @@ public class datePickerActivity extends AppCompatActivity{
         mDay = calendar.get(Calendar.DAY_OF_MONTH);
 
         DatePicker datePicker = findViewById(R.id.vDatePicker);
-        EnterDate = findViewById(R.id.vDateEnter);
-        datePicker.init(mYear, mMonth, mDay,mOnDateChangedListener);
+        enterDate = findViewById(R.id.vDateEnter);
+        datePicker.init(mYear, mMonth, mDay, mOnDateChangedListener);
 
-        EnterDate.setOnClickListener(new View.OnClickListener(){
+        // DatePicker Header 제거
+        int headerId = getResources().getIdentifier("date_picker_header", "id", "android");
+        View headerView = datePicker.findViewById(headerId);
+        if (headerView != null) {
+            headerView.setVisibility(View.GONE);
+        }
+
+        // GoalGiver 텍스트 제거 (타이틀 바 제거)
+        int titleId = getResources().getIdentifier("action_bar", "id", "android");
+        View titleView = findViewById(titleId);
+        if (titleView != null) {
+            titleView.setVisibility(View.GONE);
+        }
+
+        // 종료 날짜 선택 시 최소 날짜 설정
+        if (getIntent().hasExtra("minDate")) {
+            long minDate = getIntent().getLongExtra("minDate", -1);
+            datePicker.setMinDate(minDate);
+        }
+
+        enterDate.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view){
+            public void onClick(View view) {
                 mOnClick(view);
             }
         });
     }
-    public void mOnClick(View v){
+
+    public void mOnClick(View v) {
         Intent intent = new Intent();
 
-        intent.putExtra("mYear",mYear);
+        intent.putExtra("mYear", mYear);
         intent.putExtra("mMonth", mMonth);
         intent.putExtra("mDay", mDay);
 
         setResult(RESULT_OK, intent);
         finish();
     }
-    DatePicker.OnDateChangedListener mOnDateChangedListener = new DatePicker.OnDateChangedListener(){
+
+    DatePicker.OnDateChangedListener mOnDateChangedListener = new DatePicker.OnDateChangedListener() {
         @Override
         public void onDateChanged(DatePicker datePicker, int yy, int mm, int dd) {
-
             mYear = yy;
             mMonth = mm;
             mDay = dd;
         }
     };
-
-
-
-
 }
