@@ -20,33 +20,32 @@
             app:layout_constraintTop_toTopOf="parent" />
     <!-- Goal section -->
 
-        <TextView
-            android:text="목표"
+        <EditText
+            android:hint="목표"
             android:textSize="18dp"
             android:id="@+id/set_goal_tv"
             android:layout_width="match_parent"
             android:layout_height="80dp"
-            android:layout_marginTop="20dp"
-            android:paddingStart="90dp"
-            android:paddingTop="25dp"
+            android:layout_marginTop="10dp"
+            android:paddingStart="75dp"
             android:background="@drawable/add_goal_btn"
             app:layout_constraintTop_toBottomOf="@+id/add_goal_backButton"
             android:layout_margin="20dp"
             tools:ignore="MissingConstraints"/>
 
-        <Button
+        <EditText
+            android:id="@+id/add_goal_choose_emotion"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_marginStart="28dp"
+            android:layout_marginStart="15dp"
             android:layout_marginTop="15dp"
             android:background="@drawable/add_emotion"
-            android:text="+"
+            android:paddingStart="5dp"
+            android:hint="🎯"
             android:textSize="30sp"
             app:layout_constraintStart_toStartOf="@+id/set_goal_tv"
             app:layout_constraintTop_toTopOf="@id/set_goal_tv"
-            tools:ignore="NotSibling">
-
-        </Button>
+            tools:ignore="NotSibling"/>
 
         <TextView
             android:id="@+id/set_goal_text"
@@ -105,6 +104,7 @@
             android:layout_marginTop="20dp"
             android:orientation="vertical"
             android:paddingStart="20dp"
+
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/goal_add_distinguish">
@@ -391,9 +391,9 @@
                 <TextView
                     android:id="@+id/goal_add_team_Starttime_date"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:hint="오후 2:00"
-                    android:textSize="20dp"
+                    android:textSize="20sp"
                     android:textColor="@color/black"
                     android:padding="8dp"
                     android:background="@drawable/date_tv"
@@ -416,7 +416,7 @@
                 android:orientation="horizontal"
                 android:layout_weight="1">
 
-                <EditText
+                <TextView
                     android:id="@+id/goal_add_team_endtime_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

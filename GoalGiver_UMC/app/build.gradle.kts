@@ -52,4 +52,5 @@ dependencies {
 
     // MPAndroidChart
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
+    implementation ("com.github.prolificinteractive:material-calendarview:2.0.1");
 }
