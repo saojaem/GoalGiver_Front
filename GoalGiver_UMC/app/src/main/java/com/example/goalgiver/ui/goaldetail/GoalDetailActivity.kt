@@ -16,6 +16,7 @@ import com.example.goalgiver.MainActivity
 import com.example.goalgiver.R
 import com.example.goalgiver.databinding.ActivityGoaldetailBinding
 import com.example.goalgiver.ui.certification.CertificationDialog
+import com.example.goalgiver.ui.certification.MapCertificationActivity
 import com.example.goalgiver.ui.main.goal.AddGoalMain
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.data.PieData
@@ -63,7 +64,7 @@ class GoalDetailActivity: AppCompatActivity() {
                     context = this,
                     imageResId = R.drawable.icn_check,
                     messageResId = R.string.certification_success,
-                    targetActivity = AddGoalMain::class.java
+                    targetActivity = MapCertificationActivity::class.java
                 )
                 dialog.show()
 
