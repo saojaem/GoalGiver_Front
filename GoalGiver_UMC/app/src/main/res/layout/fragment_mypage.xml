@@ -13,11 +13,29 @@
         android:paddingTop="32dp">
 
         <!-- Profile Picture -->
-        <ImageView
+        <FrameLayout
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:src="@drawable/octicon_feed_person_16"
-            android:layout_gravity="center"/>
+            android:layout_gravity="center">
+
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/octicon_feed_person_16"
+                android:layout_gravity="center"
+                android:scaleType="centerCrop"
+                android:background="@drawable/circle_background"
+                android:contentDescription="Profile Picture"/>
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="bottom|end"
+                android:layout_margin="4dp"
+                android:src="@drawable/icn_camera"
+                android:background="@drawable/circle_background"
+                android:contentDescription="Camera Icon"/>
+        </FrameLayout>
 
         <!-- Username -->
         <TextView
@@ -202,6 +220,7 @@
 
         <!-- Delete Account -->
         <TextView
+            android:id="@+id/accountDelete"
             android:background="@drawable/layout_background"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

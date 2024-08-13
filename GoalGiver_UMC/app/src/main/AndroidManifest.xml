@@ -2,6 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-feature android:name="android.hardware.camera"
+        android:required="true"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -24,11 +30,11 @@
         <activity
             android:name=".ui.main.goal.AddGoalMain"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
         </activity>
         <activity
             android:name=".ui.main.goal.datePickerActivity"
@@ -37,6 +43,21 @@
         <activity android:name=".ui.main.goal.AddGoalDonation" />
         <activity android:name=".ui.main.goal.AddGoalStartTimeSpinner" />
         <activity android:name=".ui.main.goal.AddGoalFinishTimeSpinner" />
+        <activity android:name=".ui.goaldetail.PhotoDetailActivity" />
+        <activity
+            android:name=".ui.goaldetail.GoalDetailActivity"
+            android:exported="true">
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
+        </activity>
+        <activity android:name=".ui.certification.MapCertificationActivity" />
+        <activity android:name=".ui.main.people.SearchFriendActivity" />
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyBDdcgSnDnIM4Xc8rI3n3Nyxr5fwmqKgZk"/>
 
     </application>
 
