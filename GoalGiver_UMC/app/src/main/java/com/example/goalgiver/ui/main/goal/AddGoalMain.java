@@ -18,6 +18,8 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.TimePicker;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import androidx.annotation.Nullable;
@@ -25,23 +27,17 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.goalgiver.R;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.prolificinteractive.materialcalendarview.CalendarDay;
+import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class AddGoalMain extends AppCompatActivity {
-    private int dailyInterval = 1;
-    private String repeatType = "매일";
+    private static final int TEAM_CHOOSE_REQUEST = 7;
 
-    private DatePickerDialog.OnDateSetListener startDateCallbackMethod;
-    private DatePickerDialog.OnDateSetListener endDateCallbackMethod;
-
-    private static final int REPEAT_REQUEST = 1;
-    private static final int DONATION_REQUEST = 2;
     private static final int START_TIME_REQUEST = 3;
     private static final int END_TIME_REQUEST = 4;
-    private static final int START_DATE_REQUEST = 5;
-    private static final int END_DATE_REQUEST = 6;
-
     private TextView startDate_Ptv;
     private TextView endDate_Ptv;
     private TextView repeatRecordTv;
@@ -76,6 +72,8 @@ public class AddGoalMain extends AppCompatActivity {
         timeAttack_bt = findViewById(R.id.goal_add_team_TimeAttack);
         goalSuccess_bt = findViewById(R.id.goal_add_team_GoalSuccess);
         donation_choose_btn = findViewById(R.id.goal_add_donation_btn);
+
+        Button add_goal_team_choose_bt = (Button) findViewById(R.id.goal_add_team_choose_BT);
 
         goalAddTeam = findViewById(R.id.add_goal_team);
 
@@ -113,6 +111,7 @@ public class AddGoalMain extends AppCompatActivity {
         certificationTeam_bt = findViewById(R.id.goal_add_team_certification_team);
 
         ImageView backButton = findViewById(R.id.add_goal_backButton);
+
 
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -159,30 +158,28 @@ public class AddGoalMain extends AppCompatActivity {
         startDate_Calender_Pbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showDatePickerDialog(START_DATE_REQUEST);
+                showCalendarBottomSheet();
             }
         });
 
         endDate_Calender_Pbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showDatePickerDialog(END_DATE_REQUEST);
+                showCalendarBottomSheet_end();
             }
         });
 
         startTimePickerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(AddGoalMain.this, AddGoalStartTimeSpinner.class);
-                startActivityForResult(intent, START_TIME_REQUEST);
+                showStartTimePickerBottomSheet();
             }
         });
 
         endTimePickerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(AddGoalMain.this, AddGoalFinishTimeSpinner.class);
-                startActivityForResult(intent, END_TIME_REQUEST);
+                showEndTimePickerBottomSheet();
             }
         });
 
@@ -203,6 +200,14 @@ public class AddGoalMain extends AppCompatActivity {
                 String amPm = (cal.get(Calendar.AM_PM) == Calendar.AM) ? "오전" : "오후";
                 startTimeTextView.setText(String.format("%s %02d:%02d", amPm, cal.get(Calendar.HOUR), cal.get(Calendar.MINUTE)));
                 endTimeTextView.setText(String.format("%s %02d:%02d", amPm, cal.get(Calendar.HOUR), cal.get(Calendar.MINUTE)));
+            }
+        });
+
+        add_goal_team_choose_bt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(getApplicationContext(),AddGoalTeamChoose.class);
+                startActivityForResult(intent, TEAM_CHOOSE_REQUEST);
             }
         });
 
@@ -234,16 +239,8 @@ public class AddGoalMain extends AppCompatActivity {
             }
         });
 
-        initializeListener();
     }
 
-    private void showDatePickerDialog(int requestCode) {
-        Intent intent = new Intent(AddGoalMain.this, datePickerActivity.class);
-        if (requestCode == END_DATE_REQUEST) {
-            intent.putExtra("minDate", startDate.getTimeInMillis());
-        }
-        startActivityForResult(intent, requestCode);
-    }
 
     private void showDonationBottomSheet() {
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
@@ -412,43 +409,32 @@ public class AddGoalMain extends AppCompatActivity {
         target_lacation_L.setVisibility(View.GONE);
     }
 
-    public void initializeListener() {
-        startDateCallbackMethod = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker datePicker, int yyy, int mmm, int ddd) {
-                startDate_Ptv.setText(yyy + "-" + (mmm + 1) + "-" + ddd);
-                startDate.set(yyy, mmm, ddd);
-            }
-        };
 
-        endDateCallbackMethod = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker datePicker, int yyy, int mmm, int ddd) {
-                endDate_Ptv.setText(yyy + "-" + (mmm + 1) + "-" + ddd);
-            }
-        };
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == START_DATE_REQUEST && resultCode == RESULT_OK && data != null) {
-            int year = data.getIntExtra("mYear", Calendar.getInstance().get(Calendar.YEAR));
-            int month = data.getIntExtra("mMonth", Calendar.getInstance().get(Calendar.MONTH));
-            int day = data.getIntExtra("mDay", Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
-            startDate_Ptv.setText(year + "-" + (month + 1) + "-" + day);
-            startDate.set(year, month, day);
-        } else if (requestCode == END_DATE_REQUEST && resultCode == RESULT_OK && data != null) {
-            int year = data.getIntExtra("mYear", Calendar.getInstance().get(Calendar.YEAR));
-            int month = data.getIntExtra("mMonth", Calendar.getInstance().get(Calendar.MONTH));
-            int day = data.getIntExtra("mDay", Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
-            endDate_Ptv.setText(year + "-" + (month + 1) + "-" + day);
-        } else if (requestCode == START_TIME_REQUEST && resultCode == RESULT_OK && data != null) {
-            String selectedStartTime = data.getStringExtra("selectedStartTime");
-            startTimeTextView.setText(selectedStartTime);
-        } else if (requestCode == END_TIME_REQUEST && resultCode == RESULT_OK && data != null) {
-            String selectedEndTime = data.getStringExtra("selectedEndTime");
-            endTimeTextView.setText(selectedEndTime);
+        if (requestCode == TEAM_CHOOSE_REQUEST && resultCode == RESULT_OK && data != null) {
+            ArrayList<AddGoalTeamList> selectedUsers = data.getParcelableArrayListExtra("selectedUsers");
+            updateTeamSelection(selectedUsers);
+        }
+    }
+
+    private void updateTeamSelection(ArrayList<AddGoalTeamList> selectedUsers) {
+        // 선택된 사용자들을 화면에 추가하는 로직 구현
+        LinearLayout teamContainer = findViewById(R.id.add_goal_team_container);
+        teamContainer.removeAllViews();
+
+        for (AddGoalTeamList user : selectedUsers) {
+            View userView = LayoutInflater.from(this).inflate(R.layout.add_goal_team_check_true, teamContainer, false);
+
+            ImageView imageView = userView.findViewById(R.id.add_goal_check_true_imageView);
+            TextView textView = userView.findViewById(R.id.add_goal_check_true_name);
+
+            imageView.setImageResource(user.getImageResId());
+            textView.setText(user.getName());
+
+            teamContainer.addView(userView);
         }
     }
 
@@ -598,34 +584,6 @@ public class AddGoalMain extends AppCompatActivity {
     }
 
 
-
-    private String getSelectedDays(View bottomSheetView) {
-        StringBuilder days = new StringBuilder();
-
-        ToggleButton[] buttons = {
-                bottomSheetView.findViewById(R.id.add_goal_repeat_button_sun),
-                bottomSheetView.findViewById(R.id.add_goal_repeat_button_mon),
-                bottomSheetView.findViewById(R.id.add_goal_repeat_button_tue),
-                bottomSheetView.findViewById(R.id.add_goal_repeat_button_wed),
-                bottomSheetView.findViewById(R.id.add_goal_repeat_button_thu),
-                bottomSheetView.findViewById(R.id.add_goal_repeat_button_fri),
-                bottomSheetView.findViewById(R.id.add_goal_repeat_button_sat)
-        };
-
-        String[] dayNames = {"일", "월", "화", "수", "목", "금", "토"};
-
-        for (int i = 0; i < buttons.length; i++) {
-            if (buttons[i].isChecked()) {
-                if (days.length() > 0) {
-                    days.append(", ");
-                }
-                days.append(dayNames[i]);
-            }
-        }
-
-        return days.toString();
-    }
-
     private void setButtonStyles(View bottomSheetView, int selectedButtonId, int... otherButtonIds) {
         Button selectedButton = bottomSheetView.findViewById(selectedButtonId);
         selectedButton.setBackgroundResource(R.drawable.add_goal_repeat_plus);
@@ -637,4 +595,182 @@ public class AddGoalMain extends AppCompatActivity {
             button.setTextColor(Color.BLACK);
         }
     }
+
+    private void showCalendarBottomSheet_end() {
+        // BottomSheetDialog 생성
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
+
+        // add_goal_calendar.xml 레이아웃 인플레이트
+        View bottomSheetView = LayoutInflater.from(this).inflate(R.layout.add_goal_calendar, null);
+
+        // MaterialCalendarView와 버튼 가져오기
+        MaterialCalendarView calendarView = bottomSheetView.findViewById(R.id.add_Goal_calendar_view);
+        Button cancelBtn = bottomSheetView.findViewById(R.id.add_goal_calendar_cancle_day);
+        Button chooseBtn = bottomSheetView.findViewById(R.id.add_goal_calendar_choose_day);
+
+
+
+        CalendarDay minDate = CalendarDay.from(startDate.get(Calendar.YEAR), startDate.get(Calendar.MONTH), startDate.get(Calendar.DAY_OF_MONTH));
+        calendarView.addDecorator(new PastDateDecorator(minDate));
+
+
+        calendarView.state().edit().setMinimumDate(minDate).commit();
+
+
+
+        // 추가적인 로직 설정, 예를 들어 날짜 선택이나 버튼 클릭 처리
+        cancelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bottomSheetDialog.dismiss(); // 취소 버튼 클릭 시 BottomSheet 닫기
+            }
+        });
+
+        chooseBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 날짜 선택 처리 및 startDate_Ptv에 설정
+                CalendarDay selectedDate = calendarView.getSelectedDate();
+                if (selectedDate != null) {
+                    if (!selectedDate.isBefore(minDate)) {
+                        endDate_Ptv.setText(selectedDate.getYear() + "-" + (selectedDate.getMonth() + 1) + "-" + selectedDate.getDay());
+                    }
+                }
+                bottomSheetDialog.dismiss(); // 날짜 선택 후 BottomSheet 닫기
+            }
+        });
+
+        // 인플레이트된 뷰를 BottomSheet의 내용으로 설정
+        bottomSheetDialog.setContentView(bottomSheetView);
+        bottomSheetDialog.show();
+    }
+
+
+    private void showCalendarBottomSheet() {
+        // BottomSheetDialog 생성
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
+
+        // add_goal_calendar.xml 레이아웃 인플레이트
+        View bottomSheetView = LayoutInflater.from(this).inflate(R.layout.add_goal_calendar, null);
+
+        // MaterialCalendarView와 버튼 가져오기
+        MaterialCalendarView calendarView = bottomSheetView.findViewById(R.id.add_Goal_calendar_view);
+        Button cancelBtn = bottomSheetView.findViewById(R.id.add_goal_calendar_cancle_day);
+        Button chooseBtn = bottomSheetView.findViewById(R.id.add_goal_calendar_choose_day);
+
+        // 추가적인 로직 설정, 예를 들어 날짜 선택이나 버튼 클릭 처리
+        cancelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bottomSheetDialog.dismiss(); // 취소 버튼 클릭 시 BottomSheet 닫기
+            }
+        });
+
+        chooseBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 날짜 선택 처리 및 startDate_Ptv에 설정
+                CalendarDay selectedDate = calendarView.getSelectedDate();
+                if (selectedDate != null) {
+                    startDate_Ptv.setText(selectedDate.getYear() + "-" + (selectedDate.getMonth() + 1) + "-" + selectedDate.getDay());
+                    startDate.set(selectedDate.getYear(), selectedDate.getMonth(), selectedDate.getDay());
+                }
+                bottomSheetDialog.dismiss(); // 날짜 선택 후 BottomSheet 닫기
+            }
+        });
+
+        // 인플레이트된 뷰를 BottomSheet의 내용으로 설정
+        bottomSheetDialog.setContentView(bottomSheetView);
+        bottomSheetDialog.show();
+    }
+
+    private void showEndTimePickerBottomSheet() {
+        // BottomSheetDialog 생성
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
+
+        // add_goal_finish_time_spinner.xml 레이아웃 인플레이트
+        View bottomSheetView = LayoutInflater.from(this).inflate(R.layout.add_goal_finish_time_spinner, null);
+
+        // TimePicker와 버튼 가져오기
+        TimePicker timePicker = bottomSheetView.findViewById(R.id.finish_timePicker);
+        Button cancelBtn = bottomSheetView.findViewById(R.id.add_goal_finish_cencel);
+        Button chooseBtn = bottomSheetView.findViewById(R.id.add_goal_finish_choose_complete);
+
+        // 시간 선택 모드 설정 (12시간 또는 24시간 모드 선택)
+        timePicker.setIs24HourView(false);
+
+        // 취소 버튼 클릭 리스너 설정
+        cancelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bottomSheetDialog.dismiss(); // 취소 버튼 클릭 시 BottomSheet 닫기
+            }
+        });
+
+        // 선택 완료 버튼 클릭 리스너 설정
+        chooseBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int hour = timePicker.getCurrentHour();
+                int minute = timePicker.getCurrentMinute();
+                String amPm = (hour >= 12) ? "오후" : "오전";
+                if (hour > 12) {
+                    hour -= 12;
+                }
+                String selectedTime = String.format("%s %02d:%02d", amPm, hour, minute);
+                endTimeTextView.setText(selectedTime); // 선택된 시간을 TextView에 표시
+                bottomSheetDialog.dismiss(); // 시간 선택 후 BottomSheet 닫기
+            }
+        });
+
+        // 인플레이트된 뷰를 BottomSheet의 내용으로 설정
+        bottomSheetDialog.setContentView(bottomSheetView);
+        bottomSheetDialog.show();
+    }
+
+    private void showStartTimePickerBottomSheet() {
+        // BottomSheetDialog 생성
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
+
+        // add_goal_finish_time_spinner.xml 레이아웃 인플레이트
+        View bottomSheetView = LayoutInflater.from(this).inflate(R.layout.add_goal_start_time_spinner, null);
+
+        // TimePicker와 버튼 가져오기
+        TimePicker timePicker = bottomSheetView.findViewById(R.id.start_timePicker);
+        Button cancelBtn = bottomSheetView.findViewById(R.id.add_goal_start_cencel);
+        Button chooseBtn = bottomSheetView.findViewById(R.id.add_goal_start_choose_complete);
+
+        // 시간 선택 모드 설정 (12시간 또는 24시간 모드 선택)
+        timePicker.setIs24HourView(false);
+
+        // 취소 버튼 클릭 리스너 설정
+        cancelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bottomSheetDialog.dismiss(); // 취소 버튼 클릭 시 BottomSheet 닫기
+            }
+        });
+
+        // 선택 완료 버튼 클릭 리스너 설정
+        chooseBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int hour = timePicker.getCurrentHour();
+                int minute = timePicker.getCurrentMinute();
+                String amPm = (hour >= 12) ? "오후" : "오전";
+                if (hour > 12) {
+                    hour -= 12;
+                }
+                String selectedTime = String.format("%s %02d:%02d", amPm, hour, minute);
+                startTimeTextView.setText(selectedTime); // 선택된 시간을 TextView에 표시
+                bottomSheetDialog.dismiss(); // 시간 선택 후 BottomSheet 닫기
+            }
+        });
+
+        // 인플레이트된 뷰를 BottomSheet의 내용으로 설정
+        bottomSheetDialog.setContentView(bottomSheetView);
+        bottomSheetDialog.show();
+    }
+
+
 }
