@@ -54,10 +54,13 @@
         </activity>
         <activity android:name=".ui.certification.MapCertificationActivity" />
         <activity android:name=".ui.main.people.SearchFriendActivity" />
+        <activity android:name=".ui.main.goal.AddGoalTeamChoose" />
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBDdcgSnDnIM4Xc8rI3n3Nyxr5fwmqKgZk"/>
 
     </application>
+
 
 </manifest>
