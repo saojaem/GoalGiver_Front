@@ -29,7 +29,7 @@ class CalendarCertificationFragment: Fragment() {
         binding = FragmentGoaldetailCalendarcertificationBinding.inflate(inflater, container, false)
 
         binding.calendarView.setWeekDayFormatter(ArrayWeekDayFormatter(resources.getTextArray(R.array.custom_weekdays)));
-        binding.calendarView.setHeaderTextAppearance(R.style.CalendarWidgetHeader)
+        binding.calendarView.setHeaderTextAppearance(R.style.home_CalendarWidgetHeader)
 
         binding.calendarView.setTitleFormatter { day ->
             val inputText = day.date
