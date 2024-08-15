@@ -36,13 +36,6 @@
 <!--                <category android:name="android.intent.category.LAUNCHER" />-->
 <!--            </intent-filter>-->
         </activity>
-        <activity
-            android:name=".ui.main.goal.datePickerActivity"
-            android:theme= "@style/popupTheme" />
-        <activity android:name=".ui.main.goal.AddGoalRepeat" />
-        <activity android:name=".ui.main.goal.AddGoalDonation" />
-        <activity android:name=".ui.main.goal.AddGoalStartTimeSpinner" />
-        <activity android:name=".ui.main.goal.AddGoalFinishTimeSpinner" />
         <activity android:name=".ui.goaldetail.PhotoDetailActivity" />
         <activity
             android:name=".ui.goaldetail.GoalDetailActivity"
@@ -55,10 +48,13 @@
         </activity>
         <activity android:name=".ui.certification.MapCertificationActivity" />
         <activity android:name=".ui.main.people.SearchFriendActivity" />
+        <activity android:name=".ui.main.goal.AddGoalTeamChoose" />
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBDdcgSnDnIM4Xc8rI3n3Nyxr5fwmqKgZk"/>
 
     </application>
+
 
 </manifest>

@@ -12,8 +12,6 @@
             android:id="@+id/add_goal_backButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
             android:contentDescription="뒤로가기"
             android:src="@drawable/icn_back"
             app:layout_constraintStart_toStartOf="parent"
@@ -216,18 +214,33 @@
                 android:textStyle="bold"
                 app:layout_constraintTop_toBottomOf="@+id/goal_add_team_category"
                 tools:ignore="MissingConstraints" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <LinearLayout
+                    android:id="@+id/add_goal_team_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="10dp">
+                    <!-- 선택된 사용자들이 이곳에 동적으로 추가됩니다 -->
+                </LinearLayout>
+                <Button
+                    android:id="@+id/goal_add_team_choose_BT"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/add_emotion"
+                    android:text="+"
+                    android:textSize="30sp"
+                    app:layout_constraintStart_toStartOf="@+id/goal_add_team_category"
+                    app:layout_constraintTop_toBottomOf="@id/goal_add_team_choose_tv"
+                    tools:ignore="MissingConstraints,NotSibling" />
 
-            <Button
-                android:id="@+id/goal_add_team_choose"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/add_emotion"
-                android:text="+"
-                android:textSize="30sp"
-                app:layout_constraintStart_toStartOf="@+id/goal_add_team_category"
-                app:layout_constraintTop_toBottomOf="@id/goal_add_team_choose_tv"
-                tools:ignore="MissingConstraints,NotSibling" />
+            </LinearLayout>
+
+
 
         </LinearLayout>
 
