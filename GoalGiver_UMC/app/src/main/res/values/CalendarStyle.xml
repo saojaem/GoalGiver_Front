@@ -13,8 +13,4 @@
         <item name="android:textColor">@color/gray_600</item>
     </style>
 
-    <style name="home_CalendarWidgetHeader">
-        <item name="android:textSize">18dp</item>
-        <item name="android:textColor">@color/black</item>
-    </style>
 </resources>
