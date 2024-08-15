@@ -40,7 +40,6 @@
             android:name=".ui.main.goal.datePickerActivity"
             android:theme= "@style/popupTheme" />
         <activity android:name=".ui.main.goal.AddGoalRepeat" />
-        <activity android:name=".ui.main.goal.AddGoalDonation" />
         <activity android:name=".ui.main.goal.AddGoalStartTimeSpinner" />
         <activity android:name=".ui.main.goal.AddGoalFinishTimeSpinner" />
         <activity android:name=".ui.goaldetail.PhotoDetailActivity" />

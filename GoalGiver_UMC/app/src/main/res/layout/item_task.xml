@@ -32,6 +32,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0" />
 
+    <TextView
+        android:id="@+id/taskDays"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="2024.08.15"
+        android:textSize="16sp"
+        android:textColor="@android:color/darker_gray"
+        android:textStyle="bold"
+        android:layout_marginStart="10dp"
+        app:layout_constraintTop_toBottomOf="@id/taskTitle"
+        app:layout_constraintStart_toEndOf="@id/taskIcon"
+        app:layout_constraintEnd_toEndOf="parent" />
+
     <!-- Task Status -->
     <TextView
         android:id="@+id/taskStatus"
