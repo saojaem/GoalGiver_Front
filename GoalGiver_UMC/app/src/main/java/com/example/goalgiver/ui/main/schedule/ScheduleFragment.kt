@@ -62,7 +62,7 @@ class ScheduleFragment : Fragment() {
 
         // 달력 언어를 한국어로 설정
         binding.calendarView.setTitleFormatter(DateFormatTitleFormatter(DateTimeFormatter.ofPattern("yyyy년 MM월", Locale.KOREAN)))
-        binding.calendarView.setWeekDayLabels(arrayOf("월", "화", "수", "목", "금", "토","일" ))
+        binding.calendarView.setWeekDayLabels(arrayOf("월", "화", "수", "목", "금", "토","일"))
     }
 
     private fun updateMonthYearTitle(calendarDay: CalendarDay) {
