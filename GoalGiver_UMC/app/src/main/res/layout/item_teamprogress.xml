@@ -8,81 +8,104 @@
     android:paddingVertical="20dp"
     android:background="@drawable/recyclerview_corner"
     android:layout_marginTop="5dp">
-    
-    <ImageView
-        android:id="@+id/iv_teamprogress_profile"
+
+    <TextView
+        android:id="@+id/goal_goalIcon"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:src="@drawable/img_books"
-        android:background="@drawable/circle_background"
+        android:background="@drawable/add_emotion"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+        android:layout_marginEnd="8dp"
+        android:textSize="25dp"
+        android:paddingStart="4dp"
+        android:paddingTop="2dp"
+        android:hint="🎯"
+        />
 
+    <!-- Goal Title -->
     <TextView
-        android:id="@+id/tv_teamprogress_name"
+        android:id="@+id/goal_goalTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:textColor="@android:color/black"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@id/goal_goalIcon"
+        app:layout_constraintEnd_toStartOf="@id/goal_goalArrow"
+        app:layout_constraintHorizontal_bias="0"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"/>
+
+    <!-- D-Day -->
+    <TextView
+        android:id="@+id/goal_goalDDay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="레나"
-        style="@style/Title3"
-        app:layout_constraintStart_toEndOf="@+id/iv_teamprogress_profile"
-        android:layout_marginStart="20dp"
-        app:layout_constraintTop_toTopOf="@id/iv_teamprogress_profile"
-        app:layout_constraintBottom_toBottomOf="@id/iv_teamprogress_profile"/>
+        android:hint="D - 75"
+        android:textSize="14sp"
+        android:textColor="@android:color/holo_red_dark"
+        app:layout_constraintTop_toBottomOf="@id/goal_goalTitle"
+        app:layout_constraintStart_toEndOf="@id/goal_goalIcon"
+        app:layout_constraintBaseline_toBaselineOf="@+id/goal_goalPoints"
+        android:layout_marginStart="8dp"/>
 
-    <ImageView
-        android:id="@+id/iv_teamprogress_point"
-        android:layout_width="12dp"
-        android:layout_height="12dp"
-        android:src="@drawable/icn_point"
-        android:layout_marginEnd="20dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/iv_teamprogress_profile"
-        app:layout_constraintBottom_toBottomOf="@id/iv_teamprogress_profile"/>
-
+    <!-- Goal Points -->
     <TextView
-        android:id="@+id/tv_teamprogress_point"
+        android:id="@+id/goal_goalPoints"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="50,000"
-        style="@style/Caption1"
-        android:layout_marginEnd="5dp"
-        app:layout_constraintEnd_toStartOf="@id/iv_teamprogress_point"
-        app:layout_constraintTop_toTopOf="@id/iv_teamprogress_profile"
-        app:layout_constraintBottom_toBottomOf="@id/iv_teamprogress_profile"/>
-    
-    <TextView
-        android:id="@+id/tv_teamprogress_percent"
+        android:textSize="14sp"
+        android:textColor="@android:color/black"
+        app:layout_constraintTop_toBottomOf="@id/goal_goalTitle"
+        app:layout_constraintStart_toEndOf="@id/goal_goalDDay"
+        android:layout_marginStart="8dp"/>
+
+    <ImageView
+        android:id="@+id/iv_teamprogress_point"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:src="@drawable/icn_point"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="3dp"
+        app:layout_constraintStart_toEndOf="@id/goal_goalPoints"
+        app:layout_constraintTop_toBottomOf="@id/goal_goalTitle"/>
+
+
+    <!-- Arrow Icon -->
+    <ImageView
+        android:id="@+id/goal_goalArrow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="0%"
-        style="@style/Title3"
-        android:textColor="@color/brand_blue"
-        app:layout_constraintStart_toStartOf="@id/iv_teamprogress_profile"
-        app:layout_constraintTop_toBottomOf="@id/iv_teamprogress_profile"
-        android:layout_marginTop="12dp"/>
+        android:src="@drawable/icn_arrow"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginStart="8dp" />
 
+    <!-- Progress Text -->
     <TextView
+        android:id="@+id/goal_goalProgressText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="달성"
-        style="@style/Title3"
-        app:layout_constraintStart_toEndOf="@id/tv_teamprogress_percent"
-        android:layout_marginStart="5dp"
-        app:layout_constraintTop_toBottomOf="@id/iv_teamprogress_profile"
-        android:layout_marginTop="12dp"/>
+        android:text="60% 달성"
+        android:textSize="14sp"
+        android:textColor="@android:color/holo_blue_dark"
+        app:layout_constraintTop_toBottomOf="@id/goal_goalDDay"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="20dp"/>
 
+    <!-- Progress Bar -->
     <ProgressBar
-        android:id="@+id/pb_teamprogress"
+        android:id="@+id/goal_goalProgress"
         android:layout_width="0dp"
-        android:layout_height="10dp"
-        style="@android:style/Widget.ProgressBar.Horizontal"
-        app:layout_constraintStart_toStartOf="@id/iv_teamprogress_profile"
-        app:layout_constraintEnd_toEndOf="@id/iv_teamprogress_point"
-        app:layout_constraintTop_toBottomOf="@id/tv_teamprogress_percent"
-        android:layout_marginTop="5dp"
-        android:progressDrawable="@drawable/progressbar_custom"
-        android:progress="30"/>
-
-
-
+        android:layout_height="wrap_content"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:progress="60"
+        app:layout_constraintTop_toBottomOf="@id/goal_goalProgressText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="4dp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

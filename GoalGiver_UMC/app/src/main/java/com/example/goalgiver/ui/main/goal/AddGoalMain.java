@@ -1,10 +1,12 @@
 package com.example.goalgiver.ui.main.goal;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.InputFilter;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -24,20 +26,24 @@ import android.widget.ToggleButton;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.goalgiver.R;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 public class AddGoalMain extends AppCompatActivity {
     private static final int TEAM_CHOOSE_REQUEST = 7;
 
-    private static final int START_TIME_REQUEST = 3;
-    private static final int END_TIME_REQUEST = 4;
+
     private TextView startDate_Ptv;
     private TextView endDate_Ptv;
     private TextView repeatRecordTv;
@@ -61,7 +67,10 @@ public class AddGoalMain extends AppCompatActivity {
         super.onCreate(saveInstanceState);
         setContentView(R.layout.goal_add);
 
+
+
         Button teamButton, certificationImage_Pbt, certificationLocation_Pbt, certificationTeam_bt, personal_bt, repeatChoose_btn, timeAttack_bt, goalSuccess_bt, donation_choose_btn;
+        Button addGoalButton = findViewById(R.id.goal_add_decide_btn);
 
         EditText add_goal_choose_emotion = findViewById(R.id.add_goal_choose_emotion);
         add_goal_choose_emotion.setFilters(new InputFilter[]{new CustomInputFilter()});
@@ -98,8 +107,8 @@ public class AddGoalMain extends AppCompatActivity {
 
         Calendar cal = Calendar.getInstance();
         startDate = Calendar.getInstance();
-        startDate_Ptv.setText(cal.get(Calendar.YEAR) + "-" + (cal.get(Calendar.MONTH) + 1) + "-" + cal.get(Calendar.DATE));
-        endDate_Ptv.setText(cal.get(Calendar.YEAR) + "-" + (cal.get(Calendar.MONTH) + 1) + "-" + cal.get(Calendar.DATE));
+        startDate_Ptv.setText(cal.get(Calendar.YEAR) + "-" + (cal.get(Calendar.MONTH)+1) + "-" + cal.get(Calendar.DATE));
+        endDate_Ptv.setText(cal.get(Calendar.YEAR) + "-" + (cal.get(Calendar.MONTH)+1) + "-" + cal.get(Calendar.DATE));
 
         String amPm = (cal.get(Calendar.AM_PM) == Calendar.AM) ? "오전" : "오후";
         startTimeTextView.setText(String.format("%s %02d:%02d", amPm, cal.get(Calendar.HOUR), cal.get(Calendar.MINUTE)));
@@ -188,8 +197,8 @@ public class AddGoalMain extends AppCompatActivity {
             public void onClick(View view) {
                 setTimeAttack();
                 startDate = Calendar.getInstance();
-                startDate_Ptv.setText(cal.get(Calendar.YEAR) + "-" + (cal.get(Calendar.MONTH) + 1) + "-" + cal.get(Calendar.DATE));
-                endDate_Ptv.setText(cal.get(Calendar.YEAR) + "-" + (cal.get(Calendar.MONTH) + 1) + "-" + cal.get(Calendar.DATE));
+                startDate_Ptv.setText(cal.get(Calendar.YEAR) + "-" + (cal.get(Calendar.MONTH)) + "-" + cal.get(Calendar.DATE));
+                endDate_Ptv.setText(cal.get(Calendar.YEAR) + "-" + (cal.get(Calendar.MONTH)) + "-" + cal.get(Calendar.DATE));
             }
         });
 
@@ -239,6 +248,75 @@ public class AddGoalMain extends AppCompatActivity {
             }
         });
 
+        addGoalButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 입력된 값들을 가져오기
+
+            }
+        });
+
+        addGoalButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 데이터 수집
+                String goalTitle = ((EditText) findViewById(R.id.set_goal_tv)).getText().toString();
+                String emotion = ((EditText) findViewById(R.id.add_goal_choose_emotion)).getText().toString();
+
+                Log.d("AddGoalMain", "goalTitle=" + goalTitle + ", emotion=" + emotion);
+
+                String startDate = startDate_Ptv.getText().toString();
+                String endDate = endDate_Ptv.getText().toString();
+                String repeat = repeatRecordTv.getText().toString();
+                String donation = donationRecordTv.getText().toString();
+                String donationAmount = ((EditText) findViewById(R.id.goal_add_donationP_tv2)).getText().toString();
+
+                GoalSetItem goalItem = new GoalSetItem(emotion, goalTitle, "D-"+calculateDaysRemaining(endDate), donationAmount, "Progress 0%", 0);
+
+                // 데이터를 전달할 Intent 생성
+                Intent resultIntent = new Intent();
+                if(emotion == null){
+                    emotion = "🎯";
+                }
+                else{
+                    resultIntent.putExtra("emotion", emotion);
+                }
+                resultIntent.putExtra("goalTitle", goalTitle);
+                resultIntent.putExtra("startDate", startDate);
+                resultIntent.putExtra("endDate", endDate);
+                resultIntent.putExtra("repeat", repeat);
+                resultIntent.putExtra("donation", donation);
+                resultIntent.putExtra("donationAmount", donationAmount);
+
+                resultIntent.putExtra("goalItem", goalItem);
+
+                Log.d("AddGoalMain", "Sending Data: goalTitle=" + goalTitle + ", emotion=" + emotion);
+                // 결과 설정 및 액티비티 종료
+                setResult(Activity.RESULT_OK, resultIntent);
+                finish();
+            }
+        });
+
+
+    }
+    //오늘부터 종료날짜 계산하는 코드
+    private int calculateDaysRemaining(String endDateStr) {
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+            Date endDate = sdf.parse(endDateStr);
+
+            Calendar today = Calendar.getInstance();
+            today.set(Calendar.HOUR_OF_DAY, 0);
+            today.set(Calendar.MINUTE, 0);
+            today.set(Calendar.SECOND, 0);
+            today.set(Calendar.MILLISECOND, 0);
+
+            long diffInMillis = endDate.getTime() - today.getTimeInMillis();
+            return (int) (diffInMillis / (1000 * 60 * 60 * 24));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
     }
 
 
@@ -633,7 +711,7 @@ public class AddGoalMain extends AppCompatActivity {
                 CalendarDay selectedDate = calendarView.getSelectedDate();
                 if (selectedDate != null) {
                     if (!selectedDate.isBefore(minDate)) {
-                        endDate_Ptv.setText(selectedDate.getYear() + "-" + (selectedDate.getMonth() + 1) + "-" + selectedDate.getDay());
+                        endDate_Ptv.setText(selectedDate.getYear() + "-" + (selectedDate.getMonth()) + "-" + selectedDate.getDay());
                     }
                 }
                 bottomSheetDialog.dismiss(); // 날짜 선택 후 BottomSheet 닫기
@@ -672,7 +750,7 @@ public class AddGoalMain extends AppCompatActivity {
                 // 날짜 선택 처리 및 startDate_Ptv에 설정
                 CalendarDay selectedDate = calendarView.getSelectedDate();
                 if (selectedDate != null) {
-                    startDate_Ptv.setText(selectedDate.getYear() + "-" + (selectedDate.getMonth() + 1) + "-" + selectedDate.getDay());
+                    startDate_Ptv.setText(selectedDate.getYear() + "-" + (selectedDate.getMonth()) + "-" + selectedDate.getDay());
                     startDate.set(selectedDate.getYear(), selectedDate.getMonth(), selectedDate.getDay());
                 }
                 bottomSheetDialog.dismiss(); // 날짜 선택 후 BottomSheet 닫기
