@@ -108,120 +108,33 @@
         app:layout_constraintBottom_toTopOf="@id/floatingActionButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
-
-        <LinearLayout
+        <!-- Add goal items here -->
+        <!-- Example of a goal item -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/goal_fragment_recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
-
-            <!-- Add goal items here -->
-            <!-- Example of a goal item -->
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="16dp"
-                android:layout_marginBottom="8dp"
-                android:background="@drawable/layout_background">
-
-                <!-- Icon Image -->
-                <ImageView
-                    android:id="@+id/goalIcon"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:src="@drawable/add_emotion"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:layout_marginEnd="8dp" />
-
-                <!-- Goal Title -->
-                <TextView
-                    android:id="@+id/goalTitle"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="헬스장 가기"
-                    android:textSize="16sp"
-                    android:textColor="@android:color/black"
-                    android:textStyle="bold"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/goalIcon"
-                    app:layout_constraintEnd_toStartOf="@id/goalArrow"
-                    app:layout_constraintHorizontal_bias="0"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginStart="8dp"/>
-
-                <!-- D-Day -->
-                <TextView
-                    android:id="@+id/goalDDay"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="D - 75"
-                    android:textSize="14sp"
-                    android:textColor="@android:color/holo_red_dark"
-                    app:layout_constraintTop_toBottomOf="@id/goalTitle"
-                    app:layout_constraintStart_toEndOf="@id/goalIcon"
-                    app:layout_constraintBaseline_toBaselineOf="@+id/goalPoints"
-                    android:layout_marginStart="8dp"/>
-
-                <!-- Goal Points -->
-                <TextView
-                    android:id="@+id/goalPoints"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="50,000 P"
-                    android:textSize="14sp"
-                    android:textColor="@android:color/black"
-                    app:layout_constraintTop_toBottomOf="@id/goalTitle"
-                    app:layout_constraintStart_toEndOf="@id/goalDDay"
-                    android:layout_marginStart="8dp"/>
-
-                <!-- Arrow Icon -->
-                <ImageView
-                    android:id="@+id/goalArrow"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/icn_arrow"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    android:layout_marginStart="8dp" />
-
-                <!-- Progress Text -->
-                <TextView
-                    android:id="@+id/goalProgressText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="60% 달성"
-                    android:textSize="14sp"
-                    android:textColor="@android:color/holo_blue_dark"
-                    app:layout_constraintTop_toBottomOf="@id/goalDDay"
-                    app:layout_constraintStart_toStartOf="parent"
-                    android:layout_marginTop="20dp"/>
-
-                <!-- Progress Bar -->
-                <ProgressBar
-                    android:id="@+id/goalProgress"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    style="?android:attr/progressBarStyleHorizontal"
-                    android:progress="60"
-                    app:layout_constraintTop_toBottomOf="@id/goalProgressText"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_marginTop="4dp"/>
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-        </LinearLayout>
+            android:layout_height="0dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="60dp"
+            app:layout_constraintTop_toBottomOf="@id/subHeaderLayout"
+            app:layout_constraintBottom_toTopOf="@id/floatingActionButton"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:listitem="@layout/item_teamprogress"/>
     </ScrollView>
 
 
     <!-- Floating action button -->
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <Button
         android:id="@+id/floatingActionButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/frame_plus"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/fragmet_add_goal_page"
         app:layout_constraintBottom_toBottomOf="parent"
+        android:text="+"
+        android:textSize="30dp"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
-        />
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="5dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>
