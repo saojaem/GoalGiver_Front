@@ -37,7 +37,7 @@
         android:layout_marginTop="15dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         android:orientation="vertical"
-        tools:listitem="@layout/item_teamprogress"
+        tools:listitem="@layout/item_teamprogressham"
         android:paddingBottom="4dp"
         />
 
