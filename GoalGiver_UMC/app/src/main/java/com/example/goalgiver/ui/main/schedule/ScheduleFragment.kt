@@ -1,5 +1,6 @@
 package com.example.goalgiver.ui.main.schedule
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +8,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.goalgiver.databinding.FragmentScheduleBinding
+import com.example.goalgiver.ui.goaldetail.GoalDetailActivity
+import com.example.goalgiver.ui.teamcertificationalarm.RequestAlarmActivity
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView
 import com.prolificinteractive.materialcalendarview.OnMonthChangedListener
@@ -63,6 +66,13 @@ class ScheduleFragment : Fragment() {
         // 달력 언어를 한국어로 설정
         binding.calendarView.setTitleFormatter(DateFormatTitleFormatter(DateTimeFormatter.ofPattern("yyyy년 MM월", Locale.KOREAN)))
         binding.calendarView.setWeekDayLabels(arrayOf("월", "화", "수", "목", "금", "토","일"))
+
+        // 알림 버튼 클릭 이벤트 - ham
+        binding.alram.setOnClickListener {
+            val intent = Intent(requireContext(), RequestAlarmActivity::class.java)
+            startActivity(intent)
+        }
+        // 알림 버튼 클릭 이벤트 - ham
     }
 
     private fun updateMonthYearTitle(calendarDay: CalendarDay) {
