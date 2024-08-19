@@ -59,7 +59,7 @@ class GoalFragment : Fragment() {
         }
 
         goalList = arrayListOf(
-            GoalSetItem("🎯", "Goal 1", "D-10", "100", "Progress 50%", 10)
+            GoalSetItem("🎯", "Goal 1", "D-10", "100", "Progress 50%", 50)
         )
 
         setupRecyclerView()
