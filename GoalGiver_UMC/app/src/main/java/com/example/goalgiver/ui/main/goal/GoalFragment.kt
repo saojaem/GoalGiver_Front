@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.goalgiver.R
 import com.example.goalgiver.databinding.FragmentGoalBinding
+import com.example.goalgiver.ui.goaldetail.GoalDetailActivity
 
 class GoalFragment : Fragment() {
 
@@ -94,6 +95,17 @@ class GoalFragment : Fragment() {
         val adapter = GoalSetAdapter(requireContext(), goalList)
         binding.goalFragmentRecyclerView.adapter = adapter
         binding.goalFragmentRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+
+        // adapter itemClick -ham
+        adapter.setOnItemClickListener(object : GoalSetAdapter.OnItemClickListener {
+            override fun onItemClick(position: Int) {
+                val clickedItem = goalList[position]
+                Log.d("GoalFragment", "Clicked: ${clickedItem}")
+                val intent = Intent(requireContext(), GoalDetailActivity::class.java)
+                intent.putExtra("goalItem", clickedItem)
+                startActivity(intent)
+            }
+        })
     }
 
     override fun onDestroyView() {
