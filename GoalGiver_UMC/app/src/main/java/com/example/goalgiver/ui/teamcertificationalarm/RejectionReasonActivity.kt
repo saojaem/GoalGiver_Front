@@ -11,6 +11,7 @@ import com.example.goalgiver.databinding.ActivityFillrejectionreasonBinding
 class RejectionReasonActivity: AppCompatActivity() {
 
     lateinit var binding: ActivityFillrejectionreasonBinding
+    private var position: Int = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -18,6 +19,7 @@ class RejectionReasonActivity: AppCompatActivity() {
         binding = ActivityFillrejectionreasonBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        position = intent.getIntExtra("position", -1)
         //var str: String = binding.etRejectionReason.text.toString()
 
         binding.btnComplete.setOnClickListener {
@@ -34,7 +36,9 @@ class RejectionReasonActivity: AppCompatActivity() {
             } else {
                 val intent = Intent()
                 intent.putExtra("isChecked", true)
-                intent.putExtra("position", intent.getIntExtra("position", -1))
+                intent.putExtra("position", position)
+                //intent.putExtra("position", intent.getIntExtra("position", -1))
+                intent.putExtra("rejectionReason", str)
                 setResult(Activity.RESULT_OK, intent)
                 finish()
             }
