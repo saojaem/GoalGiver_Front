@@ -64,6 +64,7 @@ public class AddGoalMain extends AppCompatActivity {
     private LinearLayout goalAddTeam;
     private LinearLayout target_lacation_L;
     private Calendar startDate;
+    private static int timeattackCheck = 0;
 
     @Override
     protected void onCreate(Bundle saveInstanceState) {
@@ -133,10 +134,12 @@ public class AddGoalMain extends AppCompatActivity {
         personal();
         imageCertificationP();
 
+
         personal_bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 personal();
+                timeattackCheck=0;
             }
         });
 
@@ -196,6 +199,7 @@ public class AddGoalMain extends AppCompatActivity {
         timeAttack_bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                timeattackCheck = 1;
                 setTimeAttack();
                 startDate = Calendar.getInstance();
                 startDate_Ptv.setText(cal.get(Calendar.YEAR) + "-" + (cal.get(Calendar.MONTH)) + "-" + cal.get(Calendar.DATE));
@@ -206,6 +210,7 @@ public class AddGoalMain extends AppCompatActivity {
         goalSuccess_bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                timeattackCheck = 0;
                 setGoalSuccess();
                 String amPm = (cal.get(Calendar.AM_PM) == Calendar.AM) ? "오전" : "오후";
                 startTimeTextView.setText(String.format("%s %02d:%02d", amPm, cal.get(Calendar.HOUR), cal.get(Calendar.MINUTE)));
@@ -260,12 +265,21 @@ public class AddGoalMain extends AppCompatActivity {
 
                 String startDate = startDate_Ptv.getText().toString();
                 String endDate = endDate_Ptv.getText().toString();
+                String startTime = startTimeTextView.getText().toString();
+                String endTime = endTimeTextView.getText().toString();
                 String repeat = repeatRecordTv.getText().toString();
                 String donation = donationRecordTv.getText().toString();
                 String donationAmount = ((EditText) findViewById(R.id.goal_add_donationP_tv2)).getText().toString();
 
-                GoalSetItem goalItem = new GoalSetItem(emotion, goalTitle, "D-"+calculateDaysRemaining(endDate), donationAmount, "Progress 0%", 0);
+                GoalSetItem goalItem;
 
+                if(timeattackCheck==1){
+                    goalItem = new GoalSetItem(emotion, goalTitle, "⏰"+formatTimeRemaining(calculateTimeRemaining(endTime)), donationAmount, "Progress 0%", 0);
+                } else if (calculateDaysRemaining(startDate)>0) {
+                    goalItem = new GoalSetItem(emotion, goalTitle, "시작전", donationAmount, "Progress 0%", 0);
+                } else{
+                    goalItem = new GoalSetItem(emotion, goalTitle, "D-"+calculateDaysRemaining(endDate), donationAmount, "Progress 0%", 0);
+                }
                 // 데이터를 전달할 Intent 생성
                 Intent resultIntent = new Intent();
                 if(emotion == null){
@@ -274,13 +288,15 @@ public class AddGoalMain extends AppCompatActivity {
                 else{
                     resultIntent.putExtra("emotion", emotion);
                 }
+
                 resultIntent.putExtra("goalTitle", goalTitle);
                 resultIntent.putExtra("startDate", startDate);
                 resultIntent.putExtra("endDate", endDate);
+                resultIntent.putExtra("startTime", startTime);
+                resultIntent.putExtra("endTime", endTime);
                 resultIntent.putExtra("repeat", repeat);
                 resultIntent.putExtra("donation", donation);
                 resultIntent.putExtra("donationAmount", donationAmount);
-
                 resultIntent.putExtra("goalItem", goalItem);
 
                 Log.d("AddGoalMain", "Sending Data: goalTitle=" + goalTitle + ", emotion=" + emotion);
@@ -311,7 +327,48 @@ public class AddGoalMain extends AppCompatActivity {
             return 0;
         }
     }
+    private String formatTimeRemaining(long diffInMillis) {
+        long hours = diffInMillis / (1000 * 60 * 60)% 24;
+        long minutes = (diffInMillis / (1000 * 60)) % 60;
+        long seconds = (diffInMillis / 1000) % 60;
 
+        return String.format(Locale.getDefault(), "%02d:%02d:%02d", hours, minutes, seconds);
+    }
+
+    // endTimeTextView에서 설정한 시간부터 현재 시간까지 경과된 시간을 계산하는 코드
+    private long calculateTimeRemaining(String endTimeStr) {
+        try {
+            // 현재 시간
+            Calendar now = Calendar.getInstance();
+
+            // 설정된 종료 시간을 Calendar 객체로 변환
+            SimpleDateFormat timeFormat = new SimpleDateFormat("a hh:mm", Locale.KOREAN);
+            Date endTime = timeFormat.parse(endTimeStr);
+
+            Calendar endTimeCal = Calendar.getInstance();
+            endTimeCal.setTime(endTime);
+            endTimeCal.set(Calendar.SECOND, 0);
+            endTimeCal.set(Calendar.MILLISECOND, 0);
+
+            Log.d("TimeCalculation", "endTimeCal: " + endTimeCal.getTimeInMillis());
+            Log.d("TimeCalculation", "now: " + now.getTimeInMillis());
+            Log.d("TimeCalculation", "Parsed endTime: " + endTime);
+
+            // 종료 시간이 현재 시간보다 이전일 경우, 다음 날로 간주
+            if (endTimeCal.before(now)) {
+                endTimeCal.add(Calendar.DAY_OF_MONTH, 1);
+            }
+
+            // 차이 계산
+            long diffInMillis = now.getTimeInMillis()-endTimeCal.getTimeInMillis()  ;
+            Log.d("TimeCalculation", "diffInMillis: " + diffInMillis);
+            return Math.max(0, diffInMillis); // 밀리초 단위 경과 시간 반환
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+
+    }
 
     private void showDonationBottomSheet() {
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);

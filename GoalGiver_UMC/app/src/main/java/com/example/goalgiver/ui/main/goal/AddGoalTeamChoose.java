@@ -36,11 +36,11 @@ public class AddGoalTeamChoose extends AppCompatActivity {
         ImageView backButton = findViewById(R.id.add_goal_team_choose_backButton);
 
         users = new ArrayList<>();
-
-        users.add(new AddGoalTeamList("레나", R.drawable.richard_addgoal, false));
-        users.add(new AddGoalTeamList("쿠마", R.drawable.richard_addgoal, false));
-        users.add(new AddGoalTeamList("리처드", R.drawable.add_goal_profile, false));
-        users.add(new AddGoalTeamList("밀리", R.drawable.richard_addgoal, false));
+//
+//        users.add(new AddGoalTeamList("레나", R.drawable.richard_addgoal, false));
+//        users.add(new AddGoalTeamList("쿠마", R.drawable.richard_addgoal, false));
+//        users.add(new AddGoalTeamList("리처드", R.drawable.add_goal_profile, false));
+//        users.add(new AddGoalTeamList("밀리", R.drawable.richard_addgoal, false));
 
 
         SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
