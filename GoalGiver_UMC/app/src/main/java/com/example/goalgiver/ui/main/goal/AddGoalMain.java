@@ -26,10 +26,13 @@ import android.widget.ToggleButton;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.goalgiver.R;
+import com.example.goalgiver.ui.main.people.FriendItem;
+import com.example.goalgiver.ui.main.people.PeopleFragment;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
@@ -66,8 +69,6 @@ public class AddGoalMain extends AppCompatActivity {
     protected void onCreate(Bundle saveInstanceState) {
         super.onCreate(saveInstanceState);
         setContentView(R.layout.goal_add);
-
-
 
         Button teamButton, certificationImage_Pbt, certificationLocation_Pbt, certificationTeam_bt, personal_bt, repeatChoose_btn, timeAttack_bt, goalSuccess_bt, donation_choose_btn;
         Button addGoalButton = findViewById(R.id.goal_add_decide_btn);
@@ -245,14 +246,6 @@ public class AddGoalMain extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 showDonationBottomSheet();
-            }
-        });
-
-        addGoalButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // 입력된 값들을 가져오기
-
             }
         });
 
