@@ -27,6 +27,7 @@
         app:layout_constraintTop_toTopOf="@id/iv_goaldetail_progress_clock"/>
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_teamprogress"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintStart_toStartOf="parent"

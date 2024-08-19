@@ -26,6 +26,9 @@ import com.google.android.material.tabs.TabLayout
 
 class GoalDetailActivity: AppCompatActivity() {
 
+    private var isTeam: Boolean = false
+    private var isPhoto: Boolean = true
+
     // 카메라 임시코드
     private val REQUEST_IMAGE_CAPTURE = 101
     private val CAMERA_PERMISSION_CODE = 102
@@ -40,9 +43,15 @@ class GoalDetailActivity: AppCompatActivity() {
         setContentView(binding.root)
 
         if (savedInstanceState == null) {
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.goaldetail_frm, IndividualProgressFragment())
-                .commit()
+            if (isTeam) {
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.goaldetail_frm, TeamProgressFragment())
+                    .commit()
+            } else {
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.goaldetail_frm, IndividualProgressFragment())
+                    .commit()
+            }
         }
 
         initPieChart()
@@ -166,12 +175,24 @@ class GoalDetailActivity: AppCompatActivity() {
     private fun setTab() {
         binding.tablayoutGoaldetail.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener {
             override fun onTabSelected(p0: TabLayout.Tab) {
-                val fragment = when (p0.position) {
-                    0 -> IndividualProgressFragment()
-                    //1 -> PhotoCertificationFragment()
-                    1 -> CalendarCertificationFragment()
-                    else -> null
+                val fragment = when {
+                    isTeam -> when (p0.position) {
+                        0 -> TeamProgressFragment()
+                        1 -> CalendarCertificationFragment()
+                        else -> null
+                    }
+                    isPhoto -> when (p0.position) {
+                        0 -> IndividualProgressFragment()
+                        1 -> PhotoCertificationFragment()
+                        else -> null
+                    }
+                    else -> when (p0.position) {
+                        0 -> IndividualProgressFragment()
+                        1 -> CalendarCertificationFragment()
+                        else -> null
+                    }
                 }
+
                 if (fragment != null) {
                     supportFragmentManager.beginTransaction()
                         .replace(R.id.goaldetail_frm, fragment)
