@@ -65,6 +65,8 @@ public class AddGoalMain extends AppCompatActivity {
     private LinearLayout target_lacation_L;
     private Calendar startDate;
     private static int timeattackCheck = 0;
+    private int certificateCheck = 0;
+    private int personTeam = 0;
 
     @Override
     protected void onCreate(Bundle saveInstanceState) {
@@ -147,6 +149,7 @@ public class AddGoalMain extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 setGoalSuccess();
+                personTeam = 2;
                 Button certificationTeam_bt = findViewById(R.id.goal_add_team_certification_team);
 
                 goalAddTeam.setVisibility(View.VISIBLE);
@@ -274,11 +277,11 @@ public class AddGoalMain extends AppCompatActivity {
                 GoalSetItem goalItem;
 
                 if(timeattackCheck==1){
-                    goalItem = new GoalSetItem(emotion, goalTitle, "⏰"+formatTimeRemaining(calculateTimeRemaining(endTime)), donationAmount, "Progress 0%", 0);
+                    goalItem = new GoalSetItem(emotion, goalTitle, "⏰"+formatTimeRemaining(calculateTimeRemaining(endTime)), donationAmount, "Progress 0%", 0,startDate,endDate,repeat,certificateCheck, personTeam);
                 } else if (calculateDaysRemaining(startDate)>0) {
-                    goalItem = new GoalSetItem(emotion, goalTitle, "시작전", donationAmount, "Progress 0%", 0);
+                    goalItem = new GoalSetItem(emotion, goalTitle, "시작전", donationAmount, "Progress 0%", 0,startDate,endDate,repeat,certificateCheck, personTeam);
                 } else{
-                    goalItem = new GoalSetItem(emotion, goalTitle, "D-"+calculateDaysRemaining(endDate), donationAmount, "Progress 0%", 0);
+                    goalItem = new GoalSetItem(emotion, goalTitle, "D-"+calculateDaysRemaining(endDate), donationAmount, "Progress 0%", 0,startDate,endDate,repeat,certificateCheck, personTeam);
                 }
                 // 데이터를 전달할 Intent 생성
                 Intent resultIntent = new Intent();
@@ -452,6 +455,7 @@ public class AddGoalMain extends AppCompatActivity {
 
     private void personal() {
         imageCertificationP();
+        personTeam = 1;
         Button personal_bt = findViewById(R.id.goal_add_team_personal);
         Button team_bt = findViewById(R.id.goal_add_team_team);
         Button certificationTeam_bt = findViewById(R.id.goal_add_team_certification_team);
@@ -506,6 +510,7 @@ public class AddGoalMain extends AppCompatActivity {
     }
 
     private void imageCertificationP() {
+        certificateCheck = 11;
         Button certificationImage_Pbt = findViewById(R.id.goal_add_certification_camera);
         Button certificationLocation_Pbt = findViewById(R.id.goal_add_certification_location);
         Button certificationTeam_bt = findViewById(R.id.goal_add_team_certification_team);
@@ -517,6 +522,7 @@ public class AddGoalMain extends AppCompatActivity {
     }
 
     private void locationCertificationP() {
+        certificateCheck = 12;
         Button certificationImage_Pbt = findViewById(R.id.goal_add_certification_camera);
         Button certificationLocation_Pbt = findViewById(R.id.goal_add_certification_location);
         Button certificationTeam_bt = findViewById(R.id.goal_add_team_certification_team);
@@ -528,6 +534,7 @@ public class AddGoalMain extends AppCompatActivity {
     }
 
     private void teamCertification() {
+        certificateCheck = 13;
         Button certificationImage_bt = findViewById(R.id.goal_add_certification_camera);
         Button certificationLocation_bt = findViewById(R.id.goal_add_certification_location);
         Button certificationTeam_bt = findViewById(R.id.goal_add_team_certification_team);
@@ -614,6 +621,7 @@ public class AddGoalMain extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 repeatType[0] = "매주";
+
                 addGoalRepeatMonth.setVisibility(View.GONE);
                 addGoalRepeatDay.setVisibility(View.GONE);
                 addGoalRepeatWeek.setVisibility(View.VISIBLE);
@@ -626,6 +634,7 @@ public class AddGoalMain extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 repeatType[0] = "매월";
+
                 addGoalRepeatDay.setVisibility(View.GONE);
                 addGoalRepeatWeek.setVisibility(View.GONE);
                 addGoalRepeatMonth.setVisibility(View.VISIBLE);
