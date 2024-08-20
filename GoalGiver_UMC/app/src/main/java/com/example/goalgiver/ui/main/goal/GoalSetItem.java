@@ -11,15 +11,26 @@ public class GoalSetItem implements Parcelable {
     private String goalPoints;
     private String goalProgressText;
     private int goalProgress;
+    private String goalEndDate;
+    private String goalStartDate;
+    private String goalrepeat_Tv;
+    private int goalCertificationCheck;
+    private int goalPersonCheck;
+
 
     // 생성자
-    public GoalSetItem(String goalIcon, String goalTitle, String goalDDay, String goalPoints, String goalProgressText, int goalProgress) {
+    public GoalSetItem(String goalIcon, String goalTitle, String goalDDay, String goalPoints, String goalProgressText, int goalProgress, String goalStartDate, String goalEndDate, String goalrepeat_Tv, int goalCertificationCheck, int goalPersonCheck) {
         this.goalIcon = goalIcon;
         this.goalTitle = goalTitle;
         this.goalDDay = goalDDay;
         this.goalPoints = goalPoints;
         this.goalProgressText = goalProgressText;
         this.goalProgress = goalProgress;
+        this.goalEndDate = goalEndDate;
+        this.goalStartDate = goalStartDate;
+        this.goalrepeat_Tv = goalrepeat_Tv;
+        this.goalCertificationCheck = goalCertificationCheck;
+        this.goalPersonCheck = goalPersonCheck;
     }
 
     protected GoalSetItem(Parcel in) {
@@ -29,6 +40,11 @@ public class GoalSetItem implements Parcelable {
         goalPoints = in.readString();
         goalProgressText = in.readString();
         goalProgress = in.readInt();
+        goalEndDate = in.readString();
+        goalStartDate = in.readString();
+        goalrepeat_Tv = in.readString();
+        goalCertificationCheck = in.readInt();
+        goalPersonCheck = in.readInt();
     }
 
     @Override
@@ -39,6 +55,11 @@ public class GoalSetItem implements Parcelable {
         dest.writeString(goalPoints);
         dest.writeString(goalProgressText);
         dest.writeInt(goalProgress);
+        dest.writeString(goalEndDate);
+        dest.writeString(goalStartDate);
+        dest.writeString(goalrepeat_Tv);
+        dest.writeInt(goalCertificationCheck);
+        dest.writeInt(goalPersonCheck);
     }
 
     @Override
