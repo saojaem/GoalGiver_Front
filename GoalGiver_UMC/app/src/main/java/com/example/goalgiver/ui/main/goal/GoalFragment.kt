@@ -1,7 +1,9 @@
 package com.example.goalgiver.ui.main.goal
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -14,6 +16,8 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.goalgiver.R
 import com.example.goalgiver.databinding.FragmentGoalBinding
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 
 class GoalFragment : Fragment() {
 
@@ -22,12 +26,14 @@ class GoalFragment : Fragment() {
 
     private lateinit var goalList: ArrayList<GoalSetItem>
     private lateinit var teamChooseLauncher: ActivityResultLauncher<Intent>
+    private lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentGoalBinding.inflate(inflater, container, false)
+        sharedPreferences = requireContext().getSharedPreferences("goal_prefs", Context.MODE_PRIVATE)
         return binding.root
     }
 
@@ -48,6 +54,7 @@ class GoalFragment : Fragment() {
                 } else {
                     Log.d("GoalFragment", "Received goalTitle=" + goalItem.goalTitle)
                     goalList.add(goalItem)
+                    saveGoalListToPrefs()
                     binding.goalFragmentRecyclerView.adapter?.notifyDataSetChanged()
                 }
             }
@@ -58,7 +65,7 @@ class GoalFragment : Fragment() {
             teamChooseLauncher.launch(intent)
         }
 
-        goalList = arrayListOf(
+        goalList = loadGoalListFromPrefs() ?: arrayListOf(
             GoalSetItem("🎯", "Goal 1", "D-10", "100", "Progress 50%", 50)
         )
 
@@ -99,5 +106,20 @@ class GoalFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun saveGoalListToPrefs() {
+        val editor = sharedPreferences.edit()
+        val gson = Gson()
+        val json = gson.toJson(goalList)
+        editor.putString("goal_list", json)
+        editor.apply()
+    }
+
+    private fun loadGoalListFromPrefs(): ArrayList<GoalSetItem>? {
+        val gson = Gson()
+        val json = sharedPreferences.getString("goal_list", null)
+        val type = object : TypeToken<ArrayList<GoalSetItem>>() {}.type
+        return gson.fromJson(json, type)
     }
 }

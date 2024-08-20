@@ -302,6 +302,7 @@ public class AddGoalMain extends AppCompatActivity {
                 Log.d("AddGoalMain", "Sending Data: goalTitle=" + goalTitle + ", emotion=" + emotion);
                 // 결과 설정 및 액티비티 종료
                 setResult(Activity.RESULT_OK, resultIntent);
+
                 finish();
             }
         });
