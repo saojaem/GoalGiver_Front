@@ -20,6 +20,18 @@ public class GoalSetAdapter extends RecyclerView.Adapter<GoalSetAdapter.GoalView
     private Context context;
     private ArrayList<GoalSetItem> goalList;
 
+    // RecyclerView Item Click Event 설정 (ham)
+    private OnItemClickListener listener;
+
+    public interface OnItemClickListener {
+        void onItemClick(int position);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
+    }
+    // RecyclerView Item Click Event 설정 (ham)
+
     public GoalSetAdapter(Context context, ArrayList<GoalSetItem> goalList) {
         this.context = context;
         this.goalList = goalList;
@@ -29,7 +41,7 @@ public class GoalSetAdapter extends RecyclerView.Adapter<GoalSetAdapter.GoalView
     @Override
     public GoalViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.item_teamprogress, parent, false);
-        return new GoalViewHolder(view);
+        return new GoalViewHolder(view, listener);
     }
 
     @Override
@@ -64,7 +76,7 @@ public class GoalSetAdapter extends RecyclerView.Adapter<GoalSetAdapter.GoalView
         ImageView goalArrow;
         ImageView ivTeamProgressPoint;
 
-        public GoalViewHolder(@NonNull View itemView) {
+        public GoalViewHolder(@NonNull View itemView, final OnItemClickListener listener) {
             super(itemView);
 
             goalIcon = itemView.findViewById(R.id.goal_goalIcon);
@@ -75,6 +87,17 @@ public class GoalSetAdapter extends RecyclerView.Adapter<GoalSetAdapter.GoalView
             goalProgress = itemView.findViewById(R.id.goal_goalProgress);
             goalArrow = itemView.findViewById(R.id.goal_goalArrow);
             ivTeamProgressPoint = itemView.findViewById(R.id.iv_teamprogress_point);
+
+            // item ClickListener -ham
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION && listener != null) {
+                        listener.onItemClick(position);
+                    }
+                }
+            });
         }
     }
 

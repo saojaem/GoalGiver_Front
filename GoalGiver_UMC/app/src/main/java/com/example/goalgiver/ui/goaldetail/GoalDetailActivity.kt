@@ -18,6 +18,7 @@ import com.example.goalgiver.databinding.ActivityGoaldetailBinding
 import com.example.goalgiver.ui.certification.CertificationDialog
 import com.example.goalgiver.ui.certification.MapCertificationActivity
 import com.example.goalgiver.ui.main.goal.AddGoalMain
+import com.example.goalgiver.ui.main.goal.GoalSetItem
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
@@ -25,6 +26,9 @@ import com.github.mikephil.charting.data.PieEntry
 import com.google.android.material.tabs.TabLayout
 
 class GoalDetailActivity: AppCompatActivity() {
+
+    private var isTeam: Boolean = false
+    private var isPhoto: Boolean = true
 
     // 카메라 임시코드
     private val REQUEST_IMAGE_CAPTURE = 101
@@ -40,12 +44,33 @@ class GoalDetailActivity: AppCompatActivity() {
         setContentView(binding.root)
 
         if (savedInstanceState == null) {
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.goaldetail_frm, IndividualProgressFragment())
-                .commit()
+            if (isTeam) {
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.goaldetail_frm, TeamProgressFragment())
+                    .commit()
+            } else {
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.goaldetail_frm, IndividualProgressFragment())
+                    .commit()
+            }
         }
 
-        initPieChart()
+        val goalItem: GoalSetItem? = intent.getParcelableExtra("goalItem")
+
+//        goalList = arrayListOf(
+//            GoalSetItem("🎯", "Goal 1", "D-10", "100", "Progress 50%", 10)
+//        )
+
+        goalItem?.let {
+            binding.tvGoaldetailPercent.text = "${it.goalProgress}% 달성"
+            binding.ivGoaldetailMainphoto.setImageResource(R.drawable.add_goal_profile)
+            binding.tvGoaldetailTitle.text = it.goalTitle
+            binding.tvGoaldetailDeadline.text = it.goalDDay
+            binding.tvGoaldetailPoint.text = it.goalPoints
+            initPieChart(it.goalProgress.toFloat())
+        }
+
+        //initPieChart(goalItem?.goalProgress!!.toFloat())
         setTab()
         //카메라 임시코드
         takePictureLauncher = registerForActivityResult(
@@ -72,6 +97,10 @@ class GoalDetailActivity: AppCompatActivity() {
         }
         binding.btnTemp.setOnClickListener {
             checkCameraPermission()
+        }
+
+        binding.btnGoaldetailBack.setOnClickListener {
+            finish()
         }
     }
 
@@ -138,8 +167,8 @@ class GoalDetailActivity: AppCompatActivity() {
         }
     }
 
-    private fun initPieChart() {
-        val percentRatio = listOf(PieEntry(60f), PieEntry(40f))
+    private fun initPieChart(percent: Float) {
+        val percentRatio = listOf(PieEntry(percent), PieEntry(100 - percent))
 
         val pieColors = listOf(resources.getColor(R.color.brand_orange, null), resources.getColor(R.color.brand_orange_50, null))
 
@@ -166,12 +195,24 @@ class GoalDetailActivity: AppCompatActivity() {
     private fun setTab() {
         binding.tablayoutGoaldetail.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener {
             override fun onTabSelected(p0: TabLayout.Tab) {
-                val fragment = when (p0.position) {
-                    0 -> IndividualProgressFragment()
-                    //1 -> PhotoCertificationFragment()
-                    1 -> CalendarCertificationFragment()
-                    else -> null
+                val fragment = when {
+                    isTeam -> when (p0.position) {
+                        0 -> TeamProgressFragment()
+                        1 -> CalendarCertificationFragment()
+                        else -> null
+                    }
+                    isPhoto -> when (p0.position) {
+                        0 -> IndividualProgressFragment()
+                        1 -> PhotoCertificationFragment()
+                        else -> null
+                    }
+                    else -> when (p0.position) {
+                        0 -> IndividualProgressFragment()
+                        1 -> CalendarCertificationFragment()
+                        else -> null
+                    }
                 }
+
                 if (fragment != null) {
                     supportFragmentManager.beginTransaction()
                         .replace(R.id.goaldetail_frm, fragment)
