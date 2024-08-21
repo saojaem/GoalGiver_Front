@@ -16,10 +16,11 @@ public class GoalSetItem implements Parcelable {
     private String goalrepeat_Tv;
     private int goalCertificationCheck;
     private int goalPersonCheck;
+    private String goalDonation;
 
 
     // 생성자
-    public GoalSetItem(String goalIcon, String goalTitle, String goalDDay, String goalPoints, String goalProgressText, int goalProgress, String goalStartDate, String goalEndDate, String goalrepeat_Tv, int goalCertificationCheck, int goalPersonCheck) {
+    public GoalSetItem(String goalIcon, String goalTitle, String goalDDay, String goalPoints, String goalProgressText, int goalProgress, String goalStartDate, String goalEndDate, String goalrepeat_Tv, int goalCertificationCheck, int goalPersonCheck, String goalDonation) {
         this.goalIcon = goalIcon;
         this.goalTitle = goalTitle;
         this.goalDDay = goalDDay;
@@ -31,6 +32,7 @@ public class GoalSetItem implements Parcelable {
         this.goalrepeat_Tv = goalrepeat_Tv;
         this.goalCertificationCheck = goalCertificationCheck;
         this.goalPersonCheck = goalPersonCheck;
+        this.goalDonation = goalDonation;
     }
 
     protected GoalSetItem(Parcel in) {
@@ -45,6 +47,7 @@ public class GoalSetItem implements Parcelable {
         goalrepeat_Tv = in.readString();
         goalCertificationCheck = in.readInt();
         goalPersonCheck = in.readInt();
+        goalDonation = in.readString();
     }
 
     @Override
@@ -60,6 +63,7 @@ public class GoalSetItem implements Parcelable {
         dest.writeString(goalrepeat_Tv);
         dest.writeInt(goalCertificationCheck);
         dest.writeInt(goalPersonCheck);
+        dest.writeString(goalDonation);
     }
 
     @Override
@@ -127,4 +131,26 @@ public class GoalSetItem implements Parcelable {
     public void setGoalProgress(int goalProgress) {
         this.goalProgress = goalProgress;
     }
+
+    public String getGoalEndDate() { return goalEndDate; }
+
+    public void setGoalEndDate(String goalEndDate) { this.goalEndDate = goalEndDate; }
+
+    public String getGoalStartDate() { return goalStartDate; }
+
+    public void setGoalStartDate(String goalStartDate) { this.goalStartDate = goalStartDate; }
+
+    public String getGoalrepeat_Tv() { return goalrepeat_Tv; }
+
+    public void setGoalrepeat_Tv(String goalrepeat_Tv) { this.goalrepeat_Tv = goalrepeat_Tv; }
+
+    public int getGoalCertificationCheck() { return goalCertificationCheck; }
+
+    public void setGoalCertificationCheck(int goalCertificationCheck) { this.goalCertificationCheck = goalCertificationCheck; }
+
+    public int getGoalPersonCheck() { return goalPersonCheck; }
+
+    public String getGoalDonation() { return goalDonation; }
+
+    public void setGoalDonation(String goalDonation) { this.goalDonation = goalDonation; }
 }

@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.goalgiver.databinding.FragmentGoaldetailIndividualprogressBinding
+import com.example.goalgiver.ui.main.goal.GoalSetItem
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
@@ -16,13 +17,33 @@ import com.google.android.material.tabs.TabLayout
 
 class IndividualProgressFragment: Fragment() {
 
+    companion object {
+        private const val ARG_GOAL_ITEM = "goalItem"
+
+        fun newInstance(goalItem: GoalSetItem?): IndividualProgressFragment {
+            val fragment = IndividualProgressFragment()
+            val args = Bundle()
+            args.putParcelable(ARG_GOAL_ITEM, goalItem)
+            fragment.arguments = args
+            return fragment
+        }
+    }
+
+    private var goalItem: GoalSetItem? = null
+
     lateinit var binding: FragmentGoaldetailIndividualprogressBinding
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        arguments?.let { goalItem = it.getParcelable(ARG_GOAL_ITEM) }
+
         binding = FragmentGoaldetailIndividualprogressBinding.inflate(inflater, container, false)
+
+        goalItem?.let {
+            binding.tvGoaldetailProgressTerm.text = "${it.goalStartDate} ~ ${it.goalEndDate} (${it.goalrepeat_Tv})"
+        }
 
         binding.progressTab.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener {
             override fun onTabSelected(p0: TabLayout.Tab?) {
@@ -41,6 +62,14 @@ class IndividualProgressFragment: Fragment() {
 
         return binding.root
     }
+
+//    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+//        super.onViewCreated(view, savedInstanceState)
+//
+//        goalItem?.let {
+//            binding.tvGoaldetailProgressTerm.text = "${it.goalStartDate} ~ ${it.goalEndDate} (${it.goalrepeat_Tv})"
+//        }
+//    }
 
     private fun initWeeklyBarChart() {
         val barChart = binding.chartGoaldetailProgressBar

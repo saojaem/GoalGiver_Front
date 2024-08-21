@@ -277,11 +277,11 @@ public class AddGoalMain extends AppCompatActivity {
                 GoalSetItem goalItem;
 
                 if(timeattackCheck==1){
-                    goalItem = new GoalSetItem(emotion, goalTitle, "⏰"+formatTimeRemaining(calculateTimeRemaining(endTime)), donationAmount, "Progress 0%", 0,startDate,endDate,repeat,certificateCheck, personTeam);
+                    goalItem = new GoalSetItem(emotion, goalTitle, "⏰"+formatTimeRemaining(calculateTimeRemaining(endTime)), donationAmount, "Progress 0%", 0,startDate,endDate,repeat,certificateCheck, personTeam, donation);
                 } else if (calculateDaysRemaining(startDate)>0) {
-                    goalItem = new GoalSetItem(emotion, goalTitle, "시작전", donationAmount, "Progress 0%", 0,startDate,endDate,repeat,certificateCheck, personTeam);
+                    goalItem = new GoalSetItem(emotion, goalTitle, "시작전", donationAmount, "Progress 0%", 0,startDate,endDate,repeat,certificateCheck, personTeam, donation);
                 } else{
-                    goalItem = new GoalSetItem(emotion, goalTitle, "D-"+calculateDaysRemaining(endDate), donationAmount, "Progress 0%", 0,startDate,endDate,repeat,certificateCheck, personTeam);
+                    goalItem = new GoalSetItem(emotion, goalTitle, "D-"+calculateDaysRemaining(endDate), donationAmount, "Progress 0%", 0,startDate,endDate,repeat,certificateCheck, personTeam, donation);
                 }
                 // 데이터를 전달할 Intent 생성
                 Intent resultIntent = new Intent();

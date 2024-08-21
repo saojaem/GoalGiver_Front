@@ -68,7 +68,7 @@ class GoalFragment : Fragment() {
         }
 
         goalList = loadGoalListFromPrefs() ?: arrayListOf(
-            GoalSetItem("🎯", "Goal 1", "D-10", "100", "Progress 50%", 50,"2024-8-19","2024-8-30","매주 1일",1,1)
+            GoalSetItem("🎯", "Goal 1", "D-10", "100", "Progress 50%", 50,"2024-8-19","2024-8-30","매주 1일",1,1, "월드비전")
         )
 
         setupRecyclerView()
