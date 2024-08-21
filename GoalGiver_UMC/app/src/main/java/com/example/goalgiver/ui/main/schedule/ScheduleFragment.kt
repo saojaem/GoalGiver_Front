@@ -60,18 +60,7 @@ class ScheduleFragment : Fragment() {
     }
 
     private fun handleIncomingIntentData() {
-        arguments?.let { bundle ->
-            val toDoItem = bundle.getParcelable<ToDoItem>("toDoItem")
 
-            toDoItem?.let {
-                initialToDoList.add(it)
-                todoAdapter.submitList(initialToDoList.toList())
-                todoAdapter.notifyDataSetChanged()
-
-                val dates = getDatesBetween(it.startdate, it.enddate)
-                binding.calendarView.addDecorator(DotDecorator(requireContext(), dates))
-            }
-        }
     }
 
     private fun loadInitialData() {
