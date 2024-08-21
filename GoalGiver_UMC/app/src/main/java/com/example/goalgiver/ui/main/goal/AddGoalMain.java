@@ -33,6 +33,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.goalgiver.R;
 import com.example.goalgiver.ui.main.people.FriendItem;
 import com.example.goalgiver.ui.main.people.PeopleFragment;
+import com.example.goalgiver.ui.main.schedule.ScheduleFragment;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
@@ -301,9 +302,11 @@ public class AddGoalMain extends AppCompatActivity {
                 resultIntent.putExtra("donation", donation);
                 resultIntent.putExtra("donationAmount", donationAmount);
                 resultIntent.putExtra("goalItem", goalItem);
+                resultIntent.putExtra("status", "인증");
 
                 Log.d("AddGoalMain", "Sending Data: goalTitle=" + goalTitle + ", emotion=" + emotion);
                 // 결과 설정 및 액티비티 종료
+
                 setResult(Activity.RESULT_OK, resultIntent);
 
                 finish();

@@ -14,10 +14,6 @@ class ToDoAdapter : RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder>() {
         notifyDataSetChanged()
     }
 
-    fun getItems(): List<ToDoItem> {
-        return items
-    }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ToDoViewHolder {
         val binding = ItemTaskBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ToDoViewHolder(binding)
@@ -31,9 +27,12 @@ class ToDoAdapter : RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder>() {
 
     class ToDoViewHolder(private val binding: ItemTaskBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: ToDoItem) {
+            binding.scheduleGoalIcon.text = item.scheduleIcon
             binding.taskTitle.text = item.title
-            binding.taskDays.text = item.date
+            binding.scheduleStartdate.text = item.startdate
+            binding.scheduleEnddate.text = item.enddate
             binding.taskStatus.text = item.status
         }
     }
 }
+
