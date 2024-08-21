@@ -36,7 +36,7 @@ class ScheduleFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initViews()
         //
-       // handleIncomingIntentData() // Intent 데이터 처리
+       // handlerIntentData() // Intent 데이터 처리
         loadInitialData() // 초기 데이터 로드
     }
 
@@ -60,7 +60,7 @@ class ScheduleFragment : Fragment() {
         }
     }
 //
-//    private fun handleIncomingIntentData() {
+//    private fun handlerIntentData() {
 //        arguments?.let { bundle ->
 //            val toDoItem = bundle.getParcelable<ToDoItem>("toDoItem")
 //
