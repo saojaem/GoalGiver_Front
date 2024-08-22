@@ -13,7 +13,7 @@ import org.threeten.bp.format.DateTimeFormatter
 class DotDecorator(context: Context, dates: List<String>) : DayViewDecorator {
 
     private val calendarDayList = dates.map { date ->
-        CalendarDay.from(LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy.MM.dd")))
+        CalendarDay.from(LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd")))
     }
 
     private val dotColor = ContextCompat.getColor(context, R.color.brand_blue)

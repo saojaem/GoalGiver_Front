@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.goalgiver.databinding.FragmentScheduleBinding
 import com.example.goalgiver.ui.teamcertificationalarm.RequestAlarmActivity
@@ -22,6 +23,7 @@ class ScheduleFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var todoAdapter: ToDoAdapter
     private val initialToDoList: MutableList<ToDoItem> = mutableListOf()
+    private val sharedViewModel: SharedViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,8 +37,18 @@ class ScheduleFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initViews()
-        handleIncomingIntentData() // Intent 데이터 처리
-        loadInitialData() // 초기 데이터 로드
+
+        sharedViewModel.goalList.observe(viewLifecycleOwner) { goalList ->
+            if (goalList != null) {
+                todoAdapter.submitList(goalList)
+                binding.calendarView.addDecorator(DotDecorator(requireContext(), goalList.map { it.startdate }))
+            }
+        }
+
+        // ViewModel에 데이터가 없으면 초기 데이터 로드
+        if (sharedViewModel.goalList.value.isNullOrEmpty()) {
+            loadInitialData()
+        }
     }
 
     private fun initViews() {
@@ -47,7 +59,7 @@ class ScheduleFragment : Fragment() {
         }
         updateMonthYearTitle(CalendarDay.today())
         binding.calendarView.setOnDateChangedListener { widget: MaterialCalendarView, date: CalendarDay, selected: Boolean ->
-            val selectedDate = date.date?.format(DateTimeFormatter.ofPattern("yyyy.MM.dd"))
+            val selectedDate = date.date?.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
             selectedDate?.let { filterItemsByDate(it) }
         }
         binding.calendarView.setOnMonthChangedListener { _, date -> updateMonthYearTitle(date) }
@@ -67,9 +79,9 @@ class ScheduleFragment : Fragment() {
         if (initialToDoList.isEmpty()) {
             initialToDoList.addAll(
                 listOf(
-                    ToDoItem("🎯", "헬스장 가기", "2024.08.15", "2024.08.16", "인증"),
-                    ToDoItem("🎯", "회의 참석", "2024.08.16", "2024.08.17", "인증"),
-                    ToDoItem("🎯", "친구 만나기", "2024.08.17", "2024.08.20", "인증")
+//                    ToDoItem("🎯", "헬스장 가기", "2024-08-15", "2024-08-16", "인증"),
+//                    ToDoItem("🎯", "회의 참석", "2024-08-16", "2024-08-17", "인증"),
+//                    ToDoItem("🎯", "친구 만나기", "2024-08-17", "2024-08-20", "인증")
                 )
             )
             todoAdapter.submitList(initialToDoList.toList())
@@ -98,7 +110,7 @@ class ScheduleFragment : Fragment() {
 
     private fun getDatesBetween(startDate: String, endDate: String): List<String> {
         val dates = mutableListOf<String>()
-        val formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd")
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
         var start = LocalDate.parse(startDate, formatter)
         val end = LocalDate.parse(endDate, formatter)
 

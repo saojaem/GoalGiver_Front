@@ -12,7 +12,7 @@ public class GoalSetItem implements Parcelable {
     private String goalProgressText;
     private int goalProgress;
     private String goalEndDate;
-    public String goalStartDate;
+    private String goalStartDate;
     private String goalrepeat_Tv;
     private int goalCertificationCheck;
     private int goalPersonCheck;
@@ -107,7 +107,8 @@ public class GoalSetItem implements Parcelable {
     public String getGoalDDay() {
         return goalDDay;
     }
-
+    public String getGoalEndDate() { return goalEndDate;}
+    public String getGoalStartDate() { return goalStartDate;}
     public String getGoalPoints() {
         return goalPoints;
     }
@@ -119,6 +120,9 @@ public class GoalSetItem implements Parcelable {
     public int getGoalProgress() {
         return goalProgress;
     }
+
+    public int getPersonTeam(){return goalPersonCheck;}
+
 
     public void setGoalProgress(int goalProgress) {
         this.goalProgress = goalProgress;
@@ -145,4 +149,5 @@ public class GoalSetItem implements Parcelable {
     public String getGoalDonation() { return goalDonation; }
 
     public void setGoalDonation(String goalDonation) { this.goalDonation = goalDonation; }
+
 }
