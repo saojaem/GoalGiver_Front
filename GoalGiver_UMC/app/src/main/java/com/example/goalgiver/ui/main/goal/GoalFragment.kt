@@ -28,7 +28,8 @@ class GoalFragment : Fragment() {
     private var _binding: FragmentGoalBinding? = null
     private val binding get() = _binding!!
     private val sharedViewModel: SharedViewModel by activityViewModels()
-    private lateinit var goalList: ArrayList<GoalSetItem>
+    private lateinit var goalList: ArrayList<GoalSetItem> //원본데이터
+    private lateinit var filteredGoalList: ArrayList<GoalSetItem> // 필터링된 데이터
     private lateinit var teamChooseLauncher: ActivityResultLauncher<Intent>
     private lateinit var sharedPreferences: SharedPreferences
     private val goalTimerViewModel: GoalTimerViewModel by activityViewModels()
@@ -39,6 +40,7 @@ class GoalFragment : Fragment() {
     ): View? {
         _binding = FragmentGoalBinding.inflate(inflater, container, false)
         sharedPreferences = requireContext().getSharedPreferences("goal_prefs", Context.MODE_PRIVATE)
+        filteredGoalList = arrayListOf()
         return binding.root
     }
 
@@ -46,7 +48,6 @@ class GoalFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setupButtonListeners()
-
 
         // ActivityResultLauncher 초기화
         teamChooseLauncher = registerForActivityResult(
@@ -84,7 +85,7 @@ class GoalFragment : Fragment() {
         }
 
         goalList = loadGoalListFromPrefs() ?: arrayListOf(
-            GoalSetItem("🎯", "Goal 1", "D-10", "100", "Progress 50%", 50,"2024-08-19","2024-08-30","매주 1일",1,1,0L)
+            //GoalSetItem("🎯", "Goal 1", "D-10", "100", "Progress 50%", 50,"2024-08-19","2024-08-30","매주 1일",1,1,0L)
         )
         setupRecyclerView()
         saveGoalListToSharedViewModel()
@@ -106,10 +107,30 @@ class GoalFragment : Fragment() {
                     goalItem.goalDDay = "Time's up!"
                 }
 
+                // goalList와 filteredGoalList 모두 업데이트
+                updateGoalInFilteredGoalList(goalItem)
                 binding.goalFragmentRecyclerView.adapter?.notifyItemChanged(goalList.indexOf(goalItem))
             }
         }
+        binding.personalButton.performClick()
+//binding.inProgressButton.performClick()
     }
+
+    private fun filterGoalsByPersonCheck(personCheck: Int) {
+        filteredGoalList = goalList.filter { it.getPersonTeam() == personCheck } as ArrayList<GoalSetItem>
+        (binding.goalFragmentRecyclerView.adapter as GoalSetAdapter).updateGoalList(filteredGoalList)
+    }
+
+    private fun updateGoalInFilteredGoalList(goalItem: GoalSetItem) {
+        val index = filteredGoalList.indexOfFirst { it.goalTitle == goalItem.goalTitle }
+        if (index != -1) {
+            if (goalItem.remainingTime > 0) {
+                filteredGoalList[index] = goalItem
+                (binding.goalFragmentRecyclerView.adapter as GoalSetAdapter).notifyItemChanged(index)
+            }
+        }
+    }
+
     private fun saveGoalListToSharedViewModel() {
         val toDoItems = goalList.map { goalItem ->
             ToDoItem(
@@ -123,14 +144,15 @@ class GoalFragment : Fragment() {
         sharedViewModel.setGoalList(toDoItems)
     }
 
-
     private fun setupButtonListeners() {
         binding.personalButton.setOnClickListener {
             updateButtonSelection(binding.personalButton, binding.teamButton)
+            filterGoalsByPersonCheck(1) // personCheck 값이 1인 데이터만 표시
         }
 
         binding.teamButton.setOnClickListener {
             updateButtonSelection(binding.teamButton, binding.personalButton)
+            filterGoalsByPersonCheck(2) // personCheck 값이 2인 데이터만 표시
         }
 
         binding.inProgressButton.setOnClickListener {
@@ -138,6 +160,7 @@ class GoalFragment : Fragment() {
         }
 
         binding.completedButton.setOnClickListener {
+            clearGoalListFromPrefs()
             updateButtonSelection(binding.completedButton, binding.inProgressButton)
         }
     }

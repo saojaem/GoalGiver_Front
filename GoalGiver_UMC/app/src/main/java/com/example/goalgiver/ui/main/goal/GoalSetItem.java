@@ -115,4 +115,5 @@ public class GoalSetItem implements Parcelable {
     public int getGoalProgress() {
         return goalProgress;
     }
+    public int getPersonTeam(){return goalPersonCheck;}
 }

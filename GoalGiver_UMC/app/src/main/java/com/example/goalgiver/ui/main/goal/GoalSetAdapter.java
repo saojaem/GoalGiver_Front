@@ -34,7 +34,7 @@ public class GoalSetAdapter extends RecyclerView.Adapter<GoalSetAdapter.GoalView
 
     public GoalSetAdapter(Context context, ArrayList<GoalSetItem> goalList) {
         this.context = context;
-        this.goalList = goalList;
+        this.goalList = new ArrayList<>(goalList);
     }
 
     @NonNull

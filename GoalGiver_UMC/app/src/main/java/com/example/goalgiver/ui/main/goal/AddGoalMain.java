@@ -67,7 +67,7 @@ public class AddGoalMain extends AppCompatActivity {
     private LinearLayout goalAddTeam;
     private LinearLayout target_lacation_L;
     private Calendar startDate;
-    private static int timeattackCheck = 0;
+    private static int timeattackCheck;
     private int certificateCheck = 0;
     private int personTeam = 0;
 
@@ -139,6 +139,7 @@ public class AddGoalMain extends AppCompatActivity {
         personal();
         imageCertificationP();
         checkFieldsForEmptyValues();
+        timeattackCheck=0;
 
 
         personal_bt.setOnClickListener(new View.OnClickListener() {
