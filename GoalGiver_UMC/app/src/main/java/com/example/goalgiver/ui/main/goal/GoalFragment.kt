@@ -131,7 +131,6 @@ class GoalFragment : Fragment() {
 
         binding.teamButton.setOnClickListener {
             updateButtonSelection(binding.teamButton, binding.personalButton)
-            clearGoalListFromPrefs()
         }
 
         binding.inProgressButton.setOnClickListener {
