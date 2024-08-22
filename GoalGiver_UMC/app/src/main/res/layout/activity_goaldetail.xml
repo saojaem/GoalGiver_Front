@@ -21,7 +21,8 @@
             android:layout_height="wrap_content"
             android:id="@+id/btn_temp"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toEndOf="@id/btn_goaldetail_back"/>
+            app:layout_constraintStart_toEndOf="@id/btn_goaldetail_back"
+            android:visibility="gone"/>
 
         <ImageButton
             android:id="@+id/btn_goaldetail_back"
@@ -70,12 +71,13 @@
                     android:layout_gravity="center"
                     android:background="@drawable/circle_background" />
 
-                <ImageView
-                    android:id="@+id/iv_goaldetail_mainphoto"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
+                <TextView
+                    android:id="@+id/tv_goaldetail_maintext"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="h"
                     android:layout_gravity="center"
-                    android:src="@drawable/img_books" />
+                    android:textSize="60dp"/>
 
             </FrameLayout>
 
@@ -178,7 +180,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="-70dp"
+        android:layout_marginTop="-30dp"
         android:layout_marginEnd="20dp"
         android:background="@drawable/tablayout_goaldetail_cornerradius"
         app:layout_constraintEnd_toEndOf="parent"
