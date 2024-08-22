@@ -72,7 +72,8 @@ class GoalFragment : Fragment() {
                         title = goalItem.goalTitle,
                         startdate = goalItem.goalStartDate,
                         enddate = goalItem.goalEndDate,
-                        status = "인증"
+                        status = "인증",
+                        certification = goalItem.goalCertificationCheck
                     )
                     sharedViewModel.addGoal(newToDoItem)
                 }
@@ -140,7 +141,8 @@ class GoalFragment : Fragment() {
                 title = goalItem.goalTitle,
                 startdate = goalItem.goalStartDate,
                 enddate = goalItem.goalEndDate,
-                status = "인증"  // You can modify this according to your logic
+                status = "인증",  // You can modify this according to your logic
+                certification = goalItem.goalCertificationCheck
             )
         }
         sharedViewModel.setGoalList(toDoItems)
