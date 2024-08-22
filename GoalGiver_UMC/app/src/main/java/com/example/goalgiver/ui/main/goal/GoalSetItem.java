@@ -128,11 +128,9 @@ public class GoalSetItem implements Parcelable {
         this.goalProgress = goalProgress;
     }
 
-    public String getGoalEndDate() { return goalEndDate; }
 
     public void setGoalEndDate(String goalEndDate) { this.goalEndDate = goalEndDate; }
 
-    public String getGoalStartDate() { return goalStartDate; }
 
     public void setGoalStartDate(String goalStartDate) { this.goalStartDate = goalStartDate; }
 
