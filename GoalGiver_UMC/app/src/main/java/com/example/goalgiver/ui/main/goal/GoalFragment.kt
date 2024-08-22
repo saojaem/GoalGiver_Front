@@ -100,6 +100,7 @@ class GoalFragment : Fragment() {
         }
 
         binding.completedButton.setOnClickListener {
+
             updateButtonSelection(binding.completedButton, binding.inProgressButton)
         }
     }
@@ -175,5 +176,10 @@ class GoalFragment : Fragment() {
         val json = sharedPreferences.getString("goal_list", null)
         val type = object : TypeToken<ArrayList<GoalSetItem>>() {}.type
         return gson.fromJson(json, type)
+    }
+    private fun clearGoalListFromPrefs() {
+        val editor = sharedPreferences.edit()
+        editor.remove("goal_list")
+        editor.apply()
     }
 }

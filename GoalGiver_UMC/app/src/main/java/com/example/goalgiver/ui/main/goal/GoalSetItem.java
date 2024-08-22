@@ -145,4 +145,5 @@ public class GoalSetItem implements Parcelable {
     public String getGoalDonation() { return goalDonation; }
 
     public void setGoalDonation(String goalDonation) { this.goalDonation = goalDonation; }
+
 }
