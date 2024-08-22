@@ -1,7 +1,5 @@
 package com.example.goalgiver.ui.main.schedule
 
-
-
 class ToDoItem // 생성자
     (// Getter와 Setter 메서드
     var scheduleIcon: String,
@@ -11,4 +9,3 @@ class ToDoItem // 생성자
     var status: String,
     var certification: Int
 )
-

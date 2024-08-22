@@ -195,10 +195,8 @@ class GoalFragment : Fragment() {
         }
 
         binding.completedButton.setOnClickListener {
-
             isCompletedFilter = true
-            //clearGoalListFromPrefs()
-
+            clearGoalListFromPrefs()
             updateButtonSelection(binding.completedButton, binding.inProgressButton)
             applyFilters()
         }
@@ -255,8 +253,6 @@ class GoalFragment : Fragment() {
         val type = object : TypeToken<ArrayList<GoalSetItem>>() {}.type
         return gson.fromJson(json, type)
     }
-
-
 
     private fun clearGoalListFromPrefs() {
         val editor = sharedPreferences.edit()
