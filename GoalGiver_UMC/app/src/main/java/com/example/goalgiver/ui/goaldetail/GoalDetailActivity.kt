@@ -44,6 +44,29 @@ class GoalDetailActivity: AppCompatActivity() {
         binding = ActivityGoaldetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+
+
+        goalItem = intent.getParcelableExtra("goalItem")
+
+//        goalList = arrayListOf(
+//            GoalSetItem("🎯", "Goal 1", "D-10", "100", "Progress 50%", 10)
+//        )
+
+        goalItem?.let {
+            if (it.goalPersonCheck == 1) {
+                isTeam = false
+            } else {
+                isTeam = true
+            }
+            binding.tvGoaldetailPercent.text = "${it.goalProgress}% 달성"
+            binding.tvGoaldetailMaintext.text = "${it.goalIcon}"
+            binding.tvGoaldetailTitle.text = it.goalTitle
+            binding.tvGoaldetailDeadline.text = it.goalDDay
+            binding.tvGoaldetailPoint.text = it.goalPoints
+            binding.tvGoaldetailDonation.text = "기부단체: ${it.goalDonation}"
+            initPieChart(it.goalProgress.toFloat())
+        }
+
         if (savedInstanceState == null) {
             if (isTeam) {
                 supportFragmentManager.beginTransaction()
@@ -54,22 +77,6 @@ class GoalDetailActivity: AppCompatActivity() {
                     .replace(R.id.goaldetail_frm, IndividualProgressFragment())
                     .commit()
             }
-        }
-
-        goalItem = intent.getParcelableExtra("goalItem")
-
-//        goalList = arrayListOf(
-//            GoalSetItem("🎯", "Goal 1", "D-10", "100", "Progress 50%", 10)
-//        )
-
-        goalItem?.let {
-            binding.tvGoaldetailPercent.text = "${it.goalProgress}% 달성"
-            binding.tvGoaldetailMaintext.text = "${it.goalIcon}"
-            binding.tvGoaldetailTitle.text = it.goalTitle
-            binding.tvGoaldetailDeadline.text = it.goalDDay
-            binding.tvGoaldetailPoint.text = it.goalPoints
-            binding.tvGoaldetailDonation.text = "기부단체: ${it.goalDonation}"
-            initPieChart(it.goalProgress.toFloat())
         }
 
         //initPieChart(goalItem?.goalProgress!!.toFloat())
