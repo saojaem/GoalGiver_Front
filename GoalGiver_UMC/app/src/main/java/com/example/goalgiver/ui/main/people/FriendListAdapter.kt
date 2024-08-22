@@ -52,7 +52,7 @@ class FriendListAdapter(val itemList: ArrayList<FriendItem>): RecyclerView.Adapt
     override fun getItemCount(): Int {
         return itemList.count()
     }
-    
+
 
     inner class FriendListViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         val tv_name = itemView.findViewById<TextView>(R.id.tv_friendlist_name)

@@ -196,7 +196,7 @@ class GoalFragment : Fragment() {
 
         binding.completedButton.setOnClickListener {
             isCompletedFilter = true
-            //clearGoalListFromPrefs()
+            clearGoalListFromPrefs()
             updateButtonSelection(binding.completedButton, binding.inProgressButton)
             applyFilters()
         }

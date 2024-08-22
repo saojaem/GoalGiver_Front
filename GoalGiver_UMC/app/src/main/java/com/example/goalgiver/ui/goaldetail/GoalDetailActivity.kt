@@ -116,10 +116,10 @@ class GoalDetailActivity: AppCompatActivity() {
     private fun checkCameraPermission() {
         // 카메라 권한 부여 확인
         if (ContextCompat.checkSelfPermission(
-            this,
-            android.Manifest.permission.CAMERA
-        ) != PackageManager.PERMISSION_GRANTED
-            ) {
+                this,
+                android.Manifest.permission.CAMERA
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
             // 권한 없다면 권한 요청
             ActivityCompat.requestPermissions(
                 this,

@@ -22,12 +22,10 @@ class ScheduleFragment : Fragment() {
     private var _binding: FragmentScheduleBinding? = null
     private val binding get() = _binding!!
     private lateinit var todoAdapter: ToDoAdapter
-    private val initialToDoList: MutableList<ToDoItem> = mutableListOf()
     private val sharedViewModel: SharedViewModel by activityViewModels()
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
+        inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentScheduleBinding.inflate(inflater, container, false)
@@ -38,16 +36,15 @@ class ScheduleFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initViews()
 
+        // SharedViewModel 데이터 초기화
+        initializeData()
+
+        // goalList를 관찰하여 변화가 있을 때 리사이클러뷰를 업데이트
         sharedViewModel.goalList.observe(viewLifecycleOwner) { goalList ->
             if (goalList != null) {
-                todoAdapter.submitList(goalList)
+                filterItemsByDate(null) // 날짜 선택이 없으면 모든 항목을 표시
                 binding.calendarView.addDecorator(DotDecorator(requireContext(), goalList.map { it.startdate }))
             }
-        }
-
-        // ViewModel에 데이터가 없으면 초기 데이터 로드
-        if (sharedViewModel.goalList.value.isNullOrEmpty()) {
-            loadInitialData()
         }
     }
 
@@ -57,37 +54,35 @@ class ScheduleFragment : Fragment() {
             layoutManager = LinearLayoutManager(context)
             adapter = todoAdapter
         }
-        updateMonthYearTitle(CalendarDay.today())
-        binding.calendarView.setOnDateChangedListener { widget: MaterialCalendarView, date: CalendarDay, selected: Boolean ->
+
+        binding.calendarView.setOnDateChangedListener { _, date, _ ->
             val selectedDate = date.date?.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
             selectedDate?.let { filterItemsByDate(it) }
         }
+
         binding.calendarView.setOnMonthChangedListener { _, date -> updateMonthYearTitle(date) }
         binding.calendarView.setTitleFormatter(DateFormatTitleFormatter(DateTimeFormatter.ofPattern("yyyy년 MM월", Locale.KOREAN)))
         binding.calendarView.setWeekDayLabels(arrayOf("월", "화", "수", "목", "금", "토", "일"))
-        binding.alram.setOnClickListener {
-            val intent = Intent(requireContext(), RequestAlarmActivity::class.java)
-            startActivity(intent)
-        }
     }
 
-    private fun handleIncomingIntentData() {
-
+    private fun initializeData() {
+        // SharedViewModel이 초기화되거나 데이터를 가져오도록 합니다.
+        if (sharedViewModel.goalList.value.isNullOrEmpty()) {
+            loadInitialData()
+        }
     }
 
     private fun loadInitialData() {
-        if (initialToDoList.isEmpty()) {
-            initialToDoList.addAll(
-                listOf(
-//                    ToDoItem("🎯", "헬스장 가기", "2024-08-15", "2024-08-16", "인증"),
-//                    ToDoItem("🎯", "회의 참석", "2024-08-16", "2024-08-17", "인증"),
-//                    ToDoItem("🎯", "친구 만나기", "2024-08-17", "2024-08-20", "인증")
-                )
-            )
-            todoAdapter.submitList(initialToDoList.toList())
-            println("Initial Data added to RecyclerView: $initialToDoList")
-        }
-        binding.calendarView.addDecorator(DotDecorator(requireContext(), initialToDoList.map { it.startdate }))
+        // 여기서 실제로 필요한 데이터를 로드하세요.
+        val initialData = fetchInitialData() // 데이터를 가져오는 메서드를 구현해야 합니다.
+
+        // SharedViewModel에 데이터를 설정합니다.
+        sharedViewModel.setGoalList(initialData)
+    }
+
+    private fun fetchInitialData(): List<ToDoItem> {
+        // 데이터를 가져오는 로직을 추가합니다.
+        return listOf() // 예시로 비어있는 리스트 반환, 실제 데이터로 교체 필요
     }
 
     private fun updateMonthYearTitle(calendarDay: CalendarDay) {
@@ -95,30 +90,34 @@ class ScheduleFragment : Fragment() {
         binding.textMonthYear.text = calendarDay.date?.format(formatter)
     }
 
-    private fun filterItemsByDate(selectedDate: String) {
-        val filteredItems = initialToDoList.filter { it.startdate <= selectedDate && it.enddate >= selectedDate }
+    private fun filterItemsByDate(selectedDate: String?) {
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+        val filteredItems = if (selectedDate == null) {
+            sharedViewModel.goalList.value ?: emptyList()
+        } else {
+            val selectedLocalDate = LocalDate.parse(selectedDate, formatter)
+            (sharedViewModel.goalList.value ?: emptyList()).filter {
+                val startDate = LocalDate.parse(it.startdate, formatter)
+                val endDate = LocalDate.parse(it.enddate, formatter)
+                !selectedLocalDate.isBefore(startDate) && !selectedLocalDate.isAfter(endDate)
+            }
+        }
+
+        updateRecyclerViewVisibility(filteredItems)
+    }
+
+    private fun updateRecyclerViewVisibility(filteredItems: List<ToDoItem>) {
         if (filteredItems.isNotEmpty()) {
             todoAdapter.submitList(filteredItems)
+            todoAdapter.notifyDataSetChanged()
             binding.todoRecyclerView.visibility = View.VISIBLE
             binding.placeholderLayout.visibility = View.GONE
         } else {
             todoAdapter.submitList(emptyList())
+            todoAdapter.notifyDataSetChanged()
             binding.todoRecyclerView.visibility = View.GONE
             binding.placeholderLayout.visibility = View.VISIBLE
         }
-    }
-
-    private fun getDatesBetween(startDate: String, endDate: String): List<String> {
-        val dates = mutableListOf<String>()
-        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-        var start = LocalDate.parse(startDate, formatter)
-        val end = LocalDate.parse(endDate, formatter)
-
-        while (!start.isAfter(end)) {
-            dates.add(start.format(formatter))
-            start = start.plusDays(1)
-        }
-        return dates
     }
 
     override fun onDestroyView() {

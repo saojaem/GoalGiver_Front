@@ -62,9 +62,9 @@
         <activity android:name=".ui.main.people.PeopleFragment" />
 
 
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyBDdcgSnDnIM4Xc8rI3n3Nyxr5fwmqKgZk"/>
+<!--        <meta-data-->
+<!--            android:name="com.google.android.geo.API_KEY"-->
+<!--            android:value="AIzaSyBDdcgSnDnIM4Xc8rI3n3Nyxr5fwmqKgZk"/>-->
 
     </application>
 
