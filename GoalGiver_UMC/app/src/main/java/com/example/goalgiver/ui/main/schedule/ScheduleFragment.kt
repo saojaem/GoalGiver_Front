@@ -48,7 +48,7 @@ class ScheduleFragment : Fragment() {
         }
         updateMonthYearTitle(CalendarDay.today())
         binding.calendarView.setOnDateChangedListener { widget: MaterialCalendarView, date: CalendarDay, selected: Boolean ->
-            val selectedDate = date.date?.format(DateTimeFormatter.ofPattern("yyyy.MM.dd"))
+            val selectedDate = date.date?.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
             selectedDate?.let { filterItemsByDate(it) }
         }
         binding.calendarView.setOnMonthChangedListener { _, date -> updateMonthYearTitle(date) }
@@ -59,6 +59,7 @@ class ScheduleFragment : Fragment() {
             startActivity(intent)
         }
     }
+
 //
 //    private fun handlerIntentData() {
 //        arguments?.let { bundle ->
@@ -74,6 +75,7 @@ class ScheduleFragment : Fragment() {
 //            }
 //        }
 //    }
+
 
     private fun loadInitialData() {
         if (initialToDoList.isEmpty()) {
@@ -110,7 +112,7 @@ class ScheduleFragment : Fragment() {
 
     private fun getDatesBetween(startDate: String, endDate: String): List<String> {
         val dates = mutableListOf<String>()
-        val formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd")
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
         var start = LocalDate.parse(startDate, formatter)
         val end = LocalDate.parse(endDate, formatter)
 

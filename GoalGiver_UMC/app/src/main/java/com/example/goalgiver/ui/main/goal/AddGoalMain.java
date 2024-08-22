@@ -5,7 +5,9 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.InputFilter;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -136,6 +138,7 @@ public class AddGoalMain extends AppCompatActivity {
 
         personal();
         imageCertificationP();
+        checkFieldsForEmptyValues();
 
 
         personal_bt.setOnClickListener(new View.OnClickListener() {
@@ -278,11 +281,11 @@ public class AddGoalMain extends AppCompatActivity {
                 GoalSetItem goalItem;
 
                 if(timeattackCheck==1){
-                    goalItem = new GoalSetItem(emotion, goalTitle, "⏰"+formatTimeRemaining(calculateTimeRemaining(endTime)), donationAmount, "Progress 0%", 0,startDate,endDate,repeat,certificateCheck, personTeam);
+                    goalItem = new GoalSetItem(emotion, goalTitle, "⏰"+formatTimeRemaining(calculateTimeRemaining(endTime)), donationAmount, "Progress 0%", 0,startDate,endDate,repeat,certificateCheck, personTeam,calculateTimeRemaining(endTime));
                 } else if (calculateDaysRemaining(startDate)>0) {
-                    goalItem = new GoalSetItem(emotion, goalTitle, "시작전", donationAmount, "Progress 0%", 0,startDate,endDate,repeat,certificateCheck, personTeam);
+                    goalItem = new GoalSetItem(emotion, goalTitle, "시작전", donationAmount, "Progress 0%", 0,startDate,endDate,repeat,certificateCheck, personTeam,0);
                 } else{
-                    goalItem = new GoalSetItem(emotion, goalTitle, "D-"+calculateDaysRemaining(endDate), donationAmount, "Progress 0%", 0,startDate,endDate,repeat,certificateCheck, personTeam);
+                    goalItem = new GoalSetItem(emotion, goalTitle, "D-"+calculateDaysRemaining(endDate), donationAmount, "Progress 0%", 0,startDate,endDate,repeat,certificateCheck, personTeam,0);
                 }
                 // 데이터를 전달할 Intent 생성
                 Intent resultIntent = new Intent();
@@ -312,8 +315,57 @@ public class AddGoalMain extends AppCompatActivity {
                 finish();
             }
         });
+        TextWatcher textWatcher = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                checkFieldsForEmptyValues(); // 필드가 변경될 때마다 체크
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        };
+
+        // EditText 필드에 TextWatcher 연결
+        ((EditText) findViewById(R.id.set_goal_tv)).addTextChangedListener(textWatcher);
+        ((EditText) findViewById(R.id.add_goal_choose_emotion)).addTextChangedListener(textWatcher);
+        ((EditText) findViewById(R.id.goal_add_donationP_tv2)).addTextChangedListener(textWatcher);
+        repeatRecordTv.addTextChangedListener(textWatcher);
+        donationRecordTv.addTextChangedListener(textWatcher);
 
 
+    }
+
+
+    private void checkFieldsForEmptyValues() {
+        Button addGoalButton = findViewById(R.id.goal_add_decide_btn);
+
+        String startDate = startDate_Ptv.getText().toString();
+        String endDate = endDate_Ptv.getText().toString();
+        String startTime = startTimeTextView.getText().toString();
+        String endTime = endTimeTextView.getText().toString();
+        String goalTitle = ((EditText) findViewById(R.id.set_goal_tv)).getText().toString();
+        String donationAmount = ((EditText) findViewById(R.id.goal_add_donationP_tv2)).getText().toString();
+        String repeat = repeatRecordTv.getText().toString();
+        String donation = donationRecordTv.getText().toString();
+
+        if(timeattackCheck == 0){
+            if (!goalTitle.isEmpty() && !startDate.isEmpty() && !endDate.isEmpty() && !donationAmount.isEmpty() && !repeat.isEmpty() && !donation.isEmpty()) {
+                addGoalButton.setEnabled(true);
+            } else {
+                addGoalButton.setEnabled(false);
+
+            }
+        }else{
+            if (!goalTitle.isEmpty() && !startTime.isEmpty() && !endTime.isEmpty() && !donationAmount.isEmpty() && !repeat.isEmpty() && !donation.isEmpty()) {
+                addGoalButton.setEnabled(true);
+            } else {
+                addGoalButton.setEnabled(false);
+
+            }
+        }
     }
     //오늘부터 종료날짜 계산하는 코드
     private int calculateDaysRemaining(String endDateStr) {
@@ -700,9 +752,9 @@ public class AddGoalMain extends AppCompatActivity {
                             selectedWeekDays.append(dayNames[i]);
                         }
                     }
-                    repeatRecordTv.setText("매주 " + selectedWeekDays.toString());
+                    repeatRecordTv.setText("매주 " +selectedWeekDays.toString());
                 } else if (repeatType[0].equals("매일")) {
-                    repeatRecordTv.setText(quantity[0] + "일 마다");
+                    repeatRecordTv.setText("매일 "+quantity[0] + "일 마다");
                 } else if (repeatType[0].equals("매월")) {
                     repeatRecordTv.setText(repeatType[0] + " " + selectedDayOfMonth[0] + "일");
                 }
