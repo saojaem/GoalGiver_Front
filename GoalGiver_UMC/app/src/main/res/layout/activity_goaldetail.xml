@@ -21,7 +21,8 @@
             android:layout_height="wrap_content"
             android:id="@+id/btn_temp"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toEndOf="@id/btn_goaldetail_back"/>
+            app:layout_constraintStart_toEndOf="@id/btn_goaldetail_back"
+            android:visibility="gone"/>
 
         <ImageButton
             android:id="@+id/btn_goaldetail_back"

@@ -18,9 +18,11 @@ public class GoalSetItem implements Parcelable {
     private int goalPersonCheck;
     private String goalDonation;
 
+    private long remainingTime;
+
 
     // 생성자
-    public GoalSetItem(String goalIcon, String goalTitle, String goalDDay, String goalPoints, String goalProgressText, int goalProgress, String goalStartDate, String goalEndDate, String goalrepeat_Tv, int goalCertificationCheck, int goalPersonCheck, String goalDonation) {
+    public GoalSetItem(String goalIcon, String goalTitle, String goalDDay, String goalPoints, String goalProgressText, int goalProgress, String goalStartDate, String goalEndDate, String goalrepeat_Tv, int goalCertificationCheck, int goalPersonCheck, String goalDonation, long remainingTime) {
         this.goalIcon = goalIcon;
         this.goalTitle = goalTitle;
         this.goalDDay = goalDDay;
@@ -33,6 +35,7 @@ public class GoalSetItem implements Parcelable {
         this.goalCertificationCheck = goalCertificationCheck;
         this.goalPersonCheck = goalPersonCheck;
         this.goalDonation = goalDonation;
+        this.remainingTime = remainingTime;  // 초기화
     }
 
     protected GoalSetItem(Parcel in) {
@@ -48,6 +51,7 @@ public class GoalSetItem implements Parcelable {
         goalCertificationCheck = in.readInt();
         goalPersonCheck = in.readInt();
         goalDonation = in.readString();
+        remainingTime = in.readLong();  // 추가된 필드
     }
 
     @Override
@@ -64,6 +68,7 @@ public class GoalSetItem implements Parcelable {
         dest.writeInt(goalCertificationCheck);
         dest.writeInt(goalPersonCheck);
         dest.writeString(goalDonation);
+        dest.writeLong(remainingTime);  // 추가된 필드
     }
 
     @Override
