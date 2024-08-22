@@ -19,6 +19,12 @@ class PhotoCertificationFragment: Fragment() {
         R.drawable.img_emptystate,
         R.drawable.img_books,
         R.drawable.img_emptystate,
+        R.drawable.img_books,
+        R.drawable.img_emptystate,
+        R.drawable.img_books,
+        R.drawable.img_emptystate,
+        R.drawable.img_books,
+        R.drawable.img_emptystate,
         R.drawable.img_books
     )
     override fun onCreateView(
