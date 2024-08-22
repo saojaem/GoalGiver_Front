@@ -22,6 +22,9 @@ import com.google.gson.reflect.TypeToken
 import com.example.goalgiver.ui.goaldetail.GoalDetailActivity
 import com.example.goalgiver.ui.main.schedule.SharedViewModel
 import com.example.goalgiver.ui.main.schedule.ToDoItem
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 
 class GoalFragment : Fragment() {
 
@@ -34,6 +37,8 @@ class GoalFragment : Fragment() {
     private lateinit var sharedPreferences: SharedPreferences
     private val goalTimerViewModel: GoalTimerViewModel by activityViewModels()
 
+    private var isCompletedFilter: Boolean = false
+    private var personTeamFilter: Int = 1 // 1: 개인, 2: 팀
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -46,7 +51,6 @@ class GoalFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         setupButtonListeners()
 
         // ActivityResultLauncher 초기화
@@ -116,12 +120,35 @@ class GoalFragment : Fragment() {
             }
         }
         binding.personalButton.performClick()
-//binding.inProgressButton.performClick()
+        binding.inProgressButton.performClick()
     }
 
-    private fun filterGoalsByPersonCheck(personCheck: Int) {
-        filteredGoalList = goalList.filter { it.getPersonTeam() == personCheck } as ArrayList<GoalSetItem>
+    private fun applyFilters() {
+        filteredGoalList = goalList.filter {
+            val isCompleted = calculateDaysRemaining(it.goalEndDate) < 0
+            val matchesCompletionFilter = if (isCompletedFilter) isCompleted else !isCompleted
+            val matchesPersonTeamFilter = it.getPersonTeam() == personTeamFilter
+            matchesCompletionFilter && matchesPersonTeamFilter
+        } as ArrayList<GoalSetItem>
         (binding.goalFragmentRecyclerView.adapter as GoalSetAdapter).updateGoalList(filteredGoalList)
+    }
+    private fun calculateDaysRemaining(endDateStr: String): Int {
+        return try {
+            val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+            val endDate = sdf.parse(endDateStr)
+
+            val today = Calendar.getInstance()
+            today.set(Calendar.HOUR_OF_DAY, 0)
+            today.set(Calendar.MINUTE, 0)
+            today.set(Calendar.SECOND, 0)
+            today.set(Calendar.MILLISECOND, 0)
+
+            val diffInMillis = endDate!!.time - today.timeInMillis
+            (diffInMillis / (1000 * 60 * 60 * 24)).toInt()
+        } catch (e: Exception) {
+            e.printStackTrace()
+            0
+        }
     }
 
     private fun updateGoalInFilteredGoalList(goalItem: GoalSetItem) {
@@ -150,22 +177,28 @@ class GoalFragment : Fragment() {
 
     private fun setupButtonListeners() {
         binding.personalButton.setOnClickListener {
+            personTeamFilter = 1
             updateButtonSelection(binding.personalButton, binding.teamButton)
-            filterGoalsByPersonCheck(1) // personCheck 값이 1인 데이터만 표시
+            applyFilters()  // personCheck 값이 1인 데이터만 표시
         }
 
         binding.teamButton.setOnClickListener {
+            personTeamFilter = 2
             updateButtonSelection(binding.teamButton, binding.personalButton)
-            filterGoalsByPersonCheck(2) // personCheck 값이 2인 데이터만 표시
+            applyFilters() // personCheck 값이 2인 데이터만 표시
         }
 
         binding.inProgressButton.setOnClickListener {
+            isCompletedFilter = false
             updateButtonSelection(binding.inProgressButton, binding.completedButton)
+            applyFilters()
         }
 
         binding.completedButton.setOnClickListener {
-            clearGoalListFromPrefs()
+            isCompletedFilter = true
+            //clearGoalListFromPrefs()
             updateButtonSelection(binding.completedButton, binding.inProgressButton)
+            applyFilters()
         }
     }
 
