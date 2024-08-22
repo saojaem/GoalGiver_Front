@@ -1,9 +1,14 @@
 package com.example.goalgiver.ui.main.schedule
 
-data class ToDoItem(
-    val scheduleIcon: String,
-    val title: String,
-    val startdate: String,
-    val enddate: String,
-    val status: String = "인증" // 항상 "인증" 텍스트로 설정
+
+
+class ToDoItem // 생성자
+    (// Getter와 Setter 메서드
+    var scheduleIcon: String,
+    var title: String,
+    var startdate: String,
+    var enddate: String,
+    var status: String,
+    var certification: Int
 )
+

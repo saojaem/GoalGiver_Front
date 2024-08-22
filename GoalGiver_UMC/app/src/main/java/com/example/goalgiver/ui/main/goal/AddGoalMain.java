@@ -67,7 +67,7 @@ public class AddGoalMain extends AppCompatActivity {
     private LinearLayout goalAddTeam;
     private LinearLayout target_lacation_L;
     private Calendar startDate;
-    private static int timeattackCheck = 0;
+    private static int timeattackCheck;
     private int certificateCheck = 0;
     private int personTeam = 0;
 
@@ -139,6 +139,7 @@ public class AddGoalMain extends AppCompatActivity {
         personal();
         imageCertificationP();
         checkFieldsForEmptyValues();
+        timeattackCheck=0;
 
 
         personal_bt.setOnClickListener(new View.OnClickListener() {
@@ -209,8 +210,11 @@ public class AddGoalMain extends AppCompatActivity {
                 timeattackCheck = 1;
                 setTimeAttack();
                 startDate = Calendar.getInstance();
-                startDate_Ptv.setText(cal.get(Calendar.YEAR) + "-" + (cal.get(Calendar.MONTH)) + "-" + cal.get(Calendar.DATE));
-                endDate_Ptv.setText(cal.get(Calendar.YEAR) + "-" + (cal.get(Calendar.MONTH)) + "-" + cal.get(Calendar.DATE));
+                Calendar cal = Calendar.getInstance();
+                startDate = Calendar.getInstance();
+                startDate_Ptv.setText(String.format(Locale.getDefault(), "%04d-%02d-%02d", cal.get(Calendar.YEAR), cal.get(Calendar.MONTH)+1 , cal.get(Calendar.DAY_OF_MONTH)));
+                endDate_Ptv.setText(String.format(Locale.getDefault(), "%04d-%02d-%02d", cal.get(Calendar.YEAR), cal.get(Calendar.MONTH)+1, cal.get(Calendar.DAY_OF_MONTH)));
+
             }
         });
 
@@ -284,7 +288,9 @@ public class AddGoalMain extends AppCompatActivity {
 
                     goalItem = new GoalSetItem(emotion, goalTitle, "⏰"+formatTimeRemaining(calculateTimeRemaining(endTime)), donationAmount, "Progress 0%", 0,startDate,endDate,repeat,certificateCheck, personTeam, donation, 0);
                 } else if (calculateDaysRemaining(startDate)>0) {
-                    goalItem = new GoalSetItem(emotion, goalTitle, "시작전", donationAmount, "Progress 0%", 0,startDate,endDate,repeat,certificateCheck, personTeam, donation, 0);
+                    goalItem = new GoalSetItem(emotion, goalTitle, "시작전", donationAmount, "Progress 0%", 0,startDate,endDate,repeat,certificateCheck, personTeam,0);
+                } else if(calculateDaysRemaining(endDate)<0){
+                    goalItem = new GoalSetItem(emotion, goalTitle, "종료", donationAmount, "Progress 0%", 0,startDate,endDate,repeat,certificateCheck, personTeam,0);
                 } else{
                     goalItem = new GoalSetItem(emotion, goalTitle, "D-"+calculateDaysRemaining(endDate), donationAmount, "Progress 0%", 0,startDate,endDate,repeat,certificateCheck, personTeam, donation, 0);
                 }
@@ -310,7 +316,8 @@ public class AddGoalMain extends AppCompatActivity {
 
                 Log.d("AddGoalMain", "Sending Data: goalTitle=" + goalTitle + ", emotion=" + emotion);
                 // 결과 설정 및 액티비티 종료
-
+                resultIntent.putExtra("goalItem", goalItem);
+                Log.d("AddGoalMain", "Sending goalItem: $goalItem");
                 setResult(Activity.RESULT_OK, resultIntent);
 
                 finish();
@@ -422,7 +429,7 @@ public class AddGoalMain extends AppCompatActivity {
             // 차이 계산
             long diffInMillis = now.getTimeInMillis()-endTimeCal.getTimeInMillis()  ;
             Log.d("TimeCalculation", "diffInMillis: " + diffInMillis);
-            return Math.max(0, diffInMillis); // 밀리초 단위 경과 시간 반환
+            return Math.abs(diffInMillis); // 밀리초 단위 경과 시간 반환
         } catch (Exception e) {
             e.printStackTrace();
             return 0;
@@ -827,7 +834,7 @@ public class AddGoalMain extends AppCompatActivity {
                 CalendarDay selectedDate = calendarView.getSelectedDate();
                 if (selectedDate != null) {
                     if (!selectedDate.isBefore(minDate)) {
-                        endDate_Ptv.setText(selectedDate.getYear() + "-" + (selectedDate.getMonth()) + "-" + selectedDate.getDay());
+                        endDate_Ptv.setText(String.format(Locale.getDefault(), "%04d-%02d-%02d", selectedDate.getYear(), selectedDate.getMonth(), selectedDate.getDay()));
                     }
                 }
                 bottomSheetDialog.dismiss(); // 날짜 선택 후 BottomSheet 닫기
@@ -866,8 +873,10 @@ public class AddGoalMain extends AppCompatActivity {
                 // 날짜 선택 처리 및 startDate_Ptv에 설정
                 CalendarDay selectedDate = calendarView.getSelectedDate();
                 if (selectedDate != null) {
-                    startDate_Ptv.setText(selectedDate.getYear() + "-" + (selectedDate.getMonth()) + "-" + selectedDate.getDay());
+                    Calendar cal = Calendar.getInstance();
+                    startDate_Ptv.setText(String.format(Locale.getDefault(), "%04d-%02d-%02d", selectedDate.getYear(), selectedDate.getMonth(), selectedDate.getDay()));
                     startDate.set(selectedDate.getYear(), selectedDate.getMonth(), selectedDate.getDay());
+
                 }
                 bottomSheetDialog.dismiss(); // 날짜 선택 후 BottomSheet 닫기
             }

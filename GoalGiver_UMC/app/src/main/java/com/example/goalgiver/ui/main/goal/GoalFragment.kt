@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.os.CountDownTimer
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -14,34 +13,44 @@ import android.widget.Button
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.goalgiver.R
 import com.example.goalgiver.databinding.FragmentGoalBinding
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.example.goalgiver.ui.goaldetail.GoalDetailActivity
+import com.example.goalgiver.ui.main.schedule.SharedViewModel
+import com.example.goalgiver.ui.main.schedule.ToDoItem
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 
 class GoalFragment : Fragment() {
 
     private var _binding: FragmentGoalBinding? = null
     private val binding get() = _binding!!
-
-    private lateinit var goalList: ArrayList<GoalSetItem>
+    private val sharedViewModel: SharedViewModel by activityViewModels()
+    private lateinit var goalList: ArrayList<GoalSetItem> //원본데이터
+    private lateinit var filteredGoalList: ArrayList<GoalSetItem> // 필터링된 데이터
     private lateinit var teamChooseLauncher: ActivityResultLauncher<Intent>
     private lateinit var sharedPreferences: SharedPreferences
+    private val goalTimerViewModel: GoalTimerViewModel by activityViewModels()
 
+    private var isCompletedFilter: Boolean = false
+    private var personTeamFilter: Int = 1 // 1: 개인, 2: 팀
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentGoalBinding.inflate(inflater, container, false)
         sharedPreferences = requireContext().getSharedPreferences("goal_prefs", Context.MODE_PRIVATE)
+        filteredGoalList = arrayListOf()
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         setupButtonListeners()
 
         // ActivityResultLauncher 초기화
@@ -60,8 +69,17 @@ class GoalFragment : Fragment() {
 
                     // 시간이 설정된 경우에만 타이머를 시작
                     if (goalItem.remainingTime > 0) {
-                        startCountDownTimer(goalItem)
+                        goalTimerViewModel.startTimer(goalItem)
                     }
+                    val newToDoItem = ToDoItem(
+                        scheduleIcon = goalItem.goalIcon,
+                        title = goalItem.goalTitle,
+                        startdate = goalItem.goalStartDate,
+                        enddate = goalItem.goalEndDate,
+                        status = "인증",
+                        certification = goalItem.goalCertificationCheck
+                    )
+                    sharedViewModel.addGoal(newToDoItem)
                 }
             }
         }
@@ -73,35 +91,116 @@ class GoalFragment : Fragment() {
 
         goalList = loadGoalListFromPrefs() ?: arrayListOf(
 
-            GoalSetItem("🎯", "Goal 1", "D-10", "100", "Progress 50%", 50,"2024-8-19","2024-8-30","매주 1일",1,1, "월드비전", 0L)
-        )
+            //GoalSetItem("🎯", "Goal 1", "D-10", "100", "Progress 50%", 50,"2024-08-19","2024-08-30","매주 1일",1,1,0L)
 
+        )
         setupRecyclerView()
+        saveGoalListToSharedViewModel()
 
         // 시간이 설정된 항목에 대해서만 타이머 시작
         goalList.forEach { goalItem ->
             if (goalItem.remainingTime > 0) {
-                startCountDownTimer(goalItem)
+                goalTimerViewModel.startTimer(goalItem)
+            }
+        }
+
+        goalTimerViewModel.goalTimers.observe(viewLifecycleOwner) { timers ->
+            timers.forEach { (goalItem, remainingTime) ->
+                // remainingTime이 변경되었을 때 GoalSetItem의 값을 업데이트
+                goalItem.remainingTime = remainingTime
+                if (remainingTime > 0) {
+                    goalItem.goalDDay = formatTimeRemaining(remainingTime)
+                } else {
+                    goalItem.goalDDay = "Time's up!"
+                }
+
+                // goalList와 filteredGoalList 모두 업데이트
+                updateGoalInFilteredGoalList(goalItem)
+                binding.goalFragmentRecyclerView.adapter?.notifyItemChanged(goalList.indexOf(goalItem))
+            }
+        }
+        binding.personalButton.performClick()
+        binding.inProgressButton.performClick()
+    }
+
+    private fun applyFilters() {
+        filteredGoalList = goalList.filter {
+            val isCompleted = calculateDaysRemaining(it.goalEndDate) < 0
+            val matchesCompletionFilter = if (isCompletedFilter) isCompleted else !isCompleted
+            val matchesPersonTeamFilter = it.getPersonTeam() == personTeamFilter
+            matchesCompletionFilter && matchesPersonTeamFilter
+        } as ArrayList<GoalSetItem>
+        (binding.goalFragmentRecyclerView.adapter as GoalSetAdapter).updateGoalList(filteredGoalList)
+    }
+    private fun calculateDaysRemaining(endDateStr: String): Int {
+        return try {
+            val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+            val endDate = sdf.parse(endDateStr)
+
+            val today = Calendar.getInstance()
+            today.set(Calendar.HOUR_OF_DAY, 0)
+            today.set(Calendar.MINUTE, 0)
+            today.set(Calendar.SECOND, 0)
+            today.set(Calendar.MILLISECOND, 0)
+
+            val diffInMillis = endDate!!.time - today.timeInMillis
+            (diffInMillis / (1000 * 60 * 60 * 24)).toInt()
+        } catch (e: Exception) {
+            e.printStackTrace()
+            0
+        }
+    }
+
+    private fun updateGoalInFilteredGoalList(goalItem: GoalSetItem) {
+        val index = filteredGoalList.indexOfFirst { it.goalTitle == goalItem.goalTitle }
+        if (index != -1) {
+            if (goalItem.remainingTime > 0) {
+                filteredGoalList[index] = goalItem
+                (binding.goalFragmentRecyclerView.adapter as GoalSetAdapter).notifyItemChanged(index)
             }
         }
     }
 
+    private fun saveGoalListToSharedViewModel() {
+        val toDoItems = goalList.map { goalItem ->
+            ToDoItem(
+                scheduleIcon = goalItem.goalIcon,
+                title = goalItem.goalTitle,
+                startdate = goalItem.goalStartDate,
+                enddate = goalItem.goalEndDate,
+                status = "인증",  // You can modify this according to your logic
+                certification = goalItem.goalCertificationCheck
+            )
+        }
+        sharedViewModel.setGoalList(toDoItems)
+    }
+
     private fun setupButtonListeners() {
         binding.personalButton.setOnClickListener {
+            personTeamFilter = 1
             updateButtonSelection(binding.personalButton, binding.teamButton)
+            applyFilters()  // personCheck 값이 1인 데이터만 표시
         }
 
         binding.teamButton.setOnClickListener {
+            personTeamFilter = 2
             updateButtonSelection(binding.teamButton, binding.personalButton)
+            applyFilters() // personCheck 값이 2인 데이터만 표시
         }
 
         binding.inProgressButton.setOnClickListener {
+            isCompletedFilter = false
             updateButtonSelection(binding.inProgressButton, binding.completedButton)
+            applyFilters()
         }
 
         binding.completedButton.setOnClickListener {
 
+            isCompletedFilter = true
+            //clearGoalListFromPrefs()
+
             updateButtonSelection(binding.completedButton, binding.inProgressButton)
+            applyFilters()
         }
     }
 
@@ -127,27 +226,6 @@ class GoalFragment : Fragment() {
                 startActivity(intent)
             }
         })
-    }
-
-    private fun startCountDownTimer(goal: GoalSetItem) {
-        val timer = object : CountDownTimer(goal.remainingTime, 1000) {
-            override fun onTick(millisUntilFinished: Long) {
-                goal.remainingTime = millisUntilFinished
-
-                // 남은 시간을 타이머 형태로 표시
-                goal.goalDDay = formatTimeRemaining(millisUntilFinished)
-
-                binding.goalFragmentRecyclerView.adapter?.notifyItemChanged(goalList.indexOf(goal))
-            }
-
-            override fun onFinish() {
-                goal.remainingTime = 0
-                goal.goalDDay = "Time's up!"
-
-                binding.goalFragmentRecyclerView.adapter?.notifyItemChanged(goalList.indexOf(goal))
-            }
-        }
-        timer.start()
     }
 
     private fun formatTimeRemaining(diffInMillis: Long): String {
@@ -177,6 +255,9 @@ class GoalFragment : Fragment() {
         val type = object : TypeToken<ArrayList<GoalSetItem>>() {}.type
         return gson.fromJson(json, type)
     }
+
+
+
     private fun clearGoalListFromPrefs() {
         val editor = sharedPreferences.edit()
         editor.remove("goal_list")
