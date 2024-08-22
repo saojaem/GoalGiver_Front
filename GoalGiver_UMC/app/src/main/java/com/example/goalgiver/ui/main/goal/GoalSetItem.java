@@ -7,17 +7,16 @@ public class GoalSetItem implements Parcelable {
 
     private String goalIcon;
     private String goalTitle;
-    private String goalDDay;
+    public String goalDDay;
     private String goalPoints;
     private String goalProgressText;
     private int goalProgress;
     private String goalEndDate;
-    private String goalStartDate;
+    public String goalStartDate;
     private String goalrepeat_Tv;
     private int goalCertificationCheck;
     private int goalPersonCheck;
     private String goalDonation;
-
     private long remainingTime;
 
 
@@ -88,45 +87,33 @@ public class GoalSetItem implements Parcelable {
         }
     };
 
-    // Getter와 Setter 메서드
-    public String getGoalIcon() {
-        return goalIcon;
+    // Getter와 Setter 메서드 추가
+    public long getRemainingTime() {
+        return remainingTime;
     }
 
-    public void setGoalIcon(String goalIcon) {
-        this.goalIcon = goalIcon;
+    public void setRemainingTime(long remainingTime) {
+        this.remainingTime = remainingTime;
+    }
+
+    public String getGoalIcon() {
+        return goalIcon;
     }
 
     public String getGoalTitle() {
         return goalTitle;
     }
 
-    public void setGoalTitle(String goalTitle) {
-        this.goalTitle = goalTitle;
-    }
-
     public String getGoalDDay() {
         return goalDDay;
-    }
-
-    public void setGoalDDay(String goalDDay) {
-        this.goalDDay = goalDDay;
     }
 
     public String getGoalPoints() {
         return goalPoints;
     }
 
-    public void setGoalPoints(String goalPoints) {
-        this.goalPoints = goalPoints;
-    }
-
     public String getGoalProgressText() {
         return goalProgressText;
-    }
-
-    public void setGoalProgressText(String goalProgressText) {
-        this.goalProgressText = goalProgressText;
     }
 
     public int getGoalProgress() {
