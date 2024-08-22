@@ -29,6 +29,7 @@ class GoalDetailActivity: AppCompatActivity() {
 
     private var isTeam: Boolean = false
     private var isPhoto: Boolean = true
+    private var goalItem: GoalSetItem? = null
 
     // 카메라 임시코드
     private val REQUEST_IMAGE_CAPTURE = 101
@@ -43,6 +44,29 @@ class GoalDetailActivity: AppCompatActivity() {
         binding = ActivityGoaldetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+
+
+        goalItem = intent.getParcelableExtra("goalItem")
+
+//        goalList = arrayListOf(
+//            GoalSetItem("🎯", "Goal 1", "D-10", "100", "Progress 50%", 10)
+//        )
+
+        goalItem?.let {
+            if (it.goalPersonCheck == 1) {
+                isTeam = false
+            } else {
+                isTeam = true
+            }
+            binding.tvGoaldetailPercent.text = "${it.goalProgress}% 달성"
+            binding.tvGoaldetailMaintext.text = "${it.goalIcon}"
+            binding.tvGoaldetailTitle.text = it.goalTitle
+            binding.tvGoaldetailDeadline.text = it.goalDDay
+            binding.tvGoaldetailPoint.text = it.goalPoints
+            binding.tvGoaldetailDonation.text = "기부단체: ${it.goalDonation}"
+            initPieChart(it.goalProgress.toFloat())
+        }
+
         if (savedInstanceState == null) {
             if (isTeam) {
                 supportFragmentManager.beginTransaction()
@@ -53,21 +77,6 @@ class GoalDetailActivity: AppCompatActivity() {
                     .replace(R.id.goaldetail_frm, IndividualProgressFragment())
                     .commit()
             }
-        }
-
-        val goalItem: GoalSetItem? = intent.getParcelableExtra("goalItem")
-
-//        goalList = arrayListOf(
-//            GoalSetItem("🎯", "Goal 1", "D-10", "100", "Progress 50%", 10)
-//        )
-
-        goalItem?.let {
-            binding.tvGoaldetailPercent.text = "${it.goalProgress}% 달성"
-            binding.ivGoaldetailMainphoto.setImageResource(R.drawable.add_goal_profile)
-            binding.tvGoaldetailTitle.text = it.goalTitle
-            binding.tvGoaldetailDeadline.text = it.goalDDay
-            binding.tvGoaldetailPoint.text = it.goalPoints
-            initPieChart(it.goalProgress.toFloat())
         }
 
         //initPieChart(goalItem?.goalProgress!!.toFloat())
@@ -83,7 +92,7 @@ class GoalDetailActivity: AppCompatActivity() {
                 Log.d("blabla", "success")
                 val imageBitmap = data?.extras?.get("data") as Bitmap
                 //imageView.setImageBitmap(imageBitmap)
-                binding.ivGoaldetailMainphoto.setImageBitmap(imageBitmap)
+                //binding.ivGoaldetailMainphoto.setImageBitmap(imageBitmap)
 
                 val dialog = CertificationDialog(
                     context = this,
@@ -202,12 +211,12 @@ class GoalDetailActivity: AppCompatActivity() {
                         else -> null
                     }
                     isPhoto -> when (p0.position) {
-                        0 -> IndividualProgressFragment()
+                        0 -> IndividualProgressFragment.newInstance(goalItem)
                         1 -> PhotoCertificationFragment()
                         else -> null
                     }
                     else -> when (p0.position) {
-                        0 -> IndividualProgressFragment()
+                        0 -> IndividualProgressFragment.newInstance(goalItem)
                         1 -> CalendarCertificationFragment()
                         else -> null
                     }

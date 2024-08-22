@@ -76,7 +76,8 @@ class GoalFragment : Fragment() {
                         title = goalItem.goalTitle,
                         startdate = goalItem.goalStartDate,
                         enddate = goalItem.goalEndDate,
-                        status = "인증"
+                        status = "인증",
+                        certification = goalItem.goalCertificationCheck
                     )
                     sharedViewModel.addGoal(newToDoItem)
                 }
@@ -89,7 +90,9 @@ class GoalFragment : Fragment() {
         }
 
         goalList = loadGoalListFromPrefs() ?: arrayListOf(
+
             //GoalSetItem("🎯", "Goal 1", "D-10", "100", "Progress 50%", 50,"2024-08-19","2024-08-30","매주 1일",1,1,0L)
+
         )
         setupRecyclerView()
         saveGoalListToSharedViewModel()
@@ -165,7 +168,8 @@ class GoalFragment : Fragment() {
                 title = goalItem.goalTitle,
                 startdate = goalItem.goalStartDate,
                 enddate = goalItem.goalEndDate,
-                status = "인증"  // You can modify this according to your logic
+                status = "인증",  // You can modify this according to your logic
+                certification = goalItem.goalCertificationCheck
             )
         }
         sharedViewModel.setGoalList(toDoItems)

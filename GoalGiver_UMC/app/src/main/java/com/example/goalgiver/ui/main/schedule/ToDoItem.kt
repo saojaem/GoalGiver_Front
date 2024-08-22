@@ -6,5 +6,6 @@ class ToDoItem // 생성자
     var title: String,
     var startdate: String,
     var enddate: String,
-    var status: String
+    var status: String,
+    var certification: Int
 )
