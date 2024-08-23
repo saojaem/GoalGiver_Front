@@ -33,6 +33,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.goalgiver.R;
+import com.example.goalgiver.ui.certification.AddGaolMap;
 import com.example.goalgiver.ui.main.people.FriendItem;
 import com.example.goalgiver.ui.main.people.PeopleFragment;
 import com.example.goalgiver.ui.main.schedule.ScheduleFragment;
@@ -128,6 +129,14 @@ public class AddGoalMain extends AppCompatActivity {
 
         ImageView backButton = findViewById(R.id.add_goal_backButton);
 
+        Button location_selectButton = findViewById(R.id.goal_add_target_location_btn);
+        location_selectButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), AddGaolMap.class);
+                startActivity(intent);
+            }
+        });
 
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
