@@ -31,43 +31,41 @@ class NicknameFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // StartButton 초기 비활성화 및 색상 설정
-        binding.startButton.isEnabled = false
-        binding.startButton.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.brand_blue_100))
+        // StartButton 항상 활성화하고 색상만 조정
+        updateStartButtonState(false)
 
         // CheckDuplicateButton 클릭 리스너 설정
         binding.checkDuplicateButton.setOnClickListener {
-            val nickname = binding.nicknameEditText.text.toString()
+            val nickname = binding.nicknameEditText.text.toString().trim()
 
-            // 닉네임 중복 확인 로직 (여기서는 예시로 간단하게 처리)
-            if (nickname.isNotBlank()) {
+            if (nickname.isEmpty()) {
+                binding.nullText.visibility = View.VISIBLE
+                binding.duplicateWarningText.visibility = View.GONE
+                binding.duplicateSuccessText.visibility = View.GONE
+                isNicknameValid = false
+            } else {
+                binding.nullText.visibility = View.GONE
+                // 닉네임 중복 확인 로직
                 if (nickname == "중복된닉네임") { // 중복된 닉네임 예시
                     binding.duplicateWarningText.visibility = View.VISIBLE
                     binding.duplicateSuccessText.visibility = View.GONE
-                    binding.startButton.isEnabled = false
-                    binding.startButton.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.brand_blue_100))
                     isNicknameValid = false
                 } else {
                     binding.duplicateSuccessText.visibility = View.VISIBLE
                     binding.duplicateWarningText.visibility = View.GONE
-                    binding.startButton.isEnabled = true
-                    binding.startButton.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.brand_blue)) // 활성화 시 #0E9AFF 색상 사용
                     isNicknameValid = true
                 }
-            } else {
-                // 닉네임이 비어 있을 때 처리
-                binding.duplicateWarningText.visibility = View.VISIBLE
-                binding.duplicateSuccessText.visibility = View.GONE
-                binding.startButton.isEnabled = false
-                binding.startButton.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.brand_blue_100))
             }
+
+            // StartButton 상태 업데이트
+            updateStartButtonState(isNicknameValid)
         }
 
         // StartButton 클릭 리스너 설정
         binding.startButton.setOnClickListener {
-            if (isNicknameValid) {
-                val nickname = binding.nicknameEditText.text.toString()
+            val nickname = binding.nicknameEditText.text.toString().trim()
 
+            if (isNicknameValid) {
                 // 닉네임을 SharedPreferences에 저장
                 val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
                 with(sharedPref?.edit()) {
@@ -88,6 +86,16 @@ class NicknameFragment : Fragment() {
                 // 비활성화 상태에서 버튼 클릭 시 Toast 메시지 표시
                 Toast.makeText(requireContext(), "닉네임을 생성해주세요", Toast.LENGTH_SHORT).show()
             }
+        }
+    }
+
+    // StartButton 상태 업데이트 메소드
+    private fun updateStartButtonState(isEnabled: Boolean) {
+        binding.startButton.isEnabled = true  // 항상 활성화
+        if (isEnabled) {
+            binding.startButton.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.brand_blue)) // 활성화 시 #0E9AFF 색상 사용
+        } else {
+            binding.startButton.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.brand_blue_100)) // 비활성화 시 색상
         }
     }
 
