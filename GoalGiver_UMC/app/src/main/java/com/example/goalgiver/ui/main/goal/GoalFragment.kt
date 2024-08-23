@@ -103,6 +103,7 @@ class GoalFragment : Fragment() {
                 goalTimerViewModel.startTimer(goalItem)
             }
         }
+        applyFilters()
 
         goalTimerViewModel.goalTimers.observe(viewLifecycleOwner) { timers ->
             timers.forEach { (goalItem, remainingTime) ->
@@ -268,5 +269,6 @@ class GoalFragment : Fragment() {
         // SharedPreferences에서 목표 리스트를 다시 불러와서 UI를 갱신
         goalList = loadGoalListFromPrefs() ?: arrayListOf()
         (binding.goalFragmentRecyclerView.adapter as GoalSetAdapter).updateGoalList(goalList)
+        applyFilters()
     }
 }
