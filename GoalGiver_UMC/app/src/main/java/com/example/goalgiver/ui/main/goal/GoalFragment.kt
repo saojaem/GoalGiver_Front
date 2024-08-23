@@ -217,8 +217,9 @@ class GoalFragment : Fragment() {
         // RecyclerView item click listener 설정
         adapter.setOnItemClickListener(object : GoalSetAdapter.OnItemClickListener {
             override fun onItemClick(position: Int) {
-                val clickedItem = goalList[position]
-                Log.d("GoalFragment", "Clicked: ${clickedItem}")
+//                val clickedItem = goalList[position]
+                val clickedItem = filteredGoalList[position]
+                Log.d("GoalFragmentItemClick", "Clicked: ${clickedItem.goalIcon}")
                 val intent = Intent(requireContext(), GoalDetailActivity::class.java)
                 intent.putExtra("goalItem", clickedItem)
                 startActivity(intent)

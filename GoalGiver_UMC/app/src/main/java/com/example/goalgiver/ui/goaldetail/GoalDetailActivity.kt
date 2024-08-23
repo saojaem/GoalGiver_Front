@@ -59,7 +59,14 @@ class GoalDetailActivity: AppCompatActivity() {
                 isTeam = true
             }
             binding.tvGoaldetailPercent.text = "${it.goalProgress}% 달성"
-            binding.tvGoaldetailMaintext.text = "${it.goalIcon}"
+
+            if (it.goalIcon == "") {
+                binding.tvGoaldetailMaintext.text = "🎯"
+            } else {
+                binding.tvGoaldetailMaintext.text = "${it.goalIcon}"
+            }
+
+            //binding.tvGoaldetailMaintext.text = "${it.goalIcon}"
             binding.tvGoaldetailTitle.text = it.goalTitle
             binding.tvGoaldetailDeadline.text = it.goalDDay
             binding.tvGoaldetailPoint.text = it.goalPoints
