@@ -224,6 +224,10 @@ class GoalFragment : Fragment() {
                 startActivity(intent)
             }
         })
+        if (goalList.isNotEmpty()) {
+            adapter.updateGoalList(filteredGoalList)
+        }
+
     }
 
     private fun formatTimeRemaining(diffInMillis: Long): String {
@@ -258,5 +262,11 @@ class GoalFragment : Fragment() {
         val editor = sharedPreferences.edit()
         editor.remove("goal_list")
         editor.apply()
+    }
+    override fun onResume() {
+        super.onResume()
+        // SharedPreferences에서 목표 리스트를 다시 불러와서 UI를 갱신
+        goalList = loadGoalListFromPrefs() ?: arrayListOf()
+        (binding.goalFragmentRecyclerView.adapter as GoalSetAdapter).updateGoalList(goalList)
     }
 }
