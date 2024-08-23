@@ -587,7 +587,7 @@
                 android:layout_marginStart="10dp"
                 android:orientation="horizontal">
 
-                <TextView
+                <EditText
                     android:id="@+id/goal_add_target_location_record"
                     android:layout_width="300dp"
                     android:layout_height="match_parent"

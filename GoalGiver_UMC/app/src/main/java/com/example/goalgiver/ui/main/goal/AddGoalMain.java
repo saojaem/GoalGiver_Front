@@ -271,7 +271,7 @@ public class AddGoalMain extends AppCompatActivity {
                 // 데이터 수집
                 String goalTitle = ((EditText) findViewById(R.id.set_goal_tv)).getText().toString();
                 String emotion = ((EditText) findViewById(R.id.add_goal_choose_emotion)).getText().toString();
-
+                String goallocation = ((EditText) findViewById(R.id.goal_add_target_location_record)).getText().toString();
                 Log.d("AddGoalMain", "goalTitle=" + goalTitle + ", emotion=" + emotion);
 
                 String startDate = startDate_Ptv.getText().toString();
@@ -315,6 +315,7 @@ public class AddGoalMain extends AppCompatActivity {
                 resultIntent.putExtra("donationAmount", donationAmount);
                 resultIntent.putExtra("goalItem", goalItem);
                 resultIntent.putExtra("status", "인증");
+                resultIntent.putExtra("goallocation", goallocation);
 
                 Log.d("AddGoalMain", "Sending Data: goalTitle=" + goalTitle + ", emotion=" + emotion);
                 // 결과 설정 및 액티비티 종료
@@ -360,20 +361,35 @@ public class AddGoalMain extends AppCompatActivity {
         String donationAmount = ((EditText) findViewById(R.id.goal_add_donationP_tv2)).getText().toString();
         String repeat = repeatRecordTv.getText().toString();
         String donation = donationRecordTv.getText().toString();
-
+        String goallocation = ((EditText) findViewById(R.id.goal_add_target_location_record)).getText().toString();
         if(timeattackCheck == 0){
-            if (!goalTitle.isEmpty() && !startDate.isEmpty() && !endDate.isEmpty() && !donationAmount.isEmpty() && !repeat.isEmpty() && !donation.isEmpty()) {
-                addGoalButton.setEnabled(true);
-            } else {
-                addGoalButton.setEnabled(false);
-
+            if(certificateCheck == 12){
+                if (!goalTitle.isEmpty() && !goallocation.isEmpty() && !startDate.isEmpty() && !endDate.isEmpty() && !donationAmount.isEmpty() && !repeat.isEmpty() && !donation.isEmpty()) {
+                    addGoalButton.setEnabled(true);
+                } else {
+                    addGoalButton.setEnabled(false);
+                }
+            }else{
+                if (!goalTitle.isEmpty() && !startDate.isEmpty() && !endDate.isEmpty() && !donationAmount.isEmpty() && !repeat.isEmpty() && !donation.isEmpty()) {
+                    addGoalButton.setEnabled(true);
+                } else {
+                    addGoalButton.setEnabled(false);
+                }
             }
-        }else{
-            if (!goalTitle.isEmpty() && !startTime.isEmpty() && !endTime.isEmpty() && !donationAmount.isEmpty() && !repeat.isEmpty() && !donation.isEmpty()) {
-                addGoalButton.setEnabled(true);
-            } else {
-                addGoalButton.setEnabled(false);
 
+        }else{
+            if(certificateCheck == 12){
+                if (!goalTitle.isEmpty() && !goallocation.isEmpty() && !startTime.isEmpty() && !endTime.isEmpty() && !donationAmount.isEmpty() && !repeat.isEmpty() && !donation.isEmpty()) {
+                    addGoalButton.setEnabled(true);
+                } else {
+                    addGoalButton.setEnabled(false);
+                }
+            }else{
+                if (!goalTitle.isEmpty() && !startTime.isEmpty() && !endTime.isEmpty() && !donationAmount.isEmpty() && !repeat.isEmpty() && !donation.isEmpty()) {
+                    addGoalButton.setEnabled(true);
+                } else {
+                    addGoalButton.setEnabled(false);
+                }
             }
         }
     }
