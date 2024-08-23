@@ -33,7 +33,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.goalgiver.R;
-import com.example.goalgiver.ui.certification.AddGaolMap;
+import com.example.goalgiver.ui.main.goal.AddGaolMap;
 import com.example.goalgiver.ui.main.people.FriendItem;
 import com.example.goalgiver.ui.main.people.PeopleFragment;
 import com.example.goalgiver.ui.main.schedule.ScheduleFragment;
@@ -50,7 +50,7 @@ import java.util.Locale;
 public class AddGoalMain extends AppCompatActivity {
     private static final int TEAM_CHOOSE_REQUEST = 7;
 
-
+    private static final int LOCATION_REQUEST_CODE = 1;
     private TextView startDate_Ptv;
     private TextView endDate_Ptv;
     private TextView repeatRecordTv;
@@ -71,11 +71,14 @@ public class AddGoalMain extends AppCompatActivity {
     private static int timeattackCheck;
     private int certificateCheck = 0;
     private int personTeam = 0;
+    private TextView locationEditText;
 
     @Override
     protected void onCreate(Bundle saveInstanceState) {
         super.onCreate(saveInstanceState);
         setContentView(R.layout.goal_add);
+
+        locationEditText = findViewById(R.id.goal_add_target_location_record);
 
         Button teamButton, certificationImage_Pbt, certificationLocation_Pbt, certificationTeam_bt, personal_bt, repeatChoose_btn, timeAttack_bt, goalSuccess_bt, donation_choose_btn;
         Button addGoalButton = findViewById(R.id.goal_add_decide_btn);
@@ -133,8 +136,8 @@ public class AddGoalMain extends AppCompatActivity {
         location_selectButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), AddGaolMap.class);
-                startActivity(intent);
+                Intent intent = new Intent(AddGoalMain.this, AddGaolMap.class);
+                startActivityForResult(intent, LOCATION_REQUEST_CODE);
             }
         });
 
@@ -280,7 +283,7 @@ public class AddGoalMain extends AppCompatActivity {
                 // 데이터 수집
                 String goalTitle = ((EditText) findViewById(R.id.set_goal_tv)).getText().toString();
                 String emotion = ((EditText) findViewById(R.id.add_goal_choose_emotion)).getText().toString();
-                String goallocation = ((EditText) findViewById(R.id.goal_add_target_location_record)).getText().toString();
+                String goallocation = locationEditText.getText().toString();
                 Log.d("AddGoalMain", "goalTitle=" + goalTitle + ", emotion=" + emotion);
 
                 String startDate = startDate_Ptv.getText().toString();
@@ -295,15 +298,15 @@ public class AddGoalMain extends AppCompatActivity {
 
                 if(timeattackCheck==1){
 
-                    goalItem = new GoalSetItem(emotion, goalTitle, "⏰"+formatTimeRemaining(calculateTimeRemaining(endTime)), donationAmount, "Progress 0%", 0,startDate,endDate,repeat,certificateCheck, personTeam, donation, 0);
+                    goalItem = new GoalSetItem(emotion, goalTitle, "⏰"+formatTimeRemaining(calculateTimeRemaining(endTime)), donationAmount, "Progress 0%", 0,startDate,endDate,repeat,certificateCheck, personTeam, donation, 0,goallocation);
                 } else if (calculateDaysRemaining(startDate)>0) {
-                    goalItem = new GoalSetItem(emotion, goalTitle, "시작전", donationAmount, "Progress 0%", 0, startDate, endDate, repeat, certificateCheck, personTeam, donation, 0);
+                    goalItem = new GoalSetItem(emotion, goalTitle, "시작전", donationAmount, "Progress 0%", 0, startDate, endDate, repeat, certificateCheck, personTeam, donation, 0, goallocation);
                 } else if(calculateDaysRemaining(endDate)<0){
-                    goalItem = new GoalSetItem(emotion, goalTitle, "종료", donationAmount, "Progress 0%", 0, startDate, endDate, repeat, certificateCheck, personTeam, donation, 0);
+                    goalItem = new GoalSetItem(emotion, goalTitle, "종료", donationAmount, "Progress 0%", 0, startDate, endDate, repeat, certificateCheck, personTeam, donation, 0, goallocation);
 
                     //goalItem = new GoalSetItem(emotion, goalTitle, "종료", donationAmount, "Progress 0%", 0,startDate,endDate,repeat,certificateCheck, personTeam,0);
                 } else{
-                    goalItem = new GoalSetItem(emotion, goalTitle, "D-"+calculateDaysRemaining(endDate), donationAmount, "Progress 0%", 0,startDate,endDate,repeat,certificateCheck, personTeam, donation, 0);
+                    goalItem = new GoalSetItem(emotion, goalTitle, "D-"+calculateDaysRemaining(endDate), donationAmount, "Progress 0%", 0,startDate,endDate,repeat,certificateCheck, personTeam, donation, 0, goallocation);
                 }
                 // 데이터를 전달할 Intent 생성
                 Intent resultIntent = new Intent();
@@ -370,7 +373,7 @@ public class AddGoalMain extends AppCompatActivity {
         String donationAmount = ((EditText) findViewById(R.id.goal_add_donationP_tv2)).getText().toString();
         String repeat = repeatRecordTv.getText().toString();
         String donation = donationRecordTv.getText().toString();
-        String goallocation = ((EditText) findViewById(R.id.goal_add_target_location_record)).getText().toString();
+        String goallocation = locationEditText.getText().toString();
         if(timeattackCheck == 0){
             if(certificateCheck == 12){
                 if (!goalTitle.isEmpty() && !goallocation.isEmpty() && !startDate.isEmpty() && !endDate.isEmpty() && !donationAmount.isEmpty() && !repeat.isEmpty() && !donation.isEmpty()) {
@@ -643,6 +646,9 @@ public class AddGoalMain extends AppCompatActivity {
         if (requestCode == TEAM_CHOOSE_REQUEST && resultCode == RESULT_OK && data != null) {
             ArrayList<AddGoalTeamList> selectedUsers = data.getParcelableArrayListExtra("selectedUsers");
             updateTeamSelection(selectedUsers);
+        }else if (requestCode == LOCATION_REQUEST_CODE && resultCode == RESULT_OK && data != null) {
+            String selectedLocation = data.getStringExtra(AddGaolMap.RESULT_LOCATION);
+            locationEditText.setText(selectedLocation);
         }
     }
 

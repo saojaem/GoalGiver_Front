@@ -18,10 +18,11 @@ public class GoalSetItem implements Parcelable {
     private int goalPersonCheck;
     private String goalDonation;
     private long remainingTime;
+    private String location;
 
 
     // 생성자
-    public GoalSetItem(String goalIcon, String goalTitle, String goalDDay, String goalPoints, String goalProgressText, int goalProgress, String goalStartDate, String goalEndDate, String goalrepeat_Tv, int goalCertificationCheck, int goalPersonCheck, String goalDonation, long remainingTime) {
+    public GoalSetItem(String goalIcon, String goalTitle, String goalDDay, String goalPoints, String goalProgressText, int goalProgress, String goalStartDate, String goalEndDate, String goalrepeat_Tv, int goalCertificationCheck, int goalPersonCheck, String goalDonation, long remainingTime, String location) {
         this.goalIcon = goalIcon;
         this.goalTitle = goalTitle;
         this.goalDDay = goalDDay;
@@ -34,7 +35,8 @@ public class GoalSetItem implements Parcelable {
         this.goalCertificationCheck = goalCertificationCheck;
         this.goalPersonCheck = goalPersonCheck;
         this.goalDonation = goalDonation;
-        this.remainingTime = remainingTime;  // 초기화
+        this.remainingTime = remainingTime;
+        this.location = location;// 초기화
     }
 
     protected GoalSetItem(Parcel in) {
@@ -50,7 +52,8 @@ public class GoalSetItem implements Parcelable {
         goalCertificationCheck = in.readInt();
         goalPersonCheck = in.readInt();
         goalDonation = in.readString();
-        remainingTime = in.readLong();  // 추가된 필드
+        remainingTime = in.readLong();
+        location = in.readString();// 추가된 필드
     }
 
     @Override
@@ -67,7 +70,8 @@ public class GoalSetItem implements Parcelable {
         dest.writeInt(goalCertificationCheck);
         dest.writeInt(goalPersonCheck);
         dest.writeString(goalDonation);
-        dest.writeLong(remainingTime);  // 추가된 필드
+        dest.writeLong(remainingTime);
+        dest.writeString(location);// 추가된 필드
     }
 
     @Override
@@ -145,6 +149,7 @@ public class GoalSetItem implements Parcelable {
     public int getGoalPersonCheck() { return goalPersonCheck; }
 
     public String getGoalDonation() { return goalDonation; }
+    public String getGoalLocation(){ return location;}
 
     public void setGoalDonation(String goalDonation) { this.goalDonation = goalDonation; }
 

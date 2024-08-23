@@ -1,12 +1,13 @@
-package com.example.goalgiver.ui.certification
+package com.example.goalgiver.ui.main.goal;
 
+import android.content.Intent
+import android.location.Geocoder
 import android.os.Bundle
 import android.widget.Button
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.goalgiver.R
-import com.example.goalgiver.databinding.ActivityMapcertificationBinding
 import com.example.goalgiver.databinding.KakaoMapBinding
-import com.example.goalgiver.ui.main.goal.AddGoalMain
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
@@ -14,11 +15,13 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import java.util.*
 
-internal class AddGaolMap: AppCompatActivity(), OnMapReadyCallback {
+internal class AddGaolMap : AppCompatActivity(), OnMapReadyCallback {
 
     companion object {
         const val TAG = "AddGaolMap"
+        const val RESULT_LOCATION = "result_location"
     }
 
     private lateinit var binding: KakaoMapBinding
@@ -26,10 +29,10 @@ internal class AddGaolMap: AppCompatActivity(), OnMapReadyCallback {
     private lateinit var mapView: MapView
     private lateinit var googleMap: GoogleMap
     private var currentMarker: Marker? = null
+    private var selectedAddress: String? = null // 사용자가 선택한 주소를 저장할 변수
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding = KakaoMapBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -41,78 +44,77 @@ internal class AddGaolMap: AppCompatActivity(), OnMapReadyCallback {
             finish() // 현재 액티비티 종료
         }
 
-
+        findViewById<Button>(R.id.add_goal_map_complete).setOnClickListener {
+            if (selectedAddress != null) {
+                val resultIntent = Intent()
+                resultIntent.putExtra(RESULT_LOCATION, selectedAddress)
+                setResult(RESULT_OK, resultIntent)
+                finish() // 현재 액티비티 종료 및 결과 반환
+            } else {
+                // 주소가 선택되지 않았을 경우의 처리 (예: Toast 메시지 표시)
+                Toast.makeText(this, "위치를 선택해주세요.", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
-    /**
-     * onMapReady()
-     * Map이 사용할 준비가 되었을 때 호출
-     * @param googleMap
-     */
     override fun onMapReady(googleMap: GoogleMap) {
         this.googleMap = googleMap
 
-        currentMarker = setupMarker(LatLngEntity(37.5562, 126.9724)) // default 서울
+        val seoul = LatLng(37.5562, 126.9724)
+        currentMarker = setupMarker(seoul)
         currentMarker?.showInfoWindow()
+
+        googleMap.setOnMapClickListener { latLng ->
+            currentMarker?.remove()
+            currentMarker = setupMarker(latLng)
+            currentMarker?.showInfoWindow()
+
+            // Geocoder를 사용하여 LatLng을 주소로 변환
+            val geocoder = Geocoder(this, Locale.getDefault())
+            val addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1)
+            selectedAddress = addresses?.get(0)?.getAddressLine(0) ?: "주소를 찾을 수 없습니다."
+        }
     }
 
-    /**
-     * setupMarker()
-     * 선택한 위치의 marker 표시
-     * @param locationLatLngEntity
-     * @return
-     */
-    private fun setupMarker(locationLatLngEntity: LatLngEntity): Marker? {
-
-        val positionLatLng = LatLng(locationLatLngEntity.latitude!!,locationLatLngEntity.longitude!!)
-        val markerOption = MarkerOptions().apply {
-            position(positionLatLng)
-            title("위치")
-            snippet("서울역 위치")
+    private fun setupMarker(latLng: LatLng): Marker? {
+        val markerOptions = MarkerOptions().apply {
+            position(latLng)
+            title("선택한 위치")
+            snippet("위치 정보")
         }
 
-        googleMap.mapType = GoogleMap.MAP_TYPE_NORMAL  // 지도 유형 설정
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(positionLatLng, 15f))  // 카메라 이동
-        googleMap.animateCamera(CameraUpdateFactory.zoomTo(15f))  // 줌의 정도 - 1 일 경우 세계지도 수준, 숫자가 커질 수록 상세지도가 표시됨
-        return googleMap.addMarker(markerOption)
-
+        googleMap.mapType = GoogleMap.MAP_TYPE_NORMAL
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
+        return googleMap.addMarker(markerOptions)
     }
-
 
     override fun onStart() {
         super.onStart()
         mapView.onStart()
     }
+
     override fun onStop() {
         super.onStop()
         mapView.onStop()
     }
+
     override fun onResume() {
         super.onResume()
         mapView.onResume()
     }
+
     override fun onPause() {
         super.onPause()
         mapView.onPause()
     }
+
     override fun onLowMemory() {
         super.onLowMemory()
         mapView.onLowMemory()
     }
+
     override fun onDestroy() {
         mapView.onDestroy()
         super.onDestroy()
     }
-
-
-    /**
-     * LatLngEntity data class
-     *
-     * @property latitude 위도 (ex. 37.5562)
-     * @property longitude 경도 (ex. 126.9724)
-     */
-    data class LatLngEntity(
-        var latitude: Double?,
-        var longitude: Double?
-    )
 }

@@ -62,7 +62,7 @@
 <!--            </intent-filter>-->
         </activity>
         <activity android:name=".ui.teamcertificationalarm.RejectionReasonActivity" />
-        <activity android:name=".ui.certification.AddGaolMap"/>
+        <activity android:name=".ui.main.goal.AddGaolMap"/>
         <activity android:name=".ui.main.people.PeopleFragment" />
 
 
