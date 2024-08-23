@@ -65,15 +65,21 @@
         <activity android:name=".ui.main.people.PeopleFragment" />
 
         <activity android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
-            android:exported="true">
+            android:exported="true"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data android:host="oauth"
-                    android:scheme="kakao3d4bf94b72b5b0d456dce8aba5f0623c" />
+                    android:scheme="kakaodcbece26a1b1dfa37cbe592e728ea3c2" />
             </intent-filter>
         </activity>
+
+        <meta-data
+            android:name="com.kakao.sdk.AppKey"
+            android:value="dcbece26a1b1dfa37cbe592e728ea3c2"/>
+
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -81,5 +87,8 @@
 
     </application>
 
+    <queries>
+        <package android:name="com.kakao.talk" />
+    </queries>
 
 </manifest>

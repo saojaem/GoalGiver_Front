@@ -101,13 +101,13 @@ class GoalDetailActivity: AppCompatActivity() {
                 //imageView.setImageBitmap(imageBitmap)
                 //binding.ivGoaldetailMainphoto.setImageBitmap(imageBitmap)
 
-                val dialog = CertificationDialog(
-                    context = this,
-                    imageResId = R.drawable.icn_check,
-                    messageResId = R.string.certification_success,
-                    targetActivity = MapCertificationActivity::class.java
-                )
-                dialog.show()
+//                val dialog = CertificationDialog(
+//                    context = this,
+//                    imageResId = R.drawable.icn_check,
+//                    messageResId = R.string.certification_success,
+//                    //targetActivity = MapCertificationActivity::class.java
+//                )
+//                dialog.show()
 
             }
         }

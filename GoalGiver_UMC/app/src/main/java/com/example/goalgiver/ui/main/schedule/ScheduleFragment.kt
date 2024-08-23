@@ -1,14 +1,25 @@
 package com.example.goalgiver.ui.main.schedule
 
+import android.app.Activity
+import android.app.AlertDialog
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.goalgiver.R
 import com.example.goalgiver.databinding.FragmentScheduleBinding
+import com.example.goalgiver.ui.certification.CertificationDialog
+import com.example.goalgiver.ui.certification.MapCertificationActivity
+import com.example.goalgiver.ui.main.MainActivity
+import com.example.goalgiver.ui.main.goal.AddGoalMain
 import com.example.goalgiver.ui.teamcertificationalarm.RequestAlarmActivity
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView
@@ -23,6 +34,9 @@ class ScheduleFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var todoAdapter: ToDoAdapter
     private val sharedViewModel: SharedViewModel by activityViewModels()
+
+    private val CAMERA_PERMISSION_CODE = 1001
+    private val REQUEST_IMAGE_CAPTURE = 1002
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -49,7 +63,9 @@ class ScheduleFragment : Fragment() {
     }
 
     private fun initViews() {
-        todoAdapter = ToDoAdapter()
+        todoAdapter = ToDoAdapter { certification ->
+            handleCertificationClick(certification)
+        }
         binding.todoRecyclerView.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = todoAdapter
@@ -63,6 +79,74 @@ class ScheduleFragment : Fragment() {
         binding.calendarView.setOnMonthChangedListener { _, date -> updateMonthYearTitle(date) }
         binding.calendarView.setTitleFormatter(DateFormatTitleFormatter(DateTimeFormatter.ofPattern("yyyy년 MM월", Locale.KOREAN)))
         binding.calendarView.setWeekDayLabels(arrayOf("월", "화", "수", "목", "금", "토", "일"))
+
+
+    }
+
+    private fun handleCertificationClick(certification: Int) {
+        when (certification) {
+            11 -> checkCameraPermission() // 카메라 권한 확인 및 요청
+            12 -> {
+                val intent = Intent(requireContext(), MapCertificationActivity::class.java)
+                startActivity(intent)
+            }
+            else -> {
+                // AlertDialog 표시
+                AlertDialog.Builder(requireContext())
+                    .setTitle("인증")
+                    .setMessage("인증 성공")
+                    .setPositiveButton("확인", null)
+                    .show()
+            }
+        }
+    }
+
+    private fun checkCameraPermission() {
+        if (ContextCompat.checkSelfPermission(
+            requireContext(),
+            android.Manifest.permission.CAMERA
+        ) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(
+                arrayOf(android.Manifest.permission.CAMERA),
+                CAMERA_PERMISSION_CODE
+            )
+        } else {
+            dispatchTakePictureIntent()
+        }
+    }
+
+    private fun dispatchTakePictureIntent() {
+        val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        if (requestCode == CAMERA_PERMISSION_CODE) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                dispatchTakePictureIntent()
+            } else {
+                // 권한 거부 처리
+            }
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
+            val imageBitmap = data?.extras?.get("data") as Bitmap
+            // 사진 사용 구현
+            val dialog = CertificationDialog(
+                context = requireContext(),
+                imageResId = R.drawable.icn_check,
+                messageResId = R.string.certification_success,
+                targetActivity = MainActivity::class.java
+            )
+            dialog.show()
+        }
     }
 
     private fun initializeData() {

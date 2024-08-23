@@ -32,6 +32,11 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+//    override fun onResume() {
+//        super.onResume()
+//        showMainActivity()
+//    }
+
     private fun showLoginFragment() {
         binding.mainBnv.visibility = View.GONE
         supportFragmentManager.beginTransaction()

@@ -9,7 +9,8 @@ import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.user.UserApiClient
 
-class AuthCodeHandlerActivity: AppCompatActivity() {
+class AuthCodeHandlerActivity : AppCompatActivity() {
+
     private val mCallback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
         if (error != null) {
             Log.e(TAG, "로그인 실패 $error")

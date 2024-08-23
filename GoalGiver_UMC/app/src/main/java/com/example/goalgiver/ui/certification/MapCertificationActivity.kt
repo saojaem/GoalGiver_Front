@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.goalgiver.R
 import com.example.goalgiver.databinding.ActivityMapcertificationBinding
+import com.example.goalgiver.ui.main.MainActivity
 import com.example.goalgiver.ui.main.goal.AddGoalMain
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -40,7 +41,7 @@ internal class MapCertificationActivity: AppCompatActivity(), OnMapReadyCallback
                 context = this,
                 imageResId = R.drawable.icn_check,
                 messageResId = R.string.certification_success,
-                targetActivity = AddGoalMain::class.java
+                targetActivity = MainActivity::class.java
             )
             dialog.show()
         }
