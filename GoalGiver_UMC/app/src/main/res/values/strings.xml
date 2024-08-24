@@ -11,4 +11,5 @@
         <item>토</item>
         <item>일</item>
     </string-array>
+    <string name="kakao_native_key">dcbece26a1b1dfa37cbe592e728ea3c2</string>
 </resources>
