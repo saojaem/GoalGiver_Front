@@ -23,7 +23,7 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -66,6 +66,7 @@ dependencies {
 
     implementation ("com.google.code.gson:gson:2.8.9")
 
+
     //API
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
@@ -76,4 +77,5 @@ dependencies {
 
     // kakao
     implementation("com.kakao.sdk:v2-user:2.12.1")
+
 }

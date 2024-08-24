@@ -103,6 +103,7 @@ class GoalFragment : Fragment() {
                 goalTimerViewModel.startTimer(goalItem)
             }
         }
+        applyFilters()
 
         goalTimerViewModel.goalTimers.observe(viewLifecycleOwner) { timers ->
             timers.forEach { (goalItem, remainingTime) ->
@@ -196,7 +197,7 @@ class GoalFragment : Fragment() {
 
         binding.completedButton.setOnClickListener {
             isCompletedFilter = true
-            clearGoalListFromPrefs()
+            //clearGoalListFromPrefs()
             updateButtonSelection(binding.completedButton, binding.inProgressButton)
             applyFilters()
         }
@@ -210,21 +211,26 @@ class GoalFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        val adapter = GoalSetAdapter(requireContext(), goalList)
+        val adapter = GoalSetAdapter(requireContext(), filteredGoalList)
         binding.goalFragmentRecyclerView.adapter = adapter
         binding.goalFragmentRecyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         // RecyclerView item click listener 설정
         adapter.setOnItemClickListener(object : GoalSetAdapter.OnItemClickListener {
             override fun onItemClick(position: Int) {
-//                val clickedItem = goalList[position]
+
                 val clickedItem = filteredGoalList[position]
-                Log.d("GoalFragmentItemClick", "Clicked: ${clickedItem.goalIcon}")
+                Log.d("GoalFragment", "Clicked: ${clickedItem}")
+
                 val intent = Intent(requireContext(), GoalDetailActivity::class.java)
                 intent.putExtra("goalItem", clickedItem)
                 startActivity(intent)
             }
         })
+        if (goalList.isNotEmpty()) {
+            adapter.updateGoalList(filteredGoalList)
+        }
+
     }
 
     private fun formatTimeRemaining(diffInMillis: Long): String {
@@ -259,5 +265,12 @@ class GoalFragment : Fragment() {
         val editor = sharedPreferences.edit()
         editor.remove("goal_list")
         editor.apply()
+    }
+    override fun onResume() {
+        super.onResume()
+        // SharedPreferences에서 목표 리스트를 다시 불러와서 UI를 갱신
+        goalList = loadGoalListFromPrefs() ?: arrayListOf()
+        (binding.goalFragmentRecyclerView.adapter as GoalSetAdapter).updateGoalList(goalList)
+        applyFilters()
     }
 }

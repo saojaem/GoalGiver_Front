@@ -5,6 +5,8 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.LayoutInflater
@@ -20,7 +22,10 @@ import com.example.goalgiver.ui.certification.CertificationDialog
 import com.example.goalgiver.ui.certification.MapCertificationActivity
 import com.example.goalgiver.ui.main.MainActivity
 import com.example.goalgiver.ui.main.goal.AddGoalMain
+import com.example.goalgiver.ui.main.goal.GoalSetItem
 import com.example.goalgiver.ui.teamcertificationalarm.RequestAlarmActivity
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView
 import com.prolificinteractive.materialcalendarview.OnMonthChangedListener
@@ -34,6 +39,7 @@ class ScheduleFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var todoAdapter: ToDoAdapter
     private val sharedViewModel: SharedViewModel by activityViewModels()
+    private lateinit var sharedPreferences: SharedPreferences
 
     private val CAMERA_PERMISSION_CODE = 1001
     private val REQUEST_IMAGE_CAPTURE = 1002
@@ -48,10 +54,14 @@ class ScheduleFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        sharedPreferences = requireContext().getSharedPreferences("goal_prefs", Context.MODE_PRIVATE)
         initViews()
 
-        // SharedViewModel 데이터 초기화
-        initializeData()
+        // 현재 날짜 설정
+        setCurrentMonthYearTitle()
+
+        // SharedPreferences에서 데이터 로드
+        loadGoalsFromPrefs()
 
         // goalList를 관찰하여 변화가 있을 때 리사이클러뷰를 업데이트
         sharedViewModel.goalList.observe(viewLifecycleOwner) { goalList ->
@@ -149,24 +159,32 @@ class ScheduleFragment : Fragment() {
         }
     }
 
-    private fun initializeData() {
-        // SharedViewModel이 초기화되거나 데이터를 가져오도록 합니다.
-        if (sharedViewModel.goalList.value.isNullOrEmpty()) {
-            loadInitialData()
+    private fun loadGoalsFromPrefs() {
+        val gson = Gson()
+        val json = sharedPreferences.getString("goal_list", null)
+        val type = object : TypeToken<ArrayList<GoalSetItem>>() {}.type
+        val goalList: ArrayList<GoalSetItem>? = gson.fromJson(json, type)
+
+        if (goalList != null) {
+            val toDoItems = goalList.map { goalItem ->
+                ToDoItem(
+                    scheduleIcon = goalItem.goalIcon,
+                    title = goalItem.goalTitle,
+                    startdate = goalItem.goalStartDate,
+                    enddate = goalItem.goalEndDate,
+                    status = "인증",
+                    certification = goalItem.goalCertificationCheck
+                )
+            }
+            sharedViewModel.setGoalList(toDoItems)
         }
     }
 
-    private fun loadInitialData() {
-        // 여기서 실제로 필요한 데이터를 로드하세요.
-        val initialData = fetchInitialData() // 데이터를 가져오는 메서드를 구현해야 합니다.
-
-        // SharedViewModel에 데이터를 설정합니다.
-        sharedViewModel.setGoalList(initialData)
-    }
-
-    private fun fetchInitialData(): List<ToDoItem> {
-        // 데이터를 가져오는 로직을 추가합니다.
-        return listOf() // 예시로 비어있는 리스트 반환, 실제 데이터로 교체 필요
+    private fun setCurrentMonthYearTitle() {
+        // 현재 날짜를 가져와서 textMonthYear에 설정
+        val currentDate = LocalDate.now()
+        val formatter = DateTimeFormatter.ofPattern("yyyy년 MM월", Locale.getDefault())
+        binding.textMonthYear.text = currentDate.format(formatter)
     }
 
     private fun updateMonthYearTitle(calendarDay: CalendarDay) {
