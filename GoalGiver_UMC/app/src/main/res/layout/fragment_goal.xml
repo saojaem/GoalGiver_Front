@@ -123,8 +123,6 @@
             tools:listitem="@layout/item_teamprogress"/>
     </ScrollView>
 
-
-    <!-- Floating action button -->
     <Button
         android:id="@+id/floatingActionButton"
         android:layout_width="50dp"
@@ -135,6 +133,19 @@
         android:textSize="30dp"
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="5dp" />
+
+    <!-- Floating action button -->
+    <TextView
+        android:id="@+id/goal_remove"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="#F0F0F0"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:textSize="30dp"
+        android:textColor="@color/white"
+        app:layout_constraintStart_toStartOf="parent"
         android:layout_marginEnd="5dp"
         android:layout_marginBottom="5dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>
