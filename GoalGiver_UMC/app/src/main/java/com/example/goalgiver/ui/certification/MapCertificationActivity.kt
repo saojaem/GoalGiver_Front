@@ -38,10 +38,9 @@ internal class MapCertificationActivity: AppCompatActivity(), OnMapReadyCallback
 
         binding.btnCertificateComplete.setOnClickListener {
             val dialog = CertificationDialog(
-                context = this,
+                activity = this,
                 imageResId = R.drawable.icn_check,
-                messageResId = R.string.certification_success,
-                targetActivity = MainActivity::class.java
+                messageResId = R.string.certification_success
             )
             dialog.show()
         }

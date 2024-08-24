@@ -1,5 +1,6 @@
 package com.example.goalgiver.ui.main.schedule
 
+import CertificationDialog2
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
@@ -149,11 +150,10 @@ class ScheduleFragment : Fragment() {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
             val imageBitmap = data?.extras?.get("data") as Bitmap
             // 사진 사용 구현
-            val dialog = CertificationDialog(
+            val dialog = CertificationDialog2(
                 context = requireContext(),
                 imageResId = R.drawable.icn_check,
-                messageResId = R.string.certification_success,
-                targetActivity = MainActivity::class.java
+                messageResId = R.string.certification_success
             )
             dialog.show()
         }
