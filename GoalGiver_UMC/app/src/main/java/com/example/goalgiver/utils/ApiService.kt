@@ -10,6 +10,9 @@ import retrofit2.http.Url
 interface ApiService {
     @GET("api/auth/login/kakao")
     fun kakaoLogin(@Query("access_token") accessToken: String): Call<LoginResponse>
+
+    @GET("api/auth/login/kakao")
+    fun loginWithKakao(): Call<Void>
 }
 
 data class LoginResponse(
