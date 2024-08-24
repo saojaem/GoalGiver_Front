@@ -1,6 +1,3 @@
-package com.example.goalgiver.ui.certification
-
-import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
@@ -13,11 +10,11 @@ import com.example.goalgiver.MainActivity
 import com.example.goalgiver.R
 import com.example.goalgiver.ui.main.people.PeopleFragment
 
-class CertificationDialog(
-    private val activity: Activity,
+class CertificationDialog2(
+    context: Context,
     private val imageResId: Int,
-    private val messageResId: Int
-): Dialog(activity) {
+    private val messageResId: Int,
+): Dialog(context) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.dialog_certification_success)
@@ -34,7 +31,9 @@ class CertificationDialog(
         textView.setText(messageResId)
 
         setOnDismissListener {
-            activity.finish()
+//            val intent = Intent(context, targetActivity)
+//            context.startActivity(intent)
+            dismiss()
         }
     }
 }

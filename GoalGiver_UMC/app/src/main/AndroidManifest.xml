@@ -32,8 +32,11 @@
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-                <data android:scheme="http"
-                    android:host="goalgiverr-env.eba-2ff2eph3.ap-northeast-2.elasticbeanstalk.com/api/auth/login/kakao-redirect"/>
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="kakaodcbece26a1b1dfa37cbe592e728ea3c2"
+                    android:host="oauth" />
+
             </intent-filter>
         </activity>
         <activity
