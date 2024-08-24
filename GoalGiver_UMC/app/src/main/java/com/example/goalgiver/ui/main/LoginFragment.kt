@@ -19,7 +19,6 @@ import com.example.goalgiver.databinding.FragmentLoginBinding
 import com.example.goalgiver.ui.certification.MapCertificationActivity.Companion.TAG
 import com.example.goalgiver.ui.main.MainActivity
 import com.example.goalgiver.ui.main.nickname.NicknameFragment
-import com.example.goalgiver.utils.KakaoSessionManager
 import com.example.goalgiver.utils.RetrofitClient
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
@@ -57,8 +56,6 @@ class LoginFragment : Fragment() {
             Log.e(TAG, "카카오계정으로 로그인 실패", error)
         } else if (token != null) {
             Log.i(TAG, "카카오계정으로 로그인 성공 ${token.accessToken}")
-
-            KakaoSessionManager.updateAccessToken(token.accessToken)
             GoMain()
         }
     }
