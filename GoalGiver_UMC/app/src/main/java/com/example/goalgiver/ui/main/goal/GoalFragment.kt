@@ -197,7 +197,7 @@ class GoalFragment : Fragment() {
 
         binding.completedButton.setOnClickListener {
             isCompletedFilter = true
-            clearGoalListFromPrefs()
+            //clearGoalListFromPrefs()
             updateButtonSelection(binding.completedButton, binding.inProgressButton)
             applyFilters()
         }
@@ -211,14 +211,14 @@ class GoalFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        val adapter = GoalSetAdapter(requireContext(), goalList)
+        val adapter = GoalSetAdapter(requireContext(), filteredGoalList)
         binding.goalFragmentRecyclerView.adapter = adapter
         binding.goalFragmentRecyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         // RecyclerView item click listener 설정
         adapter.setOnItemClickListener(object : GoalSetAdapter.OnItemClickListener {
             override fun onItemClick(position: Int) {
-                val clickedItem = goalList[position]
+                val clickedItem = filteredGoalList[position]
                 Log.d("GoalFragment", "Clicked: ${clickedItem}")
                 val intent = Intent(requireContext(), GoalDetailActivity::class.java)
                 intent.putExtra("goalItem", clickedItem)
