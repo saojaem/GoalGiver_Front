@@ -42,6 +42,9 @@ class ScheduleFragment : Fragment() {
         sharedPreferences = requireContext().getSharedPreferences("goal_prefs", Context.MODE_PRIVATE)
         initViews()
 
+        // 현재 날짜 설정
+        setCurrentMonthYearTitle()
+
         // SharedPreferences에서 데이터 로드
         loadGoalsFromPrefs()
 
@@ -90,6 +93,13 @@ class ScheduleFragment : Fragment() {
             }
             sharedViewModel.setGoalList(toDoItems)
         }
+    }
+
+    private fun setCurrentMonthYearTitle() {
+        // 현재 날짜를 가져와서 textMonthYear에 설정
+        val currentDate = LocalDate.now()
+        val formatter = DateTimeFormatter.ofPattern("yyyy년 MM월", Locale.getDefault())
+        binding.textMonthYear.text = currentDate.format(formatter)
     }
 
     private fun updateMonthYearTitle(calendarDay: CalendarDay) {
