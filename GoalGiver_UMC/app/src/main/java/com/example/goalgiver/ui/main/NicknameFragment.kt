@@ -34,6 +34,12 @@ class NicknameFragment : Fragment() {
         // StartButton 항상 활성화하고 색상만 조정
         updateStartButtonState(false)
 
+        // backButton 클릭 리스너 설정
+        binding.backButton.setOnClickListener {
+            // 이전 화면으로 돌아가기
+            parentFragmentManager.popBackStack()
+        }
+
         // CheckDuplicateButton 클릭 리스너 설정
         binding.checkDuplicateButton.setOnClickListener {
             val nickname = binding.nicknameEditText.text.toString().trim()
