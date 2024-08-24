@@ -89,6 +89,10 @@ class GoalFragment : Fragment() {
             teamChooseLauncher.launch(intent)
         }
 
+        binding.goalRemove.setOnClickListener{
+            clearGoalListFromPrefs()
+        }
+
         goalList = loadGoalListFromPrefs() ?: arrayListOf(
 
             //GoalSetItem("🎯", "Goal 1", "D-10", "100", "Progress 50%", 50,"2024-08-19","2024-08-30","매주 1일",1,1,0L)
@@ -201,6 +205,7 @@ class GoalFragment : Fragment() {
             updateButtonSelection(binding.completedButton, binding.inProgressButton)
             applyFilters()
         }
+
     }
 
     private fun updateButtonSelection(selectedButton: Button, otherButton: Button) {

@@ -72,6 +72,7 @@ public class AddGoalMain extends AppCompatActivity {
     private int certificateCheck = 0;
     private int personTeam = 0;
     private TextView locationEditText;
+    private EditText donationCheck;
 
     @Override
     protected void onCreate(Bundle saveInstanceState) {
@@ -147,6 +148,9 @@ public class AddGoalMain extends AppCompatActivity {
                 finish();
             }
         });
+
+
+
 
         personal();
         imageCertificationP();
@@ -357,6 +361,41 @@ public class AddGoalMain extends AppCompatActivity {
         ((EditText) findViewById(R.id.goal_add_donationP_tv2)).addTextChangedListener(textWatcher);
         repeatRecordTv.addTextChangedListener(textWatcher);
         donationRecordTv.addTextChangedListener(textWatcher);
+
+        EditText donationAmountEditText = findViewById(R.id.goal_add_donationP_tv2);
+        donationAmountEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // No action needed before text changes
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // Convert text to an integer to check its value
+                if (!s.toString().isEmpty()) { // Check if the input is not empty
+                    try {
+                        int donationAmount = Integer.parseInt(s.toString());
+                        if (donationAmount > 50000) {
+                            // If the donation amount exceeds 50000, set the text to "50000"
+                            donationAmountEditText.setText("50000");
+
+                            // Move the cursor to the end of the text
+                            donationAmountEditText.setSelection(donationAmountEditText.getText().length());
+
+                            // Optional: Show a toast message to inform the user
+                            Toast.makeText(AddGoalMain.this, "현재 보유 금액이 50000원 입니다.", Toast.LENGTH_SHORT).show();
+                        }
+                    } catch (NumberFormatException e) {
+                        // Handle the case when input is not a valid number
+                    }
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                // No action needed after text has changed
+            }
+        });
 
 
     }
@@ -1007,6 +1046,7 @@ public class AddGoalMain extends AppCompatActivity {
         bottomSheetDialog.setContentView(bottomSheetView);
         bottomSheetDialog.show();
     }
+
 
 
 }
